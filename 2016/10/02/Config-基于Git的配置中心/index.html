@@ -3,15 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>balabala</title>
+  <title>Config-基于Git的配置中心 | balabala</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="balabala">
-<meta property="og:url" content="http://www.balabalacoder.com/index.html">
+  <meta name="description" content="Spring Cloud Config提供了基于Git的配置中心的服务，可以托管和实时装载各个业务线的配置文件 1.首先搭建ConfigServer: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframework.boot.autoconfigu">
+<meta name="keywords" content="spring cloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Config-基于Git的配置中心">
+<meta property="og:url" content="http://www.balabalacoder.com/2016/10/02/Config-基于Git的配置中心/index.html">
 <meta property="og:site_name" content="balabala">
+<meta property="og:description" content="Spring Cloud Config提供了基于Git的配置中心的服务，可以托管和实时装载各个业务线的配置文件 1.首先搭建ConfigServer: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframework.boot.autoconfigu">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-09-30T18:16:03.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="balabala">
+<meta name="twitter:title" content="Config-基于Git的配置中心">
+<meta name="twitter:description" content="Spring Cloud Config提供了基于Git的配置中心的服务，可以托管和实时装载各个业务线的配置文件 1.首先搭建ConfigServer: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframework.boot.autoconfigu">
   
   
     <link rel="icon" href="/favicon.png">
@@ -25,17 +30,15 @@
   <div id="container">
     <div id="wrap">
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-Config-基于Git的配置中心" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Config-基于Git的配置中心" class="article article-type-post" itemscope itemprop="blogPost">
   
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/02/Config-基于Git的配置中心/">Config-基于Git的配置中心</a>
+    <h1 class="article-title" itemprop="name">
+      Config-基于Git的配置中心
     </h1>
   
 
@@ -75,70 +78,21 @@
     </div>
   </div>
   
-</article>
-
-
-
-  
-    <article id="post-Eureka高可用部署" class="article article-type-post" itemscope itemprop="blogPost">
-  
-  <div class="article-inner">
     
-      <header class="article-header">
-        
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/01/Eureka高可用部署/">Eureka高可用部署</a>
-    </h1>
   
+    <a href="/2016/10/01/Eureka高可用部署/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Eureka高可用部署</div>
+    </a>
+  
+</nav>
 
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2016/10/01/Eureka高可用部署/" class="article-date">
-  <time datetime="2016-09-30T16:39:42.000Z" itemprop="datePublished">2016-10-01</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/spring-cloud/">spring cloud</a>
-  </div>
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在部署Eureka Server时，避免不了要解决可用性的问题，本地测试部署3台Eureka Server:</p>
-<p>Application.java:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import org.springframework.boot.SpringApplication;</div><div class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line">import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;</div><div class="line"></div><div class="line">@SpringBootApplication</div><div class="line">@EnableEurekaServer</div><div class="line">public class Application &#123;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		SpringApplication.run(Application.class, args);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>修改本地 hosts:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">127.0.0.1 peer1</div><div class="line">127.0.0.1 peer2</div><div class="line">127.0.0.1 peer3</div></pre></td></tr></table></figure>
-<p>application.properties:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">spring.application.name=eureka-server</div></pre></td></tr></table></figure></p>
-<p>application-peer1.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10001</div><div class="line">eureka.instance.hostname=peer1</div><div class="line">eureka.client.serviceUrl.defaultZone=http://peer1:10001/eureka,http://peer2:10002/eureka,http://peer3:10003/eureka</div></pre></td></tr></table></figure></p>
-<p>application-peer2.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10002</div><div class="line">eureka.instance.hostname=peer2</div><div class="line">eureka.client.serviceUrl.defaultZone=http://peer1:10001/eureka,http://peer2:10002/eureka,http://peer3:10003/eureka</div></pre></td></tr></table></figure></p>
-<p>application-peer3.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10003</div><div class="line">eureka.instance.hostname=peer3</div><div class="line">eureka.client.serviceUrl.defaultZone=http://peer1:10001/eureka,http://peer2:10002/eureka,http://peer3:10003/eureka</div></pre></td></tr></table></figure></p>
-<p>打包：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn clean package</div></pre></td></tr></table></figure>
-<p>依次运行 :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">java -jar discovery-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer1</div><div class="line">java -jar discovery-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer2</div><div class="line">java -jar discovery-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer3</div></pre></td></tr></table></figure></p>
-<p>浏览器:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">http://localhost:10001/</div><div class="line">http://localhost:10002/</div><div class="line">http://localhost:10003/</div></pre></td></tr></table></figure>
-<p>eureka高可用集群需要注意的事项：</p>
-<ul>
-<li>spring.application.name=eureka-server， 在N台节点必须保持一致</li>
-<li>eureka.instance.prefer-ip-address=true，IP注册的方式要关闭   </li>
-</ul>
-
-      
-
-      
-        
-    </div>
-  </div>
   
 </article>
 
 
-
-  
-  
 </section>
         <aside id="sidebar">
   <nav class="menus">

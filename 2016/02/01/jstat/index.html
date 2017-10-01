@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="nodejs," />
+  <meta name="keywords" content="jvm," />
 
 
 
@@ -79,23 +79,18 @@
 
 
 
-<meta name="description" content="目前比较流行的开发模式是WEB前后端分离，前端采用重量级的JavaScript框架，比如AngularJS、Ember等，后端采用Restful API提供服务，通过JSON格式的数据进行交互。 bower其实和npm比较相似，npm常被用于node.js的后端第三方依赖的管理，比如express，socket.io等。而bower是前端开发的第三方依赖的管理。比如jQuery，bootstrap">
-<meta name="keywords" content="nodejs">
+<meta name="description" content="jstat主要用于观察和判断JVM GC的情况。 用法:12jstat -help|-optionsjstat -&amp;lt;option&amp;gt; [-t] [-h&amp;lt;lines&amp;gt;] &amp;lt;vmid&amp;gt; [&amp;lt;interval&amp;gt; [&amp;lt;count&amp;gt;]]">
+<meta name="keywords" content="jvm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="bower详解">
-<meta property="og:url" content="http://www.balabalacoder.com/2015/01/02/bower详解/index.html">
+<meta property="og:title" content="jstat">
+<meta property="og:url" content="http://www.balabalacoder.com/2016/02/01/jstat/index.html">
 <meta property="og:site_name" content="balabala.sean">
-<meta property="og:description" content="目前比较流行的开发模式是WEB前后端分离，前端采用重量级的JavaScript框架，比如AngularJS、Ember等，后端采用Restful API提供服务，通过JSON格式的数据进行交互。 bower其实和npm比较相似，npm常被用于node.js的后端第三方依赖的管理，比如express，socket.io等。而bower是前端开发的第三方依赖的管理。比如jQuery，bootstrap">
+<meta property="og:description" content="jstat主要用于观察和判断JVM GC的情况。 用法:12jstat -help|-optionsjstat -&amp;lt;option&amp;gt; [-t] [-h&amp;lt;lines&amp;gt;] &amp;lt;vmid&amp;gt; [&amp;lt;interval&amp;gt; [&amp;lt;count&amp;gt;]]">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.balabalacoder.com/2015/01/02/bower详解/bower1.jpg">
-<meta property="og:image" content="http://www.balabalacoder.com/2015/01/02/bower详解/bower2.jpg">
-<meta property="og:image" content="http://www.balabalacoder.com/2015/01/02/bower详解/bower3.jpg">
-<meta property="og:image" content="http://www.balabalacoder.com/2015/01/02/bower详解/bower4.jpg">
-<meta property="og:updated_time" content="2017-10-01T06:39:24.000Z">
+<meta property="og:updated_time" content="2017-10-01T08:33:15.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="bower详解">
-<meta name="twitter:description" content="目前比较流行的开发模式是WEB前后端分离，前端采用重量级的JavaScript框架，比如AngularJS、Ember等，后端采用Restful API提供服务，通过JSON格式的数据进行交互。 bower其实和npm比较相似，npm常被用于node.js的后端第三方依赖的管理，比如express，socket.io等。而bower是前端开发的第三方依赖的管理。比如jQuery，bootstrap">
-<meta name="twitter:image" content="http://www.balabalacoder.com/2015/01/02/bower详解/bower1.jpg">
+<meta name="twitter:title" content="jstat">
+<meta name="twitter:description" content="jstat主要用于观察和判断JVM GC的情况。 用法:12jstat -help|-optionsjstat -&amp;lt;option&amp;gt; [-t] [-h&amp;lt;lines&amp;gt;] &amp;lt;vmid&amp;gt; [&amp;lt;interval&amp;gt; [&amp;lt;count&amp;gt;]]">
 
 
 
@@ -125,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://www.balabalacoder.com/2015/01/02/bower详解/"/>
+  <link rel="canonical" href="http://www.balabalacoder.com/2016/02/01/jstat/"/>
 
 
 
 
 
-  <title>bower详解 | balabala.sean</title>
+  <title>jstat | balabala.sean</title>
   
 
 
@@ -258,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/01/02/bower详解/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/02/01/jstat/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -275,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">bower详解</h1>
+          <h1 class="post-title" itemprop="name headline">jstat</h1>
         
 
         <div class="post-meta">
@@ -287,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-02T14:01:33+08:00">
-                2015-01-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-01T16:27:08+08:00">
+                2016-02-01
               </time>
             
 
@@ -310,8 +305,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/nodejs/" itemprop="url" rel="index">
-                    <span itemprop="name">nodejs</span>
+                  <a href="/categories/jvm/" itemprop="url" rel="index">
+                    <span itemprop="name">jvm</span>
                   </a>
                 </span>
 
@@ -347,17 +342,35 @@
       
 
       
-        <p>目前比较流行的开发模式是WEB前后端分离，前端采用重量级的JavaScript框架，比如AngularJS、Ember等，后端采用Restful API提供服务，通过JSON格式的数据进行交互。</p>
-<p>bower其实和npm比较相似，npm常被用于node.js的后端第三方依赖的管理，比如express，socket.io等。而bower是前端开发的第三方依赖的管理。比如jQuery，bootstrap，angularjs等。<br><a id="more"></a></p>
-<p>bower的安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g bower</div></pre></td></tr></table></figure></p>
-<p>bower同样也有自己的配置文件 — bower.json，可以运行bower init命令，它可以帮我们自动生成一份bower.json文件在当前目录下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bower init</div></pre></td></tr></table></figure></p>
-<p>然后看一下生成的bower.json文件具体都有哪些内容：<br><img src="/2015/01/02/bower详解/bower1.jpg" alt="场景"></p>
-<p>接下来如果我们想在项目中引用bootstrap该怎么办呢？可以执行命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bower install bootstrap —save</div></pre></td></tr></table></figure></p>
-<p><img src="/2015/01/02/bower详解/bower2.jpg" alt="场景"></p>
-<p>bower install bootstrap 会在当前目录下生产一个bower_components的文件夹，并把依赖的package下载到这个目录下，加上了 —save ，则会把依赖的package在bower.json中的dependencies中加入。当别人再用这个项目的时候，直接bower init命令就读取bower.json文件中的dependencies的依赖包自动去下载了。</p>
-<p>值得一提的是，bootstrap依赖了jQuery，bower在下载bootstrap的同时会自动把bootstrap依赖的jQuery一并帮我们下载好，如下：<br><img src="/2015/01/02/bower详解/bower3.jpg" alt="场景"></p>
-<p>我们看到bower_components目录被生成了，同时它的下面有bootstrap和jQuery文件目录，接着，我们需要在页面中引入js文件,如下：<br><img src="/2015/01/02/bower详解/bower4.jpg" alt="场景"></p>
-<p>OK，这样我们的bower就算初识了，^_^。至于bower更多的功能和资料，可以查阅Google或者官网上找一找。</p>
+        <p>jstat主要用于观察和判断JVM GC的情况。</p>
+<p>用法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">jstat -help|-options</div><div class="line">jstat -&lt;option&gt; [-t] [-h&lt;lines&gt;] &lt;vmid&gt; [&lt;interval&gt; [&lt;count&gt;]]</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>gc分析： -gcutil<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jstat -gcutil vmid 1000 5</div></pre></td></tr></table></figure></p>
+<p>上面命令的意思是：每隔1秒打印出gc的情况，连续执行5次。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT   </div><div class="line">2.33   0.00  16.09  61.68  97.71  95.25    434    1.916     2    0.221    2.138</div><div class="line">2.33   0.00  16.09  61.68  97.71  95.25    434    1.916     2    0.221    2.138</div><div class="line">2.33   0.00  16.09  61.68  97.71  95.25    434    1.916     2    0.221    2.138</div><div class="line">2.33   0.00  18.09  61.68  97.71  95.25    434    1.916     2    0.221    2.138</div><div class="line">2.33   0.00  18.09  61.68  97.71  95.25    434    1.916     2    0.221    2.138</div></pre></td></tr></table></figure></p>
+<p>如果对JVM内存比较熟悉，上面的各个参数应该一目了然了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">S0  — Heap上的 Survivor space 0 区已使用空间的百分比</div><div class="line">S1  — Heap上的 Survivor space 1 区已使用空间的百分比</div><div class="line">E   — Heap上的 Eden space 区已使用空间的百分比</div><div class="line">O   — Heap上的 Old space 区已使用空间的百分比</div><div class="line">M   — Meta space 区已使用空间的百分比</div><div class="line">CCS --- Compressed Class Space 压缩后的class空间缩小比例</div><div class="line">YGC — 从应用程序启动到采样时发生 Young GC 的次数</div><div class="line">YGCT– 从应用程序启动到采样时 Young GC 所用的时间(单位秒)</div><div class="line">FGC — 从应用程序启动到采样时发生 Full GC 的次数</div><div class="line">FGCT– 从应用程序启动到采样时 Full GC 所用的时间(单位秒)</div><div class="line">GCT — 从应用程序启动到采样时用于垃圾回收的总时间(单位秒)</div></pre></td></tr></table></figure></p>
+<p>隔了一会儿，再次执行如上的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT   </div><div class="line">0.00   1.82  34.04  61.68  97.71  95.25    435    1.920     2    0.221    2.141</div><div class="line">0.00   1.82  34.04  61.68  97.71  95.25    435    1.920     2    0.221    2.141</div><div class="line">0.00   1.82  34.04  61.68  97.71  95.25    435    1.920     2    0.221    2.141</div><div class="line">0.00   1.82  34.04  61.68  97.71  95.25    435    1.920     2    0.221    2.141</div><div class="line">0.00   1.82  36.03  61.68  97.71  95.25    435    1.920     2    0.221    2.141</div></pre></td></tr></table></figure></p>
+<p>YGC的次数变了，在这期间发生了1次young gc,对比可以发现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">S0: 2.33 -&gt; 0.00</div><div class="line">S1: 0.00 -&gt; 1.82</div><div class="line">E : 16.09 -&gt; 34.04</div></pre></td></tr></table></figure></p>
+<p>然后就是YGC的次数多了1次，YGC的Time增加了0.004秒，GC总和的时间增加了0.003秒。这有助于观察GC的频次去寻找问题。</p>
+<p>附：<br>jstat options :</p>
+<ul>
+<li>class: </li>
+<li>compiler: </li>
+<li>gc: </li>
+<li>gccapacity: </li>
+<li>gccause: </li>
+<li>gcnew: </li>
+<li>gcnewcapacity: Displays statistics about the sizes of the new generations and its corresponding spaces.</li>
+<li>gcold: Displays statistics about the behavior of the old generation and metaspace statistics.</li>
+<li>gcoldcapacity: Displays statistics about the sizes of the old generation.</li>
+<li>gcmetacapacity: Displays statistics about the sizes of the metaspace.</li>
+<li>gcutil:<br>printcompilation: Displays Java HotSpot VM compilation method statistics.</li>
+</ul>
+<p>Displays statistics about the behavior of the class loader.</p>
+<p>Displays statistics about the behavior of the Java HotSpot VM Just-in-Time compiler.</p>
+<p>Displays statistics about the behavior of the garbage collected heap.</p>
+<p>Displays statistics about the capacities of the generations and their corresponding spaces.</p>
+<p>Displays a summary about garbage collection statistics (same as -gcutil), with the cause of the last and current (when applicable) garbage collection events.</p>
+<p>Displays statistics of the behavior of the new generation.</p>
 
       
     </div>
@@ -375,7 +388,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+            <a href="/tags/jvm/" rel="tag"># jvm</a>
           
         </div>
       
@@ -388,8 +401,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/01/01/npm详解/" rel="next" title="npm详解">
-                <i class="fa fa-chevron-left"></i> npm详解
+              <a href="/2015/12/05/JVM中的堆外内存/" rel="next" title="JVM中的堆外内存">
+                <i class="fa fa-chevron-left"></i> JVM中的堆外内存
               </a>
             
           </div>
@@ -398,8 +411,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/01/02/npm和bower的区别/" rel="prev" title="npm和bower的区别">
-                npm和bower的区别 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/06/19/分布式事务之可靠消息/" rel="prev" title="分布式事务之可靠消息">
+                分布式事务之可靠消息 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

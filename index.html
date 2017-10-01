@@ -561,6 +561,156 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/06/19/分布式事务之可靠消息/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean.Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="balabala.sean">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/19/分布式事务之可靠消息/" itemprop="url">分布式事务之可靠消息</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-19T10:38:24+08:00">
+                2016-06-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示，</p>
+<p><img src="/2016/06/19/分布式事务之可靠消息/dist.jpg" alt="场景"></p>
+<p>如上所示，我们已经做好了如下的准备：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1. 系统已经模块化(服务化)，每条垂直的业务线都由响应的团队独立开发和维护</div><div class="line">2. 各个系统之间的通讯都采用了MQ的方式</div><div class="line">3. 每个业务系统中都存在了2张用于控制可靠消息的表：mq_message_produce、mq_message_consume</div></pre></td></tr></table></figure></p>
+<p>下面就来解释下mq_message_produce、mq_message_consume的作用和操作的步骤：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">begin transaction</div><div class="line"></div><div class="line">	-- 对业务系统的更新</div><div class="line">	update order table;</div><div class="line">	-- 通知下游系统的消息入库</div><div class="line">	insert into mq_message_produce;</div><div class="line"></div><div class="line">commit</div></pre></td></tr></table></figure>
+<p>以上的业务操作和消息入库的操作都在同一事务中进行，确保数据的一致性。需要注意的是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1. 被插入的mq_message_produce是有状态的，初始插入时，状态为未发送</div><div class="line">2. 各个业务系统有专门的task（或者后台线程）去轮询未发送的消息数据，投递到mq-cluster中。试想mq-cluster宕机5分钟后又恢复可用，此时业务系统应当保证之前未发送出去的消息被重新投递。另外这样也能提升业务系统本身的性能，发送message的过程是后台线程异步处理的。</div><div class="line">3. 当发送成功的时候，update此记录的状态为已发送。</div></pre></td></tr></table></figure></p>
+<p>消息的消费者：被通知的业务系统在收到消息后，为了避免重复消费，在第一次收到消息的时候，对mq_message_consume进行一次查询：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1. 如果没有记录，则insert一条记录到mq_message_consume中</div><div class="line">2. 如果有记录，则忽略此重复消息的处理</div></pre></td></tr></table></figure>
+<p>同样的，mq_message_consume也是有状态的，业务的处理和状态的变更也是在本地同一事务中进行。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -607,7 +757,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -618,7 +768,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -629,7 +779,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

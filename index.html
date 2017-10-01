@@ -785,17 +785,17 @@
 
       
         
-          
-            <p>JVM为了满足AIO（避免内核态和用户态的进程数据拷贝，实现IO多路复用），在java.nio.buffer.ByteBuffer中提供了访问堆外内存的功能。</p>
+          <p>JVM为了满足AIO（避免内核态和用户态的进程数据拷贝），在java.nio.buffer.ByteBuffer中提供了访问堆外内存的功能。</p>
 <p>关于ByteBuffer:(分为2种)</p>
 <p>1.Heap ByteBuffer -&gt; -XX:Xmx<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">该类对象分配在JVM的堆内存里面，直接由Java虚拟机负责垃圾回收，</div></pre></td></tr></table></figure></p>
 <p>2.Direct ByteBuffer -&gt; -XX:MaxDirectMemorySize<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">通过jni在虚拟机外内存中分配的。通过jmap无法查看该快内存的使用情况。只能通过top来看它的内存使用情况。</div><div class="line"></div><div class="line">-XX:MaxDirectMemorySize此设置的含义是当Direct ByteBuffer分配的堆外内存到达指定大小后，即触发Full GC。</div></pre></td></tr></table></figure></p>
-<p>例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">import java.lang.reflect.Field;</div><div class="line">import java.nio.ByteBuffer;</div><div class="line"></div><div class="line"></div><div class="line">public class MaxDirectMemorySize &#123;</div><div class="line">	public static void main(String[] args) throws ClassNotFoundException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException &#123;</div><div class="line">   		System.out.println(&quot;maxMemoryValue:&quot;+sun.misc.VM.maxDirectMemory()); </div><div class="line">   </div><div class="line">   </div><div class="line">		System.out.println(&quot;================================&quot;);</div><div class="line">   </div><div class="line">		ByteBuffer buffer=ByteBuffer.allocateDirect(0);</div><div class="line">		Class&lt;?&gt; c = Class.forName(&quot;java.nio.Bits&quot;);  </div><div class="line">		Field maxMemory = c.getDeclaredField(&quot;maxMemory&quot;);  </div><div class="line">		maxMemory.setAccessible(true);  </div><div class="line">		synchronized (c) &#123;  </div><div class="line">			Long maxMemoryValue = (Long)maxMemory.get(null);  </div><div class="line">			System.out.println(&quot;maxMemoryValue:&quot;+maxMemoryValue);  </div><div class="line">		&#125;  </div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>Direct ByteBuffer通过full gc来回收内存的，它会自己检测情况而调用system.gc()，但是如果参数中使用了DisableExplicitGC那么就无法回收该快内存了</p>
-<p>-XX:+DisableExplicitGC标志自动将System.gc()调用转换成一个空操作，就是应用中调用System.gc()会变成一个空操作。</p>
-<p>那么如果设置了就只能手动来回收内存了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public void testAllocateDirector() throws Exception&#123;</div><div class="line">    ByteBuffer buffer=ByteBuffer.allocateDirect(1024);</div><div class="line">    Field cleanerField = buffer.getClass().getDeclaredField(&quot;cleaner&quot;);</div><div class="line">    cleanerField.setAccessible(true);</div><div class="line">    Cleaner cleaner = (Cleaner) cleanerField.get(buffer);</div><div class="line">    cleaner.clean();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/12/05/JVM中的堆外内存/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -934,16 +934,16 @@
 
       
         
-          
-            <p>Heap（堆）也叫堆内存，每个JVM实例有且只有一个堆内存（啥叫堆，就是一堆东西往里塞啊，各种各种，所以就叫堆，大家都往里面丢，丢成小山了就成堆咯~）</p>
-<p>堆有一个很大的特点就是：堆内存是可以调节的。</p>
+          <p>Heap（堆）也叫堆内存，每个JVM实例有且只有一个堆内存（啥叫堆，就是一堆东西往里塞啊，各种各种，所以就叫堆，大家都往里面丢，丢成小山了就成堆咯~）</p>
+<p>堆有一个很大的特点就是：堆内存是可以调节的。(不然怎么会叫虚拟机呢？)</p>
 <p>ClassLoader读取了*.class文件后，需要把类、方法、常亮放到堆内存中，以方便执行器执行，堆内存分为3个部分：</p>
-<p>1.Permanent Space 永久存储区<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Permanent Space是一个常驻内存的区域，用于存放JDK资深携带的Class，Interface的元数据（Meta-Data），就像JVM启动的时候，什么java.lang.*、java.util.*被load之后，都是放在了堆的Permanent Space中，也就是说它存储的是运行环境必须的类信息，准确点说就是classpath中配置的（rt.jar、tool.jar、dt.jar等），被装载进此区域的数据是不会被GC回收掉的，只有关闭JVM的时候才会释放此区域所占用的内存。</div></pre></td></tr></table></figure></p>
-<p>2.Young Generation Space 新生区<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Young Generation Space是类的诞生、成长、消亡的区域（就像是一个鱼缸，大鱼产小鱼在这里，小鱼长大也在这里，小鱼最后挂了也是在这里），一个类在这里产生、应用，最后被GC回收，结束生命。新生区又分为2部分：伊甸区（Eden [&apos;i:dən] Space）和幸存者区（Survivor [sə&apos;vaɪver] Space）,所有的类都是在伊甸区被new出来的，幸存区有2个：0区（Survivor 0 Space）和1区（Survivor 1 Space），当Eden Space用完的时候，程序又需要创建对象，JVM的GC这个时候就跳出来对Eden Space进行大扫荡，像鬼子进村一样，对Eden Space区进行垃圾回收的操作，将Eden Space中不再被其他对象引用的对象进行销毁和内存的释放，然后把Eden Space中剩余的对象移动到Survivor 0 Space（外号：幸存0号）中，若Survivor 0 Space也满了，再对Survivor 0 Space进行GC操作，然后把剩余的移动到Survivor 1 Space（外号：幸存1号）中，那如果1号也满了，就对Survivor 1 Space也进行GC，GC之后1还是满的就丢到Tenure Generation Space（养老区）中。</div></pre></td></tr></table></figure></p>
-<p>3.Tenure Generation Space 养老区<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">养老区用于存放从Eden Space筛选出来的（认为有资格去养老的那批Object）的Java对象，一般来说，池对象（类似DB Connection Pool）都存放在这个区域</div></pre></td></tr></table></figure></p>
-<p>即：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Heap = Young + Old + Permernet</div><div class="line">Young = Eden + 2 Survivor</div></pre></td></tr></table></figure></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/12/04/JVM中的堆/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1082,8 +1082,7 @@
 
       
         
-          
-            <p>双亲委托机制：<br>ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。</p>
+          <p>双亲委托机制：<br>ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。</p>
 <p>有一个比较特殊的是BootClassLoader，它是内嵌在JVM中的，只有它是没有父加载器的，但是可以被用作其他ClassLoader的父加载器。</p>
 <ul>
 <li>当一个ClassLoader要加载某个*.class的时候，它会先把任务往上丢（丢给他老爸），所以一层层的丢，最后丢到了BootClassLoader那里去了。</li>
@@ -1092,17 +1091,13 @@
 <li>如果AppClassLoader也没加载成，则返回给指定的文件系统或者网络等URL中加载此类。</li>
 <li>如果最后一层层往上丢，丢完之后又一层层往下丢，整个流程执行完了之后还没找着，就ClassNotFoundException了。</li>
 </ul>
-<p>双亲委托的好处：</p>
-<ul>
-<li>避免重复加载，当ParentClassLoader已经加载了某个类，就没必要ChildClassLoader再加载一遍</li>
-<li>安全，如果继承了ClassLoader并实现了自己的类加载器，又写了一个java.lang.Integer这样的类，如果不是自上而下的去加载，那么我就能覆盖掉jdk自己的Integer了，这样非常危险。所以自上而下的去加载，那么在BootClassLoader就已经加载过的Integer，就不会到达自己实现的类加载器了。</li>
-</ul>
-<p>观察ExtClassLoader和AppClassLoader，他们都继承自URLClassLoader，一层层的向上寻找，我们找到了java.security.ClassLoader<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">static class ExtClassLoader extends URLClassLoader &#123; ... &#125;</div><div class="line">static class AppClassLoader extends URLClassLoader &#123; ... &#125;</div><div class="line">public class URLClassLoader extends SecureClassLoader &#123; ... &#125;</div><div class="line">public class SecureClassLoader extends ClassLoader &#123; ... &#125; // package java.security</div></pre></td></tr></table></figure></p>
-<p>ClassLoader源码分析：</p>
-<p>1.Parent ClassLoader<br><img src="/2015/12/03/ClassLoader双亲委托/classloader1.png" alt="场景"></p>
-<p>2.向上递归<br><img src="/2015/12/03/ClassLoader双亲委托/classloader2.png" alt="场景"></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/12/03/ClassLoader双亲委托/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1241,18 +1236,15 @@
 
       
         
-          
-            <p>JVM是通过ClassLoader来加载*.class（编译好的class文件）的，程序在启动的时候，并不会一次性加载应用程序所要用到的所有class文件，而是根据程序运行的需要，通过Java的类加载机制（ClassLoader）来动态加载某个class文件到内存道中的，而只有class文件被加载到了内存之后，才能被其他的class引用。所以，ClassLoader是用来动态加载class文件到内存中的。</p>
+          <p>JVM是通过ClassLoader来加载*.class（编译好的class文件）的，程序在启动的时候，并不会一次性加载应用程序所要用到的所有class文件，而是根据程序运行的需要，通过Java的类加载机制（ClassLoader）来动态加载某个class文件到内存道中的，而只有class文件被加载到了内存之后，才能被其他的class引用。所以，ClassLoader是用来动态加载class文件到内存中的。</p>
 <p>JVM默认的提供了3个ClassLoader:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">BootClassLoader : 负责加载jre/lib下的核心类库，如rt.jar、resources.jar、charsets.jar等</div><div class="line">Extension ClassLoader : 负责加载jre/lib/ext下的所有扩展类库</div><div class="line">App ClassLoader : 系统类加载器，加载应用程序classpath目录下的所有jar和class文件</div></pre></td></tr></table></figure></p>
-<p>BootClassLoader的感知：<br>查看BootClassLoader到底在程序启动的时候加载了哪些地方的jar<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">URL[] urls = Launcher.getBootstrapClassPath().getURLs();</div><div class="line">for (URL url : urls)&#123;</div><div class="line">    System.out.println(url.getPath());</div><div class="line">&#125;</div><div class="line"></div><div class="line">output~:</div><div class="line"></div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/resources.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/rt.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/sunrsasign.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/jsse.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/jce.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/charsets.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/jfr.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/classes</div></pre></td></tr></table></figure></p>
-<p>上面有一个很关键的类：sun.misc.Launcher，它是JVM启动的核心类，下面看下它的源码：</p>
-<p><img src="/2015/12/02/ClassLoader初探/classloader1.png" alt="场景"></p>
-<p>ExtensionClassLoader和AppClassLoader都是包访问权限的，所以我们外部通过代码访问不了：</p>
-<p><img src="/2015/12/02/ClassLoader初探/classloader2.png" alt="场景"></p>
-<p><img src="/2015/12/02/ClassLoader初探/classloader3.png" alt="场景"></p>
-<p>由于BootClassLoader底层由c++编写实现，并嵌入到了JVM中（其实就是jvm.dll中），所以我们在java source中看不到。当JVM启动的时候，BootClassLoader也随之启动，在它加载完jre/lib后，并构造出ExtensionClassLoader和AppClassLoader。</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/12/02/ClassLoader初探/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

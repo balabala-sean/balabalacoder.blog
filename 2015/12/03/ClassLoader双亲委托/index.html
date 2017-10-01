@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.balabalacoder.com/2015/12/03/ClassLoader双亲委托/classloader1.png">
 <meta property="og:image" content="http://www.balabalacoder.com/2015/12/03/ClassLoader双亲委托/classloader2.png">
-<meta property="og:updated_time" content="2017-10-01T07:34:07.000Z">
+<meta property="og:updated_time" content="2017-10-01T08:08:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ClassLoader双亲委托">
 <meta name="twitter:description" content="双亲委托机制：ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。 有一个比较特殊的是BootClassLoader，它是内嵌在JVM中的，只有它是没有父加载器的，但是可以被用作其他ClassLoader的父加载器。  当一个ClassLoader要加载某个*.cl">
@@ -354,6 +354,7 @@
 <li>如果AppClassLoader也没加载成，则返回给指定的文件系统或者网络等URL中加载此类。</li>
 <li>如果最后一层层往上丢，丢完之后又一层层往下丢，整个流程执行完了之后还没找着，就ClassNotFoundException了。</li>
 </ul>
+<a id="more"></a>
 <p>双亲委托的好处：</p>
 <ul>
 <li>避免重复加载，当ParentClassLoader已经加载了某个类，就没必要ChildClassLoader再加载一遍</li>

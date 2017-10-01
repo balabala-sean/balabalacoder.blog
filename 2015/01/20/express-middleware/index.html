@@ -79,21 +79,18 @@
 
 
 
-<meta name="description" content="Grunt在JavaScript中是一个强大的构建工具，提供了自动化功能，例如压缩js/css、编译、单元测试等，可以大大减轻程序员的工作。同时，它还拥有强大的package系统，日常开发中的大多数task都可以交给Grunt来处理。 grunt的安装：12npm install -g grunt-clinpm install -g grunt-init">
+<meta name="description" content="假如有这样一个需求，需要记录Application的PV总数，用nodejs原生的写法可能需要这样做：12345678910var http = require(&amp;apos;http&amp;apos;);var pv = 0;var server = http.createServer(function(req,res)&amp;#123;    pv++;    res.end(pv.toString());">
 <meta name="keywords" content="nodejs">
 <meta property="og:type" content="article">
-<meta property="og:title" content="grunt详解">
-<meta property="og:url" content="http://www.balabalacoder.com/2015/01/03/grunt详解/index.html">
+<meta property="og:title" content="express-middleware">
+<meta property="og:url" content="http://www.balabalacoder.com/2015/01/20/express-middleware/index.html">
 <meta property="og:site_name" content="balabala.sean">
-<meta property="og:description" content="Grunt在JavaScript中是一个强大的构建工具，提供了自动化功能，例如压缩js/css、编译、单元测试等，可以大大减轻程序员的工作。同时，它还拥有强大的package系统，日常开发中的大多数task都可以交给Grunt来处理。 grunt的安装：12npm install -g grunt-clinpm install -g grunt-init">
+<meta property="og:description" content="假如有这样一个需求，需要记录Application的PV总数，用nodejs原生的写法可能需要这样做：12345678910var http = require(&amp;apos;http&amp;apos;);var pv = 0;var server = http.createServer(function(req,res)&amp;#123;    pv++;    res.end(pv.toString());">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.balabalacoder.com/2015/01/03/grunt详解/grunt1.jpg">
-<meta property="og:image" content="http://www.balabalacoder.com/2015/01/03/grunt详解/grunt2.jpg">
-<meta property="og:updated_time" content="2017-10-01T06:39:33.000Z">
+<meta property="og:updated_time" content="2017-10-01T07:12:49.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="grunt详解">
-<meta name="twitter:description" content="Grunt在JavaScript中是一个强大的构建工具，提供了自动化功能，例如压缩js/css、编译、单元测试等，可以大大减轻程序员的工作。同时，它还拥有强大的package系统，日常开发中的大多数task都可以交给Grunt来处理。 grunt的安装：12npm install -g grunt-clinpm install -g grunt-init">
-<meta name="twitter:image" content="http://www.balabalacoder.com/2015/01/03/grunt详解/grunt1.jpg">
+<meta name="twitter:title" content="express-middleware">
+<meta name="twitter:description" content="假如有这样一个需求，需要记录Application的PV总数，用nodejs原生的写法可能需要这样做：12345678910var http = require(&amp;apos;http&amp;apos;);var pv = 0;var server = http.createServer(function(req,res)&amp;#123;    pv++;    res.end(pv.toString());">
 
 
 
@@ -123,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://www.balabalacoder.com/2015/01/03/grunt详解/"/>
+  <link rel="canonical" href="http://www.balabalacoder.com/2015/01/20/express-middleware/"/>
 
 
 
 
 
-  <title>grunt详解 | balabala.sean</title>
+  <title>express-middleware | balabala.sean</title>
   
 
 
@@ -256,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/01/03/grunt详解/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/01/20/express-middleware/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -273,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">grunt详解</h1>
+          <h1 class="post-title" itemprop="name headline">express-middleware</h1>
         
 
         <div class="post-meta">
@@ -285,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-03T10:01:20+08:00">
-                2015-01-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-20T11:21:30+08:00">
+                2015-01-20
               </time>
             
 
@@ -345,20 +342,17 @@
       
 
       
-        <p>Grunt在JavaScript中是一个强大的构建工具，提供了自动化功能，例如压缩js/css、编译、单元测试等，可以大大减轻程序员的工作。同时，它还拥有强大的package系统，日常开发中的大多数task都可以交给Grunt来处理。</p>
-<p>grunt的安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install -g grunt-cli</div><div class="line">npm install -g grunt-init</div></pre></td></tr></table></figure></p>
+        <p>假如有这样一个需求，需要记录Application的PV总数，用nodejs原生的写法可能需要这样做：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var http = require(&apos;http&apos;);</div><div class="line"></div><div class="line">var pv = 0;</div><div class="line"></div><div class="line">var server = http.createServer(function(req,res)&#123;</div><div class="line">    pv++;</div><div class="line">    res.end(pv.toString());</div><div class="line">&#125;);</div><div class="line"></div><div class="line">server.listener(3000,&apos;127.0.0.1&apos;);</div></pre></td></tr></table></figure></p>
+<p>在server上绑定了一个callback函数，每次把变量pv进行加1的操作来记录PageVisit的数量。</p>
 <a id="more"></a>
-<p>grunt也有自己的配置文件 — Gruntfile.js。如何生成一个Gruntfile.js呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># save the git project to path(~/.grunt-init/gruntfile), only do it once</div><div class="line">git clone https://github.com/gruntjs/grunt-init-gruntfile.git ~/.grunt-init/gruntfile</div><div class="line"></div><div class="line"># create Gruntfile.js</div><div class="line">grunt-init gruntfile</div></pre></td></tr></table></figure></p>
-<p>需要注意点是，第一行的git clone命令只是下载一份template文件，以后通过grunt-init gruntfile生成文件都会根据模板文件来创建。所以只需要执行一次。命令执行结束后，可以看到这一次grunt生成了package.json和Gruntfile.js两个文件。package.json是npm需要的文件，这里它被生成是因为需要告诉npm加载grunt的插件。</p>
-<p><img src="/2015/01/03/grunt详解/grunt1.jpg" alt="场景"></p>
-<p>而Gruntfile.js则会从package.json中加载grunt的插件，然后可以对各个插件进行配置和管理。有兴趣可以仔细看看Gruntfile.js文件。</p>
-<p>在第3章中介绍了bower,那么grunt和bower是否能结合使用呢？答案肯定是必须能啊。先安装个grunt和bower的插件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install grunt-bower-task --save-dev</div></pre></td></tr></table></figure></p>
-<p>然后打开Gruntfile.js文件，在里面加入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grunt.loadNpmTasks(&apos;grunt-bower-task&apos;);</div></pre></td></tr></table></figure></p>
-<p>然后在 grunt.initConfig({…}) 参数中，添加相应的配置项，把bower下载的js库拷贝到 public/js/lib 下：<br><img src="/2015/01/03/grunt详解/grunt2.jpg" alt="场景"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&quot;bower&quot;: &#123;</div><div class="line">    &quot;install&quot;: &#123;</div><div class="line">        &quot;options&quot;: &#123;</div><div class="line">            &quot;targetDir&quot;: &quot;./public/js/lib&quot;,</div><div class="line">            &quot;layout&quot;: &quot;byComponent&quot;,</div><div class="line">            &quot;install&quot;: true,</div><div class="line">            &quot;verbose&quot;: false,</div><div class="line">            &quot;cleanTargetDir&quot;: false</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>最后我们运行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grunt bower</div></pre></td></tr></table></figure>
-<p>这样就大功告成！</p>
+<p>在Express中该怎么做呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var express = require(&apos;express&apos;);</div><div class="line">var app = express();</div><div class="line"></div><div class="line">var pv = 0;</div><div class="line"></div><div class="line">app.use(function(req,res,next)&#123;</div><div class="line">    pv ++;</div><div class="line">    next();</div><div class="line">&#125;);</div><div class="line"></div><div class="line">app.listen(3000);</div></pre></td></tr></table></figure></p>
+<p>首先看一下下面的案例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">var express = require(&apos;express&apos;);</div><div class="line">var app = express();</div><div class="line"></div><div class="line">app.get(&apos;/&apos;,function(req,res)&#123;</div><div class="line">    console.log(&apos;request 1’);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">app.get(&apos;/&apos;,function(req,res)&#123;</div><div class="line">    console.log(&apos;request 2&apos;);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">app.listen(3000);</div></pre></td></tr></table></figure></p>
+<p>输出的结果[ request 1 ]。在Express中，如果回调函数中没有next(),则在匹配到第一个路由的时候，就不会往下执行了。改写上面的案例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">var express = require(&apos;express&apos;);</div><div class="line">var app = express();</div><div class="line"></div><div class="line">app.get(&apos;/&apos;,function(req, res, next)&#123;</div><div class="line">    console.log(&apos;request 1&apos;);</div><div class="line">    next();</div><div class="line">&#125;);</div><div class="line"></div><div class="line">app.get(&apos;/&apos;,function(req, res)&#123;</div><div class="line">    console.log(&apos;request 2&apos;);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">app.listen(3000);</div></pre></td></tr></table></figure>
+<p>所以，Express中的路由十分像一条河流，如果在河流中被某一块截住了，下面的就不会流下去了。由此可见，Express中的路由顺序至关重要！下面看一个MVC中的404写法：（注意顺序）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">app.get(&apos;/user&apos;,function(req,res)&#123;&#125;)</div><div class="line">app.post(&apos;/user&apos;,function(req,res)&#123;&#125;)</div><div class="line">app.put(&apos;/user&apos;,function(req,res)&#123;&#125;)</div><div class="line">app.delete(&apos;/user&apos;,function(req,res)&#123;&#125;)</div><div class="line"></div><div class="line">app.all(&apos;*&apos;,function(req,res)&#123;</div><div class="line">    res.send(&apos;404，please check your url :&apos; + req.url);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>我们把all放在了最后，而且是通配符进行匹配，所以在经过了业务层的所有路由都没有找到匹配的请求的时候，会被我们的404最终兜底，然后返回给页面提示信息或者跳转到404.html。如果把all放在最上面，则不管任何request进来，都是直接返回404了，这是Express中路由顺序执行问题的最佳实践！<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">//middle ware —&gt; check auth </div><div class="line">app.use(&apos;*&apos;,function(req, res, next) &#123;</div><div class="line">    var chechAuth = true;</div><div class="line">    if(chechAuth)&#123;</div><div class="line">        console.log(&apos;check auth : true&apos;);</div><div class="line">        next();    </div><div class="line">    &#125;else&#123;</div><div class="line">        console.log(&apos;check auth : false&apos;);</div><div class="line">        res.send(&quot;no authorization&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">//routes—————————start</div><div class="line">app.get(&apos;/user&apos;,function(req,res)&#123;</div><div class="line">    console.log(&apos;error request&apos;);</div><div class="line">    throw new Error(&apos;an error&apos;);</div><div class="line">&#125;)</div><div class="line">app.post(&apos;/user&apos;,function(req,res)&#123;&#125;)</div><div class="line">app.put(&apos;/user&apos;,function(req,res)&#123;&#125;)</div><div class="line">app.delete(&apos;/user&apos;,function(req,res)&#123;&#125;)</div><div class="line">//routes—————————end</div><div class="line"></div><div class="line"></div><div class="line">//middle ware —&gt; 404 handler</div><div class="line">app.use(&apos;*&apos;,function(req,res)&#123;</div><div class="line">    res.send(&apos;404&apos;);</div><div class="line">&#125;)</div><div class="line"></div><div class="line">//middle ware —&gt; 500 handler</div><div class="line">app.use(&apos;*&apos;,function(err, req, res, next)&#123;</div><div class="line">  res.status(500).send(&apos;500&apos;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>特别要注意的是，middleware的url是模糊匹配（前匹配），这一点对理解Express中的静态资源访问尤为重要：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">app.use(&apos;/static&apos;,express.static(__dirname + &apos;/public&apos;));</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -389,8 +383,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/01/02/npm和bower的区别/" rel="next" title="npm和bower的区别">
-                <i class="fa fa-chevron-left"></i> npm和bower的区别
+              <a href="/2015/01/03/grunt详解/" rel="next" title="grunt详解">
+                <i class="fa fa-chevron-left"></i> grunt详解
               </a>
             
           </div>
@@ -399,8 +393,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/01/20/express-middleware/" rel="prev" title="express-middleware">
-                express-middleware <i class="fa fa-chevron-right"></i>
+              <a href="/2015/01/21/promise探究/" rel="prev" title="promise探究">
+                promise探究 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

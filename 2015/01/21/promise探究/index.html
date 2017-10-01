@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="分布式," />
+  <meta name="keywords" content="nodejs," />
 
 
 
@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示，">
-<meta name="keywords" content="分布式">
+<meta name="description" content="Promise中文译为”承诺，誓言”,但是不能按照中文译来理解它。Promise其实是一种编程方式。其实，它的英文翻译为”普罗米修斯”，是希腊神话中的大英雄，名字的意思是”先知”。Promise最初的命名是Futures，即”未来”，即未卜先知的意思，可以理解为”预测、预言”。 1一个Promise对象表示当前还不可用，但是在未来的某个时间点会变为可以被解析的值。它允许我们以一种同步的方式编写异步">
+<meta name="keywords" content="nodejs">
 <meta property="og:type" content="article">
-<meta property="og:title" content="分布式事务之可靠消息">
-<meta property="og:url" content="http://www.balabalacoder.com/2016/06/19/分布式事务之可靠消息/index.html">
+<meta property="og:title" content="promise探究">
+<meta property="og:url" content="http://www.balabalacoder.com/2015/01/21/promise探究/index.html">
 <meta property="og:site_name" content="balabala.sean">
-<meta property="og:description" content="基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示，">
+<meta property="og:description" content="Promise中文译为”承诺，誓言”,但是不能按照中文译来理解它。Promise其实是一种编程方式。其实，它的英文翻译为”普罗米修斯”，是希腊神话中的大英雄，名字的意思是”先知”。Promise最初的命名是Futures，即”未来”，即未卜先知的意思，可以理解为”预测、预言”。 1一个Promise对象表示当前还不可用，但是在未来的某个时间点会变为可以被解析的值。它允许我们以一种同步的方式编写异步">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.balabalacoder.com/2016/06/19/分布式事务之可靠消息/dist.jpg">
-<meta property="og:updated_time" content="2017-10-01T06:39:26.000Z">
+<meta property="og:image" content="http://www.balabalacoder.com/2015/01/21/promise探究/promise.png">
+<meta property="og:updated_time" content="2017-10-01T06:39:34.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="分布式事务之可靠消息">
-<meta name="twitter:description" content="基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示，">
-<meta name="twitter:image" content="http://www.balabalacoder.com/2016/06/19/分布式事务之可靠消息/dist.jpg">
+<meta name="twitter:title" content="promise探究">
+<meta name="twitter:description" content="Promise中文译为”承诺，誓言”,但是不能按照中文译来理解它。Promise其实是一种编程方式。其实，它的英文翻译为”普罗米修斯”，是希腊神话中的大英雄，名字的意思是”先知”。Promise最初的命名是Futures，即”未来”，即未卜先知的意思，可以理解为”预测、预言”。 1一个Promise对象表示当前还不可用，但是在未来的某个时间点会变为可以被解析的值。它允许我们以一种同步的方式编写异步">
+<meta name="twitter:image" content="http://www.balabalacoder.com/2015/01/21/promise探究/promise.png">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://www.balabalacoder.com/2016/06/19/分布式事务之可靠消息/"/>
+  <link rel="canonical" href="http://www.balabalacoder.com/2015/01/21/promise探究/"/>
 
 
 
 
 
-  <title>分布式事务之可靠消息 | balabala.sean</title>
+  <title>promise探究 | balabala.sean</title>
   
 
 
@@ -255,7 +255,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/06/19/分布式事务之可靠消息/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/01/21/promise探究/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -272,7 +272,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">分布式事务之可靠消息</h1>
+          <h1 class="post-title" itemprop="name headline">promise探究</h1>
         
 
         <div class="post-meta">
@@ -284,8 +284,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-19T10:38:24+08:00">
-                2016-06-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-21T13:47:29+08:00">
+                2015-01-21
               </time>
             
 
@@ -307,8 +307,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/" itemprop="url" rel="index">
-                    <span itemprop="name">分布式</span>
+                  <a href="/categories/nodejs/" itemprop="url" rel="index">
+                    <span itemprop="name">nodejs</span>
                   </a>
                 </span>
 
@@ -344,16 +344,21 @@
       
 
       
-        <p>基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示，</p>
-<p><img src="/2016/06/19/分布式事务之可靠消息/dist.jpg" alt="场景"></p>
+        <p>Promise中文译为”承诺，誓言”,但是不能按照中文译来理解它。Promise其实是一种编程方式。其实，它的英文翻译为”普罗米修斯”，是希腊神话中的大英雄，名字的意思是”先知”。Promise最初的命名是Futures，即”未来”，即未卜先知的意思，可以理解为”预测、预言”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">一个Promise对象表示当前还不可用，但是在未来的某个时间点会变为可以被解析的值。它允许我们以一种同步的方式编写异步代码。这是处理JavaScript中异步的回调函数内嵌层太多的一个很好的解决方案。</div></pre></td></tr></table></figure>
 <a id="more"></a>
-<p>如上所示，我们已经做好了如下的准备：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1. 系统已经模块化(服务化)，每条垂直的业务线都由响应的团队独立开发和维护</div><div class="line">2. 各个系统之间的通讯都采用了MQ的方式</div><div class="line">3. 每个业务系统中都存在了2张用于控制可靠消息的表：mq_message_produce、mq_message_consume</div></pre></td></tr></table></figure></p>
-<p>下面就来解释下mq_message_produce、mq_message_consume的作用和操作的步骤：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">begin transaction</div><div class="line"></div><div class="line">	-- 对业务系统的更新</div><div class="line">	update order table;</div><div class="line">	-- 通知下游系统的消息入库</div><div class="line">	insert into mq_message_produce;</div><div class="line"></div><div class="line">commit</div></pre></td></tr></table></figure>
-<p>以上的业务操作和消息入库的操作都在同一事务中进行，确保数据的一致性。需要注意的是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1. 被插入的mq_message_produce是有状态的，初始插入时，状态为未发送</div><div class="line">2. 各个业务系统有专门的task（或者后台线程）去轮询未发送的消息数据，投递到mq-cluster中。试想mq-cluster宕机5分钟后又恢复可用，此时业务系统应当保证之前未发送出去的消息被重新投递。另外这样也能提升业务系统本身的性能，发送message的过程是后台线程异步处理的。</div><div class="line">3. 当发送成功的时候，update此记录的状态为已发送。</div></pre></td></tr></table></figure></p>
-<p>消息的消费者：被通知的业务系统在收到消息后，为了避免重复消费，在第一次收到消息的时候，对mq_message_consume进行一次查询：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1. 如果没有记录，则insert一条记录到mq_message_consume中</div><div class="line">2. 如果有记录，则忽略此重复消息的处理</div></pre></td></tr></table></figure>
-<p>同样的，mq_message_consume也是有状态的，业务的处理和状态的变更也是在本地同一事务中进行。</p>
+<p>JavaScript的运行本身是单线程的，但是由于它可以传递函数引用（即callback函数），所以往往在复杂的业务场景下，代码结构会是：嵌套再嵌套，嵌套再嵌套…</p>
+<p>还是先看一个promise的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var promise = new Promise(</div><div class="line">	function(resolve)&#123;</div><div class="line">		resolve(10);</div><div class="line">	&#125;</div><div class="line">);</div><div class="line"></div><div class="line">promise.then(function(value)&#123;</div><div class="line"> 	console.log(value);</div><div class="line">&#125;).catch(function(error)&#123;</div><div class="line"> 	throw error;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>假如，上面代码中的resolve(10)不是一个如此简单的处理逻辑，它可能去发了一个请求到其他的应用，也可能是一个复杂的查询过程，总之，我们假设它是比较耗时的操作。then函数会在resolve(10)结束之后，当promise链表中的前一个元素的返回值可以被解析的时候，才会触发then去继续的执行下去。catch函数则表示在出现了异常的时候，被触发调用的函数。</p>
+<p>Promise的语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * resolve:成功时的回调函数</div><div class="line"> * reject:失败时的回调函数</div><div class="line"> */</div><div class="line">var promise = new Promise(function(resolve, reject) &#123;</div><div class="line">    // 代码逻辑......</div><div class="line">    // 调用resolve 或 reject</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>下面是一个Ajax Request的代码案例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">var promise = new Promise(function(resolve, reject) &#123;</div><div class="line">	var request = new XMLHttpRequest();</div><div class="line">	request.open(&apos;GET&apos;, &apos;http://api.icndb.com/jokes/random&apos;);</div><div class="line">	request.onload = fucntion() &#123;</div><div class="line"> 		if (request.status == 200) &#123;</div><div class="line"> 			resolve(request.response); // ajax request success</div><div class="line">		&#125; else &#123;</div><div class="line"> 			reject(Error(request.statusText)); //error</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	request.onerror = function() &#123;</div><div class="line"> 		reject(Error(&apos;Error fetching data&apos;)); //error</div><div class="line">	&#125;;</div><div class="line"> 	request.send();</div><div class="line">&#125;);</div><div class="line"></div><div class="line">console.log(&apos;Asynchronous request made.&apos;);</div><div class="line"></div><div class="line">//data is the request.response object</div><div class="line">promise.then(function(data) &#123;</div><div class="line">	console.log(&apos;success&apos;);</div><div class="line">&#125;).catch(function(error)&#123;</div><div class="line"> 	console.log(&apos;Promise rejected&apos;);</div><div class="line"> 	console.log(error.message);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>其实，Promise有3种状态：</p>
+<ul>
+<li>unresolved        Pending        promise对象刚被创建后的初始化状态，既不是resolve也不是reject</li>
+<li>has-resolution    Fulfilled     resolve(成功)时。此时会调用onFulfilled</li>
+<li>has-rejection        Rejected     reject(失败)时。此时会调用onRejected</li>
+</ul>
+<p>ES6中提供了一个直白的图片：<br><img src="/2015/01/21/promise探究/promise.png" alt="场景"></p>
 
       
     </div>
@@ -371,7 +376,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/分布式/" rel="tag"># 分布式</a>
+            <a href="/tags/nodejs/" rel="tag"># nodejs</a>
           
         </div>
       
@@ -384,8 +389,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/01/21/promise探究/" rel="next" title="promise探究">
-                <i class="fa fa-chevron-left"></i> promise探究
+              <a href="/2015/01/03/grunt详解/" rel="next" title="grunt详解">
+                <i class="fa fa-chevron-left"></i> grunt详解
               </a>
             
           </div>
@@ -394,8 +399,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/10/01/Eureka高可用部署/" rel="prev" title="Eureka高可用部署">
-                Eureka高可用部署 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/06/19/分布式事务之可靠消息/" rel="prev" title="分布式事务之可靠消息">
+                分布式事务之可靠消息 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

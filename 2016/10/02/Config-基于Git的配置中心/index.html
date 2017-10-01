@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Spring Cloud Config提供了基于Git的配置中心的服务，可以托管和实时装载各个业务线的配置文件 1.首先搭建ConfigServer: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframework.boot.autoconfigu">
+<meta name="description" content="Spring Cloud Config提供了配置中心的服务，可以实时装载各个业务线的配置文件。在各条业务线通用配置较多的情况下，配置中心会显得很方便。 1.首先搭建ConfigServer: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframew">
 <meta name="keywords" content="spring cloud">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringConfig - 基于Git的配置中心">
 <meta property="og:url" content="http://www.balabalacoder.com/2016/10/02/Config-基于Git的配置中心/index.html">
 <meta property="og:site_name" content="balabala.sean">
-<meta property="og:description" content="Spring Cloud Config提供了基于Git的配置中心的服务，可以托管和实时装载各个业务线的配置文件 1.首先搭建ConfigServer: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframework.boot.autoconfigu">
+<meta property="og:description" content="Spring Cloud Config提供了配置中心的服务，可以实时装载各个业务线的配置文件。在各条业务线通用配置较多的情况下，配置中心会显得很方便。 1.首先搭建ConfigServer: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframew">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-30T19:22:37.000Z">
+<meta property="og:updated_time" content="2017-10-01T06:39:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringConfig - 基于Git的配置中心">
-<meta name="twitter:description" content="Spring Cloud Config提供了基于Git的配置中心的服务，可以托管和实时装载各个业务线的配置文件 1.首先搭建ConfigServer: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframework.boot.autoconfigu">
+<meta name="twitter:description" content="Spring Cloud Config提供了配置中心的服务，可以实时装载各个业务线的配置文件。在各条业务线通用配置较多的情况下，配置中心会显得很方便。 1.首先搭建ConfigServer: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframew">
 
 
 
@@ -342,10 +342,11 @@
       
 
       
-        <p>Spring Cloud Config提供了基于Git的配置中心的服务，可以托管和实时装载各个业务线的配置文件</p>
+        <p>Spring Cloud Config提供了配置中心的服务，可以实时装载各个业务线的配置文件。在各条业务线通用配置较多的情况下，配置中心会显得很方便。</p>
 <p>1.首先搭建ConfigServer:</p>
 <p>Application.java:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import org.springframework.boot.SpringApplication;</div><div class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line">import org.springframework.cloud.config.server.EnableConfigServer;</div><div class="line"></div><div class="line">@SpringBootApplication</div><div class="line">@EnableConfigServer</div><div class="line">public class Application &#123;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		SpringApplication.run(Application.class, args);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>application.properties:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10001</div><div class="line">spring.cloud.config.server.git.uri=https://github.com/balabala-sean/spring-cloud-config-repo</div><div class="line">spring.cloud.config.server.git.searchPaths=dev,qa,release,prod</div></pre></td></tr></table></figure></p>
 <p>2.创建远程Git仓库（在内网的Gitlab，本地测试就在Github上创建了）,详情见：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/balabala-sean/spring-cloud-config-repo</div></pre></td></tr></table></figure>
@@ -460,7 +461,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -471,7 +472,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -482,7 +483,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

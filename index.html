@@ -341,23 +341,17 @@
 
       
         
-          
-            <p>Spring Cloud Config提供了基于Git的配置中心的服务，可以托管和实时装载各个业务线的配置文件</p>
+          <p>Spring Cloud Config提供了配置中心的服务，可以实时装载各个业务线的配置文件。在各条业务线通用配置较多的情况下，配置中心会显得很方便。</p>
 <p>1.首先搭建ConfigServer:</p>
 <p>Application.java:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import org.springframework.boot.SpringApplication;</div><div class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line">import org.springframework.cloud.config.server.EnableConfigServer;</div><div class="line"></div><div class="line">@SpringBootApplication</div><div class="line">@EnableConfigServer</div><div class="line">public class Application &#123;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		SpringApplication.run(Application.class, args);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>application.properties:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10001</div><div class="line">spring.cloud.config.server.git.uri=https://github.com/balabala-sean/spring-cloud-config-repo</div><div class="line">spring.cloud.config.server.git.searchPaths=dev,qa,release,prod</div></pre></td></tr></table></figure></p>
-<p>2.创建远程Git仓库（在内网的Gitlab，本地测试就在Github上创建了）,详情见：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/balabala-sean/spring-cloud-config-repo</div></pre></td></tr></table></figure>
-<p>3.客户端调用：</p>
-<p>Application.java:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">import org.springframework.boot.SpringApplication;</div><div class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line">import org.springframework.context.ApplicationContext;</div><div class="line"></div><div class="line">@SpringBootApplication</div><div class="line">public class Application &#123;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		</div><div class="line">		ApplicationContext ac = SpringApplication.run(Application.class, args);</div><div class="line">		</div><div class="line">		//test configurations</div><div class="line">		RedisConfig redisConfig = ac.getBean(RedisConfig.class);</div><div class="line">		System.out.println(&quot;redis host : &quot; + redisConfig.getHost());</div><div class="line">		System.out.println(&quot;redis username : &quot; + redisConfig.getUsername());</div><div class="line">		System.out.println(&quot;redis password : &quot; + redisConfig.getPassword());</div><div class="line">		</div><div class="line">		JdbcConfig jdbcConfig = ac.getBean(JdbcConfig.class);</div><div class="line">		System.out.println(&quot;jdbc host : &quot; + jdbcConfig.getDriver());</div><div class="line">		System.out.println(&quot;jdbc host : &quot; + jdbcConfig.getUrl());</div><div class="line">		System.out.println(&quot;jdbc username : &quot; + jdbcConfig.getUsername());</div><div class="line">		System.out.println(&quot;jdbc password : &quot; + jdbcConfig.getPassword());</div><div class="line">		</div><div class="line">		ActivemqConfig activemqConfig = ac.getBean(ActivemqConfig.class);</div><div class="line">		System.out.println(&quot;activemq max connection : &quot; + activemqConfig.getMaxConnection());</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>ActivemqConfig.java:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">import org.springframework.beans.factory.annotation.Value;</div><div class="line">import org.springframework.stereotype.Component;</div><div class="line"></div><div class="line">@Component</div><div class="line">public class ActivemqConfig &#123;</div><div class="line">	</div><div class="line">	@Value(&quot;$&#123;max.connection&#125;&quot;)</div><div class="line">	private String maxConnection;</div><div class="line"></div><div class="line">	public String getMaxConnection() &#123;</div><div class="line">		return maxConnection;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setMaxConnection(String maxConnection) &#123;</div><div class="line">		this.maxConnection = maxConnection;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>JdbcConfig.java:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line">import org.springframework.beans.factory.annotation.Value;</div><div class="line">import org.springframework.stereotype.Component;</div><div class="line"></div><div class="line">@Component</div><div class="line">public class JdbcConfig &#123;</div><div class="line"></div><div class="line">	@Value(&quot;$&#123;jdbc.driver&#125;&quot;)</div><div class="line">	private String driver;</div><div class="line">	</div><div class="line">	@Value(&quot;$&#123;jdbc.url&#125;&quot;)</div><div class="line">	private String url;</div><div class="line">	</div><div class="line">	@Value(&quot;$&#123;jdbc.username&#125;&quot;)</div><div class="line">	private String username;</div><div class="line">	</div><div class="line">	@Value(&quot;$&#123;jdbc.password&#125;&quot;)</div><div class="line">	private String password;</div><div class="line"></div><div class="line">	public String getDriver() &#123;</div><div class="line">		return driver;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setDriver(String driver) &#123;</div><div class="line">		this.driver = driver;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public String getUrl() &#123;</div><div class="line">		return url;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setUrl(String url) &#123;</div><div class="line">		this.url = url;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public String getUsername() &#123;</div><div class="line">		return username;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setUsername(String username) &#123;</div><div class="line">		this.username = username;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public String getPassword() &#123;</div><div class="line">		return password;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setPassword(String password) &#123;</div><div class="line">		this.password = password;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>RedisConfig.java<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">import org.springframework.beans.factory.annotation.Value;</div><div class="line">import org.springframework.stereotype.Component;</div><div class="line"></div><div class="line">@Component</div><div class="line">public class RedisConfig &#123;</div><div class="line">	</div><div class="line">	@Value(&quot;$&#123;redis.host&#125;&quot;)</div><div class="line">	private String host;</div><div class="line">	</div><div class="line">	@Value(&quot;$&#123;redis.username&#125;&quot;)</div><div class="line">	private String username;</div><div class="line">	</div><div class="line">	@Value(&quot;$&#123;redis.password&#125;&quot;)</div><div class="line">	private String password;</div><div class="line"></div><div class="line">	public String getHost() &#123;</div><div class="line">		return host;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setHost(String host) &#123;</div><div class="line">		this.host = host;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public String getUsername() &#123;</div><div class="line">		return username;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setUsername(String username) &#123;</div><div class="line">		this.username = username;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public String getPassword() &#123;</div><div class="line">		return password;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	public void setPassword(String password) &#123;</div><div class="line">		this.password = password;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>application.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">server.port=10002</div></pre></td></tr></table></figure></p>
-<p>bootstrap.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">spring.application.name=jdbc,redis,activemq</div><div class="line"></div><div class="line">#different environments</div><div class="line">spring.cloud.config.profile=prod</div><div class="line">#spring.cloud.config.profile=qa</div><div class="line">#spring.cloud.config.profile=release</div><div class="line">#spring.cloud.config.profile=dev</div><div class="line"></div><div class="line">spring.cloud.config.label=master</div><div class="line">spring.cloud.config.uri=http://localhost:8090</div></pre></td></tr></table></figure></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/10/02/Config-基于Git的配置中心/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -496,28 +490,16 @@
 
       
         
-          
-            <p>在部署Eureka Server时，避免不了要解决可用性的问题，本地测试部署3台Eureka Server:</p>
+          <p>在部署Eureka Server时，避免不了要解决可用性的问题，本地测试部署3台Eureka Server:</p>
 <p>Application.java:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import org.springframework.boot.SpringApplication;</div><div class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line">import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;</div><div class="line"></div><div class="line">@SpringBootApplication</div><div class="line">@EnableEurekaServer</div><div class="line">public class Application &#123;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		SpringApplication.run(Application.class, args);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>修改本地 hosts:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">127.0.0.1 peer1</div><div class="line">127.0.0.1 peer2</div><div class="line">127.0.0.1 peer3</div></pre></td></tr></table></figure>
-<p>application.properties:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">spring.application.name=eureka-server</div></pre></td></tr></table></figure></p>
-<p>application-peer1.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10001</div><div class="line">eureka.instance.hostname=peer1</div><div class="line">eureka.client.serviceUrl.defaultZone=http://peer1:10001/eureka,http://peer2:10002/eureka,http://peer3:10003/eureka</div></pre></td></tr></table></figure></p>
-<p>application-peer2.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10002</div><div class="line">eureka.instance.hostname=peer2</div><div class="line">eureka.client.serviceUrl.defaultZone=http://peer1:10001/eureka,http://peer2:10002/eureka,http://peer3:10003/eureka</div></pre></td></tr></table></figure></p>
-<p>application-peer3.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10003</div><div class="line">eureka.instance.hostname=peer3</div><div class="line">eureka.client.serviceUrl.defaultZone=http://peer1:10001/eureka,http://peer2:10002/eureka,http://peer3:10003/eureka</div></pre></td></tr></table></figure></p>
-<p>打包：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn clean package</div></pre></td></tr></table></figure>
-<p>依次运行 :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">java -jar discovery-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer1</div><div class="line">java -jar discovery-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer2</div><div class="line">java -jar discovery-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer3</div></pre></td></tr></table></figure></p>
-<p>浏览器:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">http://localhost:10001/</div><div class="line">http://localhost:10002/</div><div class="line">http://localhost:10003/</div></pre></td></tr></table></figure>
-<p>eureka高可用集群需要注意的事项：</p>
-<ul>
-<li>spring.application.name=eureka-server， 在N台节点必须保持一致</li>
-<li>eureka.instance.prefer-ip-address=true，IP注册的方式要关闭   </li>
-</ul>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/10/01/Eureka高可用部署/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -656,18 +638,902 @@
 
       
         
-          
-            <p>基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示，</p>
+          <p>基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示，</p>
 <p><img src="/2016/06/19/分布式事务之可靠消息/dist.jpg" alt="场景"></p>
-<p>如上所示，我们已经做好了如下的准备：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1. 系统已经模块化(服务化)，每条垂直的业务线都由响应的团队独立开发和维护</div><div class="line">2. 各个系统之间的通讯都采用了MQ的方式</div><div class="line">3. 每个业务系统中都存在了2张用于控制可靠消息的表：mq_message_produce、mq_message_consume</div></pre></td></tr></table></figure></p>
-<p>下面就来解释下mq_message_produce、mq_message_consume的作用和操作的步骤：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">begin transaction</div><div class="line"></div><div class="line">	-- 对业务系统的更新</div><div class="line">	update order table;</div><div class="line">	-- 通知下游系统的消息入库</div><div class="line">	insert into mq_message_produce;</div><div class="line"></div><div class="line">commit</div></pre></td></tr></table></figure>
-<p>以上的业务操作和消息入库的操作都在同一事务中进行，确保数据的一致性。需要注意的是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1. 被插入的mq_message_produce是有状态的，初始插入时，状态为未发送</div><div class="line">2. 各个业务系统有专门的task（或者后台线程）去轮询未发送的消息数据，投递到mq-cluster中。试想mq-cluster宕机5分钟后又恢复可用，此时业务系统应当保证之前未发送出去的消息被重新投递。另外这样也能提升业务系统本身的性能，发送message的过程是后台线程异步处理的。</div><div class="line">3. 当发送成功的时候，update此记录的状态为已发送。</div></pre></td></tr></table></figure></p>
-<p>消息的消费者：被通知的业务系统在收到消息后，为了避免重复消费，在第一次收到消息的时候，对mq_message_consume进行一次查询：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1. 如果没有记录，则insert一条记录到mq_message_consume中</div><div class="line">2. 如果有记录，则忽略此重复消息的处理</div></pre></td></tr></table></figure>
-<p>同样的，mq_message_consume也是有状态的，业务的处理和状态的变更也是在本地同一事务中进行。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/06/19/分布式事务之可靠消息/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/01/21/promise探究/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean.Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="balabala.sean">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/01/21/promise探究/" itemprop="url">promise探究</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-21T13:47:29+08:00">
+                2015-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/nodejs/" itemprop="url" rel="index">
+                    <span itemprop="name">nodejs</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Promise中文译为”承诺，誓言”,但是不能按照中文译来理解它。Promise其实是一种编程方式。其实，它的英文翻译为”普罗米修斯”，是希腊神话中的大英雄，名字的意思是”先知”。Promise最初的命名是Futures，即”未来”，即未卜先知的意思，可以理解为”预测、预言”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">一个Promise对象表示当前还不可用，但是在未来的某个时间点会变为可以被解析的值。它允许我们以一种同步的方式编写异步代码。这是处理JavaScript中异步的回调函数内嵌层太多的一个很好的解决方案。</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/01/21/promise探究/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/01/03/grunt详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean.Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="balabala.sean">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/01/03/grunt详解/" itemprop="url">grunt详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-03T10:01:20+08:00">
+                2015-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/nodejs/" itemprop="url" rel="index">
+                    <span itemprop="name">nodejs</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Grunt在JavaScript中是一个强大的构建工具，提供了自动化功能，例如压缩js/css、编译、单元测试等，可以大大减轻程序员的工作。同时，它还拥有强大的package系统，日常开发中的大多数task都可以交给Grunt来处理。</p>
+<p>grunt的安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install -g grunt-cli</div><div class="line">npm install -g grunt-init</div></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/01/03/grunt详解/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/01/02/npm和bower的区别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean.Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="balabala.sean">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/01/02/npm和bower的区别/" itemprop="url">npm和bower的区别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-02T15:01:01+08:00">
+                2015-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/nodejs/" itemprop="url" rel="index">
+                    <span itemprop="name">nodejs</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <ul>
+<li>相同点：npm和bower都是一个对外部依赖模块进行统一管理的工具。</li>
+<li>不同点：npm是node.js后端开发中的模块安装工具，bower是前端的模块安装工具。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">我们在用node.js进行后台开发的时候，安装express、socket.io这些外部框架的时候，肯定是使用npm;</div><div class="line">而我们在开发前端的时候，比如bootstrap，jquery等前端框架，则需要使用bower。</div></pre></td></tr></table></figure>
+</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/01/02/npm和bower的区别/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/01/02/bower详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean.Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="balabala.sean">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/01/02/bower详解/" itemprop="url">bower详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-02T14:01:33+08:00">
+                2015-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/nodejs/" itemprop="url" rel="index">
+                    <span itemprop="name">nodejs</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>目前比较流行的开发模式是WEB前后端分离，前端采用重量级的JavaScript框架，比如AngularJS、Ember等，后端采用Restful API提供服务，通过JSON格式的数据进行交互。</p>
+<p>bower其实和npm比较相似，npm常被用于node.js的后端第三方依赖的管理，比如express，socket.io等。而bower是前端开发的第三方依赖的管理。比如jQuery，bootstrap，angularjs等。<br></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/01/02/bower详解/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/01/01/npm详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean.Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="balabala.sean">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/01/01/npm详解/" itemprop="url">npm详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-01T14:31:49+08:00">
+                2015-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/nodejs/" itemprop="url" rel="index">
+                    <span itemprop="name">nodejs</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>1、npm是什么？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm全称：nodejs package manager (nodejs的包管理器)，类似于Java中maven，是外部第三方依赖的大管家。</div></pre></td></tr></table></figure>
+<p>2、npm的安装和更新</p>
+<p>在安装nodejs的时候，是默认帮安装了npm的，所以此步略过。详情可以参考nodejs的安装。但是有一个坑：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">在安装完nodejs之后，我们要更新它默认为我们安装的npm，为什么呢？因为npm的版本更新速度要远远高于nodejs的版本更新速度，它的版本更新是很频繁的</div><div class="line"></div><div class="line">所以nodejs中的npm版本往往是比较过时的，我们需要手动的更新一下，执行命令：</div><div class="line"></div><div class="line">sudo npm install -g npm</div></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/01/01/npm详解/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/01/01/nodejs初识/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean.Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="balabala.sean">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/01/01/nodejs初识/" itemprop="url">nodejs初识</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-01T10:51:35+08:00">
+                2015-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/nodejs/" itemprop="url" rel="index">
+                    <span itemprop="name">nodejs</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>nodejs适用于密集型IO的应用，由于目前做的是广告流量业务，每天的请求峰值会很高，对外的接口打算用nodejs来做，先撸一个web应用看看<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var net = require(&apos;net&apos;);</div><div class="line">var server = net.createServer();</div><div class="line">server.on(&apos;connection&apos;, function(client)&#123;</div><div class="line">    client.write(&apos;hello\n&apos;);</div><div class="line">    client.write(&apos;byebye\n&apos;);</div><div class="line">    client.end();</div><div class="line">&#125;)</div><div class="line"></div><div class="line">server.listen(8888);</div></pre></td></tr></table></figure></p>
+<p>第一感觉：so easy…<br>第二感觉：so much easy…<br></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/01/01/nodejs初识/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -747,7 +1613,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -758,7 +1624,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -769,7 +1635,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

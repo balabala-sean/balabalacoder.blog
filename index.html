@@ -638,15 +638,15 @@
 
       
         
-          
-            <p>在eureka-server项目中增加spring-boot security的pom依赖</p>
+          <p>在eureka-server项目中增加spring-boot security的pom依赖</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;  </div><div class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;  </div><div class="line">    &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;  </div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure>
-<p>修改application.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">server.port=8761</div><div class="line"></div><div class="line">#### add security limit #####</div><div class="line">security.basic.enabled=true</div><div class="line">security.user.name=test</div><div class="line">security.user.password=123456</div><div class="line"></div><div class="line">eureka.instance.hostname=peer1</div><div class="line">eureka.client.register-with-eureka=false</div><div class="line">eureka.client.fetch-registry=false  </div><div class="line">eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka</div></pre></td></tr></table></figure></p>
-<p>打开浏览器：<a href="http://localhost:8761" target="_blank" rel="external">http://localhost:8761</a></p>
-<p><img src="/2016/09/03/eureka用户认证/eureka.jpg" alt="场景"></p>
-<p>提示输入用户名和密码</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/03/eureka用户认证/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

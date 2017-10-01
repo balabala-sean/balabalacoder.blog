@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="balabala.sean">
 <meta property="og:description" content="jstat主要用于观察和判断JVM GC的情况。 用法:12jstat -help|-optionsjstat -&amp;lt;option&amp;gt; [-t] [-h&amp;lt;lines&amp;gt;] &amp;lt;vmid&amp;gt; [&amp;lt;interval&amp;gt; [&amp;lt;count&amp;gt;]]">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-01T08:33:15.000Z">
+<meta property="og:updated_time" content="2017-10-01T08:38:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jstat">
 <meta name="twitter:description" content="jstat主要用于观察和判断JVM GC的情况。 用法:12jstat -help|-optionsjstat -&amp;lt;option&amp;gt; [-t] [-h&amp;lt;lines&amp;gt;] &amp;lt;vmid&amp;gt; [&amp;lt;interval&amp;gt; [&amp;lt;count&amp;gt;]]">
@@ -350,27 +350,7 @@
 <p>如果对JVM内存比较熟悉，上面的各个参数应该一目了然了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">S0  — Heap上的 Survivor space 0 区已使用空间的百分比</div><div class="line">S1  — Heap上的 Survivor space 1 区已使用空间的百分比</div><div class="line">E   — Heap上的 Eden space 区已使用空间的百分比</div><div class="line">O   — Heap上的 Old space 区已使用空间的百分比</div><div class="line">M   — Meta space 区已使用空间的百分比</div><div class="line">CCS --- Compressed Class Space 压缩后的class空间缩小比例</div><div class="line">YGC — 从应用程序启动到采样时发生 Young GC 的次数</div><div class="line">YGCT– 从应用程序启动到采样时 Young GC 所用的时间(单位秒)</div><div class="line">FGC — 从应用程序启动到采样时发生 Full GC 的次数</div><div class="line">FGCT– 从应用程序启动到采样时 Full GC 所用的时间(单位秒)</div><div class="line">GCT — 从应用程序启动到采样时用于垃圾回收的总时间(单位秒)</div></pre></td></tr></table></figure></p>
 <p>隔了一会儿，再次执行如上的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT   </div><div class="line">0.00   1.82  34.04  61.68  97.71  95.25    435    1.920     2    0.221    2.141</div><div class="line">0.00   1.82  34.04  61.68  97.71  95.25    435    1.920     2    0.221    2.141</div><div class="line">0.00   1.82  34.04  61.68  97.71  95.25    435    1.920     2    0.221    2.141</div><div class="line">0.00   1.82  34.04  61.68  97.71  95.25    435    1.920     2    0.221    2.141</div><div class="line">0.00   1.82  36.03  61.68  97.71  95.25    435    1.920     2    0.221    2.141</div></pre></td></tr></table></figure></p>
 <p>YGC的次数变了，在这期间发生了1次young gc,对比可以发现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">S0: 2.33 -&gt; 0.00</div><div class="line">S1: 0.00 -&gt; 1.82</div><div class="line">E : 16.09 -&gt; 34.04</div></pre></td></tr></table></figure></p>
-<p>然后就是YGC的次数多了1次，YGC的Time增加了0.004秒，GC总和的时间增加了0.003秒。这有助于观察GC的频次去寻找问题。</p>
-<p>附：<br>jstat options :</p>
-<ul>
-<li>class: </li>
-<li>compiler: </li>
-<li>gc: </li>
-<li>gccapacity: </li>
-<li>gccause: </li>
-<li>gcnew: </li>
-<li>gcnewcapacity: Displays statistics about the sizes of the new generations and its corresponding spaces.</li>
-<li>gcold: Displays statistics about the behavior of the old generation and metaspace statistics.</li>
-<li>gcoldcapacity: Displays statistics about the sizes of the old generation.</li>
-<li>gcmetacapacity: Displays statistics about the sizes of the metaspace.</li>
-<li>gcutil:<br>printcompilation: Displays Java HotSpot VM compilation method statistics.</li>
-</ul>
-<p>Displays statistics about the behavior of the class loader.</p>
-<p>Displays statistics about the behavior of the Java HotSpot VM Just-in-Time compiler.</p>
-<p>Displays statistics about the behavior of the garbage collected heap.</p>
-<p>Displays statistics about the capacities of the generations and their corresponding spaces.</p>
-<p>Displays a summary about garbage collection statistics (same as -gcutil), with the cause of the last and current (when applicable) garbage collection events.</p>
-<p>Displays statistics of the behavior of the new generation.</p>
+<p>然后就是YGC的次数多了1次，YGC的Time增加了0.004秒，GC总和的时间增加了0.003秒。这有助于观察GC的频次去寻找问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">如果Young GC的频率过高，就需要评估是不是内存的利用率过高，需不需要及时扩大负载的集群。提前做好准备</div></pre></td></tr></table></figure></p>
 
       
     </div>

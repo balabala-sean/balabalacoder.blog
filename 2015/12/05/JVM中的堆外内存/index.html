@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="JVM为了满足AIO（避免内核态和用户态的进程数据拷贝，实现IO多路复用），在java.nio.buffer.ByteBuffer中提供了访问堆外内存的功能。 关于ByteBuffer:  heap ByteBuffer -&amp;gt; -XX:Xmx 1该类对象分配在JVM的堆内存里面，直接由Java虚拟机负责垃圾回收，  direct ByteBuffer -&amp;gt; -XX:MaxDirectM">
+<meta name="description" content="JVM为了满足AIO（避免内核态和用户态的进程数据拷贝，实现IO多路复用），在java.nio.buffer.ByteBuffer中提供了访问堆外内存的功能。 关于ByteBuffer:(分为2种) 1.Heap ByteBuffer -&amp;gt; -XX:Xmx1该类对象分配在JVM的堆内存里面，直接由Java虚拟机负责垃圾回收， 2.Direct ByteBuffer -&amp;gt; -XX:Max">
 <meta name="keywords" content="jvm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM中的堆外内存">
 <meta property="og:url" content="http://www.balabalacoder.com/2015/12/05/JVM中的堆外内存/index.html">
 <meta property="og:site_name" content="balabala.sean">
-<meta property="og:description" content="JVM为了满足AIO（避免内核态和用户态的进程数据拷贝，实现IO多路复用），在java.nio.buffer.ByteBuffer中提供了访问堆外内存的功能。 关于ByteBuffer:  heap ByteBuffer -&amp;gt; -XX:Xmx 1该类对象分配在JVM的堆内存里面，直接由Java虚拟机负责垃圾回收，  direct ByteBuffer -&amp;gt; -XX:MaxDirectM">
+<meta property="og:description" content="JVM为了满足AIO（避免内核态和用户态的进程数据拷贝，实现IO多路复用），在java.nio.buffer.ByteBuffer中提供了访问堆外内存的功能。 关于ByteBuffer:(分为2种) 1.Heap ByteBuffer -&amp;gt; -XX:Xmx1该类对象分配在JVM的堆内存里面，直接由Java虚拟机负责垃圾回收， 2.Direct ByteBuffer -&amp;gt; -XX:Max">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-01T07:56:20.000Z">
+<meta property="og:updated_time" content="2017-10-01T07:58:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM中的堆外内存">
-<meta name="twitter:description" content="JVM为了满足AIO（避免内核态和用户态的进程数据拷贝，实现IO多路复用），在java.nio.buffer.ByteBuffer中提供了访问堆外内存的功能。 关于ByteBuffer:  heap ByteBuffer -&amp;gt; -XX:Xmx 1该类对象分配在JVM的堆内存里面，直接由Java虚拟机负责垃圾回收，  direct ByteBuffer -&amp;gt; -XX:MaxDirectM">
+<meta name="twitter:description" content="JVM为了满足AIO（避免内核态和用户态的进程数据拷贝，实现IO多路复用），在java.nio.buffer.ByteBuffer中提供了访问堆外内存的功能。 关于ByteBuffer:(分为2种) 1.Heap ByteBuffer -&amp;gt; -XX:Xmx1该类对象分配在JVM的堆内存里面，直接由Java虚拟机负责垃圾回收， 2.Direct ByteBuffer -&amp;gt; -XX:Max">
 
 
 
@@ -343,16 +343,10 @@
 
       
         <p>JVM为了满足AIO（避免内核态和用户态的进程数据拷贝，实现IO多路复用），在java.nio.buffer.ByteBuffer中提供了访问堆外内存的功能。</p>
-<p>关于ByteBuffer:</p>
-<ol>
-<li><p>heap ByteBuffer -&gt; -XX:Xmx</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">该类对象分配在JVM的堆内存里面，直接由Java虚拟机负责垃圾回收，</div></pre></td></tr></table></figure>
-</li>
-<li><p>direct ByteBuffer -&gt; -XX:MaxDirectMemorySize</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">通过jni在虚拟机外内存中分配的。通过jmap无法查看该快内存的使用情况。只能通过top来看它的内存使用情况。</div><div class="line"></div><div class="line">-XX:MaxDirectMemorySize此设置的含义是当Direct ByteBuffer分配的堆外内存到达指定大小后，即触发Full GC。</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">import java.lang.reflect.Field;</div><div class="line">import java.nio.ByteBuffer;</div><div class="line"></div><div class="line"></div><div class="line">public class MaxDirectMemorySize &#123;</div><div class="line">	public static void main(String[] args) throws ClassNotFoundException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException &#123;</div><div class="line">   		System.out.println(&quot;maxMemoryValue:&quot;+sun.misc.VM.maxDirectMemory()); </div><div class="line">   </div><div class="line">   </div><div class="line">		System.out.println(&quot;================================&quot;);</div><div class="line">   </div><div class="line">		ByteBuffer buffer=ByteBuffer.allocateDirect(0);</div><div class="line">		Class&lt;?&gt; c = Class.forName(&quot;java.nio.Bits&quot;);  </div><div class="line">		Field maxMemory = c.getDeclaredField(&quot;maxMemory&quot;);  </div><div class="line">		maxMemory.setAccessible(true);  </div><div class="line">		synchronized (c) &#123;  </div><div class="line">			Long maxMemoryValue = (Long)maxMemory.get(null);  </div><div class="line">			System.out.println(&quot;maxMemoryValue:&quot;+maxMemoryValue);  </div><div class="line">		&#125;  </div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>关于ByteBuffer:(分为2种)</p>
+<p>1.Heap ByteBuffer -&gt; -XX:Xmx<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">该类对象分配在JVM的堆内存里面，直接由Java虚拟机负责垃圾回收，</div></pre></td></tr></table></figure></p>
+<p>2.Direct ByteBuffer -&gt; -XX:MaxDirectMemorySize<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">通过jni在虚拟机外内存中分配的。通过jmap无法查看该快内存的使用情况。只能通过top来看它的内存使用情况。</div><div class="line"></div><div class="line">-XX:MaxDirectMemorySize此设置的含义是当Direct ByteBuffer分配的堆外内存到达指定大小后，即触发Full GC。</div></pre></td></tr></table></figure></p>
+<p>例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">import java.lang.reflect.Field;</div><div class="line">import java.nio.ByteBuffer;</div><div class="line"></div><div class="line"></div><div class="line">public class MaxDirectMemorySize &#123;</div><div class="line">	public static void main(String[] args) throws ClassNotFoundException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException &#123;</div><div class="line">   		System.out.println(&quot;maxMemoryValue:&quot;+sun.misc.VM.maxDirectMemory()); </div><div class="line">   </div><div class="line">   </div><div class="line">		System.out.println(&quot;================================&quot;);</div><div class="line">   </div><div class="line">		ByteBuffer buffer=ByteBuffer.allocateDirect(0);</div><div class="line">		Class&lt;?&gt; c = Class.forName(&quot;java.nio.Bits&quot;);  </div><div class="line">		Field maxMemory = c.getDeclaredField(&quot;maxMemory&quot;);  </div><div class="line">		maxMemory.setAccessible(true);  </div><div class="line">		synchronized (c) &#123;  </div><div class="line">			Long maxMemoryValue = (Long)maxMemory.get(null);  </div><div class="line">			System.out.println(&quot;maxMemoryValue:&quot;+maxMemoryValue);  </div><div class="line">		&#125;  </div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>Direct ByteBuffer通过full gc来回收内存的，它会自己检测情况而调用system.gc()，但是如果参数中使用了DisableExplicitGC那么就无法回收该快内存了</p>
 <p>-XX:+DisableExplicitGC标志自动将System.gc()调用转换成一个空操作，就是应用中调用System.gc()会变成一个空操作。</p>
 <p>那么如果设置了就只能手动来回收内存了：</p>

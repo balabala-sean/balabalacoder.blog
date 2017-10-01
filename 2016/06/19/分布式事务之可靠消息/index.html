@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示，">
+<meta name="description" content="基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示">
 <meta name="keywords" content="分布式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式事务之可靠消息">
 <meta property="og:url" content="http://www.balabalacoder.com/2016/06/19/分布式事务之可靠消息/index.html">
 <meta property="og:site_name" content="balabala.sean">
-<meta property="og:description" content="基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示，">
+<meta property="og:description" content="基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.balabalacoder.com/2016/06/19/分布式事务之可靠消息/dist.jpg">
-<meta property="og:updated_time" content="2017-10-01T06:39:26.000Z">
+<meta property="og:updated_time" content="2017-10-01T09:37:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式事务之可靠消息">
-<meta name="twitter:description" content="基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示，">
+<meta name="twitter:description" content="基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示">
 <meta name="twitter:image" content="http://www.balabalacoder.com/2016/06/19/分布式事务之可靠消息/dist.jpg">
 
 
@@ -344,7 +344,7 @@
       
 
       
-        <p>基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示，</p>
+        <p>基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示</p>
 <p><img src="/2016/06/19/分布式事务之可靠消息/dist.jpg" alt="场景"></p>
 <a id="more"></a>
 <p>如上所示，我们已经做好了如下的准备：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1. 系统已经模块化(服务化)，每条垂直的业务线都由响应的团队独立开发和维护</div><div class="line">2. 各个系统之间的通讯都采用了MQ的方式</div><div class="line">3. 每个业务系统中都存在了2张用于控制可靠消息的表：mq_message_produce、mq_message_consume</div></pre></td></tr></table></figure></p>
@@ -354,6 +354,10 @@
 <p>消息的消费者：被通知的业务系统在收到消息后，为了避免重复消费，在第一次收到消息的时候，对mq_message_consume进行一次查询：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1. 如果没有记录，则insert一条记录到mq_message_consume中</div><div class="line">2. 如果有记录，则忽略此重复消息的处理</div></pre></td></tr></table></figure>
 <p>同样的，mq_message_consume也是有状态的，业务的处理和状态的变更也是在本地同一事务中进行。</p>
+<p>基于上述的理论，用Java来实现此功能(已开发成通用组件，目前上线系统都在跑，思路如下)：</p>
+<p>某业务模块的Service.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">@Autowired</div><div class="line">private Dao dao;</div><div class="line"></div><div class="line">@Autowired</div><div class="line">private MqTransactionalClient mqTransactionalClient;</div><div class="line"></div><div class="line">@Transactional</div><div class="line">public void service()&#123;</div><div class="line">    // service update</div><div class="line">    dao.updateSomething();</div><div class="line">    </div><div class="line">    // send mq to other-service</div><div class="line">    mqTransactionalClient.sendMessage(msgContent);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>MqTransactionalClient.java:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line">import org.slf4j.Logger;</div><div class="line">import org.slf4j.LoggerFactory;</div><div class="line">import org.springframework.beans.factory.annotation.Autowired;</div><div class="line">import org.springframework.transaction.annotation.Transactional;</div><div class="line">import org.springframework.transaction.support.TransactionSynchronizationAdapter;</div><div class="line">import org.springframework.transaction.support.TransactionSynchronizationManager;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 实现消息的发送、状态的变更，对调用方透明</div><div class="line"> */</div><div class="line">@Autowired</div><div class="line">public class MqTransactionalClient &#123;</div><div class="line"></div><div class="line">    private static final Logger logger = LoggerFactory.getLogger(MqTransactionalClient.class);</div><div class="line"></div><div class="line">    private static ThreadLocal&lt;Object&gt; dataContext = new ThreadLocal&lt;&gt;();</div><div class="line"></div><div class="line">    // 对外提供的发送事务消息的方法</div><div class="line">    public void sendMessage(Object message)&#123;</div><div class="line">        dataContext.set(message);</div><div class="line">        this.insertMqMessage();</div><div class="line">        this.transactionAfterCommit();</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    // 消息插入数据库</div><div class="line">    private void insertMqMessage()&#123;</div><div class="line">        // TODO 消息保存到DB中</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 利用Spring的事务注册Callback的机制去实现可靠消息</div><div class="line">    private void transactionAfterCommit()&#123;</div><div class="line">        boolean actualTransactionActive = TransactionSynchronizationManager.isActualTransactionActive();</div><div class="line">        if (!actualTransactionActive) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() &#123;</div><div class="line">            public void afterCompletion(int status) &#123;</div><div class="line">                //0 : 本地事务（业务Update + 消息Insert）成功</div><div class="line">                //1 : 本地事务失败</div><div class="line">                if (0 == status) &#123;</div><div class="line">                    Object message = MqTransactionalClient.dataContext.get();</div><div class="line">                    if (message != null) &#123;</div><div class="line">                        // TODO 调用MQ中间件的API发送消息，这里可以考虑放入一个集合队列，后台线程去异步发数据到MQ中去</div><div class="line">                    &#125;</div><div class="line">                &#125; else if (1 == status) &#123;</div><div class="line">                    logger.info(&quot;事务已经回滚&quot;);</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                MqTransactionalClient.dataContext.remove();</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
       
     </div>

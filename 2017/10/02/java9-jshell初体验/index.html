@@ -79,13 +79,17 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="balabala.sean">
-<meta property="og:url" content="http://www.balabalacoder.com/archives/index.html">
+<meta name="description" content="JShell：Java9中新增了Java REPL (Read-Eval-Print-Loop),在命令行允许我们进行交互式的编程体验，不需要用class/method去包装表达式语句， 下载jdk9，然后配置path.123java version &amp;quot;9&amp;quot;Java(TM) SE Runtime Environment (build 9+181)Java HotSpot(TM)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java9-jshell初体验">
+<meta property="og:url" content="http://www.balabalacoder.com/2017/10/02/java9-jshell初体验/index.html">
 <meta property="og:site_name" content="balabala.sean">
+<meta property="og:description" content="JShell：Java9中新增了Java REPL (Read-Eval-Print-Loop),在命令行允许我们进行交互式的编程体验，不需要用class/method去包装表达式语句， 下载jdk9，然后配置path.123java version &amp;quot;9&amp;quot;Java(TM) SE Runtime Environment (build 9+181)Java HotSpot(TM)">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-02T02:24:59.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="balabala.sean">
+<meta name="twitter:title" content="java9-jshell初体验">
+<meta name="twitter:description" content="JShell：Java9中新增了Java REPL (Read-Eval-Print-Loop),在命令行允许我们进行交互式的编程体验，不需要用class/method去包装表达式语句， 下载jdk9，然后配置path.123java version &amp;quot;9&amp;quot;Java(TM) SE Runtime Environment (build 9+181)Java HotSpot(TM)">
 
 
 
@@ -115,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://www.balabalacoder.com/archives/"/>
+  <link rel="canonical" href="http://www.balabalacoder.com/2017/10/02/java9-jshell初体验/"/>
 
 
 
 
 
-  <title>归档 | balabala.sean</title>
+  <title>java9-jshell初体验 | balabala.sean</title>
   
 
 
@@ -140,7 +144,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -234,421 +238,149 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2017/10/02/java9-jshell初体验/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean.Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="balabala.sean">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">java9-jshell初体验</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-02T10:12:12+08:00">
+                2017-10-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 19 篇日志。 继续努力。
-      </span>
 
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/02/java9-jshell初体验/" itemprop="url">
-              
-                <span itemprop="name">java9-jshell初体验</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-02T10:12:12+08:00"
-              content="2017-10-02" >
-          10-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/02/基于Git的配置中心/" itemprop="url">
-              
-                <span itemprop="name">基于Git的配置中心</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-02T12:05:42+08:00"
-              content="2017-04-02" >
-          04-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/08/eureka高可用部署/" itemprop="url">
-              
-                <span itemprop="name">eureka高可用部署</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-08T00:39:42+08:00"
-              content="2017-03-08" >
-          03-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/03/eureka用户认证/" itemprop="url">
-              
-                <span itemprop="name">eureka用户认证</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-03T17:56:47+08:00"
-              content="2017-03-03" >
-          03-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
+            
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2016">2016</h1>
-          </div>
-        
-        
 
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2016/06/19/分布式事务之可靠消息/" itemprop="url">
-              
-                <span itemprop="name">分布式事务之可靠消息</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-06-19T10:38:24+08:00"
-              content="2016-06-19" >
-          06-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2016/02/01/jstat/" itemprop="url">
-              
-                <span itemprop="name">jstat</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-02-01T16:27:08+08:00"
-              content="2016-02-01" >
-          02-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2015">2015</h1>
-          </div>
-        
-        
+          
 
-        
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2015/12/06/JVM中的栈/" itemprop="url">
-              
-                <span itemprop="name">JVM中的栈</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2015-12-06T18:53:47+08:00"
-              content="2015-12-06" >
-          12-06
-        </time>
-      </div>
+        </div>
+      </header>
+    
 
-    </header>
-  </article>
-
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2015/12/05/JVM中的堆外内存/" itemprop="url">
-              
-                <span itemprop="name">JVM中的堆外内存</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2015-12-05T15:13:22+08:00"
-              content="2015-12-05" >
-          12-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2015/12/04/JVM中的堆/" itemprop="url">
-              
-                <span itemprop="name">JVM中的堆</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2015-12-04T15:23:53+08:00"
-              content="2015-12-04" >
-          12-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>JShell：Java9中新增了Java REPL (Read-Eval-Print-Loop),<br>在命令行允许我们进行交互式的编程体验，不需要用class/method去包装表达式语句，</p>
+<p>下载jdk9，然后配置path.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">java version &quot;9&quot;</div><div class="line">Java(TM) SE Runtime Environment (build 9+181)</div><div class="line">Java HotSpot(TM) 64-Bit Server VM (build 9+181, mixed mode)</div></pre></td></tr></table></figure></p>
+<p>ok, 接着就可以在终端使用了，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">MacBook-Pro:workspace sean$ jshell   </div><div class="line">|  Welcome to JShell -- Version 9</div><div class="line">|  For an introduction type: /help intro</div><div class="line">jshell&gt;</div></pre></td></tr></table></figure></p>
+<p>输出hello jshell:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">jshell&gt; System.out.println(&quot;hello jshell&quot;)</div><div class="line">hello jshell</div></pre></td></tr></table></figure></p>
+<p>jshell中可以省略行尾的”;”<br><a id="more"></a></p>
+<p>再体验一把本地文件的io操作：（创建一个文件，并读取内容）</p>
+<p>创建文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim test.txt</div><div class="line"></div><div class="line">###########################</div><div class="line">hey, test java 9 io package</div><div class="line">===========================</div></pre></td></tr></table></figure></p>
+<p>读取内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">MacBook-Pro:workspace sean$ jshell</div><div class="line">|  Welcome to JShell -- Version 9</div><div class="line">|  For an introduction type: /help intro</div><div class="line"></div><div class="line">jshell&gt; import java.nio.file.*</div><div class="line"></div><div class="line">jshell&gt; import java.util.stream.Stream</div><div class="line"></div><div class="line">jshell&gt; Path path = Paths.get(&quot;/workspace/test.txt&quot;)</div><div class="line">path ==&gt; /workspace/test.txt</div><div class="line"></div><div class="line">jshell&gt; Stream&lt;String&gt; lines = Files.lines(path)</div><div class="line">lines ==&gt; java.util.stream.ReferencePipeline$Head@60c6f5b</div><div class="line"></div><div class="line">jshell&gt; lines.forEach(line -&gt; System.out.println(line))</div><div class="line">###########################</div><div class="line">hey, test java 9 io package</div><div class="line">===========================</div></pre></td></tr></table></figure></p>
+<p>so easy.</p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2015/12/03/ClassLoader双亲委托/" itemprop="url">
-              
-                <span itemprop="name">ClassLoader双亲委托</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2015-12-03T15:23:53+08:00"
-              content="2015-12-03" >
-          12-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/02/基于Git的配置中心/" rel="next" title="基于Git的配置中心">
+                <i class="fa fa-chevron-left"></i> 基于Git的配置中心
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -656,6 +388,8 @@
 
 
           
+  
+
 
         </div>
         
@@ -858,6 +592,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 

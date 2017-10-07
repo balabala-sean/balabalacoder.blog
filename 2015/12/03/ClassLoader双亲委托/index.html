@@ -79,21 +79,21 @@
 
 
 
-<meta name="description" content="双亲委托机制：ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。 有一个比较特殊的是BootClassLoader，它是内嵌在JVM中的，只有它是没有父加载器的，但是可以被用作其他ClassLoader的父加载器。  当一个ClassLoader要加载某个*.cl">
+<meta name="description" content="双亲委托机制：ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。而且我们通过重载一些方法(findClass)，可以破坏原有的双亲委托机制。 有一个比较特殊的是BootClassLoader，它是内嵌在JVM中的，只有它是没有父加载器的，但是可以被用作其他Clas">
 <meta name="keywords" content="jvm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ClassLoader双亲委托">
-<meta property="og:url" content="http://www.balabalacoder.com/2015/12/03/ClassLoader双亲委托/index.html">
+<meta property="og:title" content="classLoader双亲委托">
+<meta property="og:url" content="http://www.balabalacoder.com/2015/12/03/classloader双亲委托/index.html">
 <meta property="og:site_name" content="balabala.sean">
-<meta property="og:description" content="双亲委托机制：ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。 有一个比较特殊的是BootClassLoader，它是内嵌在JVM中的，只有它是没有父加载器的，但是可以被用作其他ClassLoader的父加载器。  当一个ClassLoader要加载某个*.cl">
+<meta property="og:description" content="双亲委托机制：ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。而且我们通过重载一些方法(findClass)，可以破坏原有的双亲委托机制。 有一个比较特殊的是BootClassLoader，它是内嵌在JVM中的，只有它是没有父加载器的，但是可以被用作其他Clas">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.balabalacoder.com/2015/12/03/ClassLoader双亲委托/classloader1.png">
-<meta property="og:image" content="http://www.balabalacoder.com/2015/12/03/ClassLoader双亲委托/classloader2.png">
-<meta property="og:updated_time" content="2017-10-01T08:08:12.000Z">
+<meta property="og:image" content="http://www.balabalacoder.com/2015/12/03/classloader双亲委托/ClassLoader双亲委托/classloader1.png">
+<meta property="og:image" content="http://www.balabalacoder.com/2015/12/03/classloader双亲委托/ClassLoader双亲委托/classloader2.png">
+<meta property="og:updated_time" content="2017-10-07T10:04:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ClassLoader双亲委托">
-<meta name="twitter:description" content="双亲委托机制：ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。 有一个比较特殊的是BootClassLoader，它是内嵌在JVM中的，只有它是没有父加载器的，但是可以被用作其他ClassLoader的父加载器。  当一个ClassLoader要加载某个*.cl">
-<meta name="twitter:image" content="http://www.balabalacoder.com/2015/12/03/ClassLoader双亲委托/classloader1.png">
+<meta name="twitter:title" content="classLoader双亲委托">
+<meta name="twitter:description" content="双亲委托机制：ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。而且我们通过重载一些方法(findClass)，可以破坏原有的双亲委托机制。 有一个比较特殊的是BootClassLoader，它是内嵌在JVM中的，只有它是没有父加载器的，但是可以被用作其他Clas">
+<meta name="twitter:image" content="http://www.balabalacoder.com/2015/12/03/classloader双亲委托/ClassLoader双亲委托/classloader1.png">
 
 
 
@@ -123,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://www.balabalacoder.com/2015/12/03/ClassLoader双亲委托/"/>
+  <link rel="canonical" href="http://www.balabalacoder.com/2015/12/03/classloader双亲委托/"/>
 
 
 
 
 
-  <title>ClassLoader双亲委托 | balabala.sean</title>
+  <title>classLoader双亲委托 | balabala.sean</title>
   
 
 
@@ -256,7 +256,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/12/03/ClassLoader双亲委托/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/12/03/classloader双亲委托/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -273,7 +273,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ClassLoader双亲委托</h1>
+          <h1 class="post-title" itemprop="name headline">classLoader双亲委托</h1>
         
 
         <div class="post-meta">
@@ -345,7 +345,7 @@
       
 
       
-        <p>双亲委托机制：<br>ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。</p>
+        <p>双亲委托机制：<br>ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。而且我们通过重载一些方法(findClass)，可以破坏原有的双亲委托机制。</p>
 <p>有一个比较特殊的是BootClassLoader，它是内嵌在JVM中的，只有它是没有父加载器的，但是可以被用作其他ClassLoader的父加载器。</p>
 <ul>
 <li>当一个ClassLoader要加载某个*.class的时候，它会先把任务往上丢（丢给他老爸），所以一层层的丢，最后丢到了BootClassLoader那里去了。</li>
@@ -362,8 +362,8 @@
 </ul>
 <p>观察ExtClassLoader和AppClassLoader，他们都继承自URLClassLoader，一层层的向上寻找，我们找到了java.security.ClassLoader<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">static class ExtClassLoader extends URLClassLoader &#123; ... &#125;</div><div class="line">static class AppClassLoader extends URLClassLoader &#123; ... &#125;</div><div class="line">public class URLClassLoader extends SecureClassLoader &#123; ... &#125;</div><div class="line">public class SecureClassLoader extends ClassLoader &#123; ... &#125; // package java.security</div></pre></td></tr></table></figure></p>
 <p>ClassLoader源码分析：</p>
-<p>1.Parent ClassLoader<br><img src="/2015/12/03/ClassLoader双亲委托/classloader1.png" alt="场景"></p>
-<p>2.向上递归<br><img src="/2015/12/03/ClassLoader双亲委托/classloader2.png" alt="场景"></p>
+<p>1.Parent ClassLoader<br><img src="/2015/12/03/classloader双亲委托/ClassLoader双亲委托/classloader1.png" alt="场景"></p>
+<p>2.向上递归<br><img src="/2015/12/03/classloader双亲委托/ClassLoader双亲委托/classloader2.png" alt="场景"></p>
 
       
     </div>
@@ -394,8 +394,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/02/ClassLoader初探/" rel="next" title="ClassLoader初探">
-                <i class="fa fa-chevron-left"></i> ClassLoader初探
+              <a href="/2015/12/02/bootstrap-classloader/" rel="next" title="bootstrap-classloader">
+                <i class="fa fa-chevron-left"></i> bootstrap-classloader
               </a>
             
           </div>

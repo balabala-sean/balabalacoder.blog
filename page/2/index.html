@@ -697,7 +697,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/12/03/ClassLoader双亲委托/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/12/03/classloader双亲委托/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -716,7 +716,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/12/03/ClassLoader双亲委托/" itemprop="url">ClassLoader双亲委托</a></h1>
+                <a class="post-title-link" href="/2015/12/03/classloader双亲委托/" itemprop="url">classLoader双亲委托</a></h1>
         
 
         <div class="post-meta">
@@ -789,7 +789,7 @@
 
       
         
-          <p>双亲委托机制：<br>ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。</p>
+          <p>双亲委托机制：<br>ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。而且我们通过重载一些方法(findClass)，可以破坏原有的双亲委托机制。</p>
 <p>有一个比较特殊的是BootClassLoader，它是内嵌在JVM中的，只有它是没有父加载器的，但是可以被用作其他ClassLoader的父加载器。</p>
 <ul>
 <li>当一个ClassLoader要加载某个*.class的时候，它会先把任务往上丢（丢给他老爸），所以一层层的丢，最后丢到了BootClassLoader那里去了。</li>
@@ -800,7 +800,7 @@
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/12/03/ClassLoader双亲委托/#more" rel="contents">
+            <a class="btn" href="/2015/12/03/classloader双亲委托/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -851,7 +851,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/12/02/ClassLoader初探/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/12/02/bootstrap-classloader/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -870,7 +870,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/12/02/ClassLoader初探/" itemprop="url">ClassLoader初探</a></h1>
+                <a class="post-title-link" href="/2015/12/02/bootstrap-classloader/" itemprop="url">bootstrap-classloader</a></h1>
         
 
         <div class="post-meta">
@@ -947,7 +947,7 @@
 <p>JVM默认的提供了3个ClassLoader:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">BootClassLoader : 负责加载jre/lib下的核心类库，如rt.jar、resources.jar、charsets.jar等</div><div class="line">Extension ClassLoader : 负责加载jre/lib/ext下的所有扩展类库</div><div class="line">App ClassLoader : 系统类加载器，加载应用程序classpath目录下的所有jar和class文件</div></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/12/02/ClassLoader初探/#more" rel="contents">
+            <a class="btn" href="/2015/12/02/bootstrap-classloader/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

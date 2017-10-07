@@ -82,19 +82,19 @@
 <meta name="description" content="JVM是通过ClassLoader来加载*.class（编译好的class文件）的，程序在启动的时候，并不会一次性加载应用程序所要用到的所有class文件，而是根据程序运行的需要，通过Java的类加载机制（ClassLoader）来动态加载某个class文件到内存道中的，而只有class文件被加载到了内存之后，才能被其他的class引用。所以，ClassLoader是用来动态加载class文件到内">
 <meta name="keywords" content="jvm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ClassLoader初探">
-<meta property="og:url" content="http://www.balabalacoder.com/2015/12/02/ClassLoader初探/index.html">
+<meta property="og:title" content="bootstrap-classloader">
+<meta property="og:url" content="http://www.balabalacoder.com/2015/12/02/bootstrap-classloader/index.html">
 <meta property="og:site_name" content="balabala.sean">
 <meta property="og:description" content="JVM是通过ClassLoader来加载*.class（编译好的class文件）的，程序在启动的时候，并不会一次性加载应用程序所要用到的所有class文件，而是根据程序运行的需要，通过Java的类加载机制（ClassLoader）来动态加载某个class文件到内存道中的，而只有class文件被加载到了内存之后，才能被其他的class引用。所以，ClassLoader是用来动态加载class文件到内">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.balabalacoder.com/2015/12/02/ClassLoader初探/classloader1.png">
-<meta property="og:image" content="http://www.balabalacoder.com/2015/12/02/ClassLoader初探/classloader2.png">
-<meta property="og:image" content="http://www.balabalacoder.com/2015/12/02/ClassLoader初探/classloader3.png">
-<meta property="og:updated_time" content="2017-10-01T08:08:08.000Z">
+<meta property="og:image" content="http://www.balabalacoder.com/2015/12/02/bootstrap-classloader/ClassLoader初探/classloader1.png">
+<meta property="og:image" content="http://www.balabalacoder.com/2015/12/02/bootstrap-classloader/ClassLoader初探/classloader2.png">
+<meta property="og:image" content="http://www.balabalacoder.com/2015/12/02/bootstrap-classloader/ClassLoader初探/classloader3.png">
+<meta property="og:updated_time" content="2017-10-07T10:02:36.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ClassLoader初探">
+<meta name="twitter:title" content="bootstrap-classloader">
 <meta name="twitter:description" content="JVM是通过ClassLoader来加载*.class（编译好的class文件）的，程序在启动的时候，并不会一次性加载应用程序所要用到的所有class文件，而是根据程序运行的需要，通过Java的类加载机制（ClassLoader）来动态加载某个class文件到内存道中的，而只有class文件被加载到了内存之后，才能被其他的class引用。所以，ClassLoader是用来动态加载class文件到内">
-<meta name="twitter:image" content="http://www.balabalacoder.com/2015/12/02/ClassLoader初探/classloader1.png">
+<meta name="twitter:image" content="http://www.balabalacoder.com/2015/12/02/bootstrap-classloader/ClassLoader初探/classloader1.png">
 
 
 
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://www.balabalacoder.com/2015/12/02/ClassLoader初探/"/>
+  <link rel="canonical" href="http://www.balabalacoder.com/2015/12/02/bootstrap-classloader/"/>
 
 
 
 
 
-  <title>ClassLoader初探 | balabala.sean</title>
+  <title>bootstrap-classloader | balabala.sean</title>
   
 
 
@@ -257,7 +257,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/12/02/ClassLoader初探/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/12/02/bootstrap-classloader/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -274,7 +274,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ClassLoader初探</h1>
+          <h1 class="post-title" itemprop="name headline">bootstrap-classloader</h1>
         
 
         <div class="post-meta">
@@ -351,11 +351,11 @@
 <a id="more"></a>
 <p>BootClassLoader的感知：<br>查看BootClassLoader到底在程序启动的时候加载了哪些地方的jar<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">URL[] urls = Launcher.getBootstrapClassPath().getURLs();</div><div class="line">for (URL url : urls)&#123;</div><div class="line">    System.out.println(url.getPath());</div><div class="line">&#125;</div><div class="line"></div><div class="line">output~:</div><div class="line"></div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/resources.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/rt.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/sunrsasign.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/jsse.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/jce.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/charsets.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/lib/jfr.jar</div><div class="line">/D:/Program%20Files/Java/jdk1.8.0_91/jre/classes</div></pre></td></tr></table></figure></p>
 <p>上面有一个很关键的类：sun.misc.Launcher，它是JVM启动的核心类，下面看下它的源码：</p>
-<p><img src="/2015/12/02/ClassLoader初探/classloader1.png" alt="场景"></p>
+<p><img src="/2015/12/02/bootstrap-classloader/ClassLoader初探/classloader1.png" alt="场景"></p>
 <p>ExtensionClassLoader和AppClassLoader都是包访问权限的，所以我们外部通过代码访问不了：</p>
-<p><img src="/2015/12/02/ClassLoader初探/classloader2.png" alt="场景"></p>
-<p><img src="/2015/12/02/ClassLoader初探/classloader3.png" alt="场景"></p>
-<p>由于BootClassLoader底层由c++编写实现，并嵌入到了JVM中（其实就是jvm.dll中），所以我们在java source中看不到。当JVM启动的时候，BootClassLoader也随之启动，在它加载完jre/lib后，并构造出ExtensionClassLoader和AppClassLoader。</p>
+<p><img src="/2015/12/02/bootstrap-classloader/ClassLoader初探/classloader2.png" alt="场景"></p>
+<p><img src="/2015/12/02/bootstrap-classloader/ClassLoader初探/classloader3.png" alt="场景"></p>
+<p>由于BootClassLoader底层由c++编写实现，并嵌入到了JVM中(jvm采用的是c &amp; c++混合开发的模式)。在JVM源码中，关于BootstrapClassLoader的加载：(名字也很好理解，”compile the world”)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">void ClassLoader::compile_the_world() &#123;</div><div class="line">    EXCEPTION_MARK;</div><div class="line">    HandleMark hm(THREAD);</div><div class="line">    ResourceMark rm(THREAD);</div><div class="line">    BackgroundCompilation = false;</div><div class="line">    // 根据系统路径寻找Boot ClassLoader</div><div class="line">    Handle system_class_loader(THREAD, SystemDictionary::java_system_loader());</div><div class="line">    ClassPathEntry *e = _first_entry;</div><div class="line">    jlong start = os::javaTimeMillis();</div><div class="line">    while (e != NULL) &#123;</div><div class="line">        if (e-&gt;is_rt_jar() &amp;&amp; e != _first_entry) break;</div><div class="line">        e-&gt;compile_the_world(system_class_loader, CATCH);</div><div class="line">        e = e-&gt;next();</div><div class="line">    &#125;</div><div class="line">    jlong end = os::javaTimeMillis();</div><div class="line">    tty-&gt;print_cr(&quot;CompileTheWorld : Done (%d classes, %d methods, %d ms)&quot;,</div><div class="line">                  _compile_the_world_class_counter, _compile_the_world_method_counter, (end - start));</div><div class="line">    &#123;</div><div class="line">        extern void print_statistics();</div><div class="line">        print_statistics();</div><div class="line">    &#125;</div><div class="line">    vm_exit(0);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -396,8 +396,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/12/03/ClassLoader双亲委托/" rel="prev" title="ClassLoader双亲委托">
-                ClassLoader双亲委托 <i class="fa fa-chevron-right"></i>
+              <a href="/2015/12/03/classloader双亲委托/" rel="prev" title="classLoader双亲委托">
+                classLoader双亲委托 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

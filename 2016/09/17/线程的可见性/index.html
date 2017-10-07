@@ -83,11 +83,11 @@
 <meta name="keywords" content="并发">
 <meta property="og:type" content="article">
 <meta property="og:title" content="并发中的可见性">
-<meta property="og:url" content="http://www.balabalacoder.com/2017/10/07/线程的可见性/index.html">
+<meta property="og:url" content="http://www.balabalacoder.com/2016/09/17/线程的可见性/index.html">
 <meta property="og:site_name" content="balabala.sean">
 <meta property="og:description" content="在Java的多线程模型中，线程之间是不允许直接传递数据进行交互的，它们之间的交互只能通过共享变量来实现。当创建一个对象实例的时候，它是被分配在堆(heap)上的，每个线程运行时都有自己的工作内存(stack), 当线程操作这个对象的时候，首先从堆中创建一个此对象的引用副本到自己的工作内存中，线程运行完毕后，再把工作内存中的对象副本刷新到堆中。在多线程的情况下，即一个共享对象存在了多个副本(在不同的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-07T05:02:41.000Z">
+<meta property="og:updated_time" content="2017-10-07T06:29:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发中的可见性">
 <meta name="twitter:description" content="在Java的多线程模型中，线程之间是不允许直接传递数据进行交互的，它们之间的交互只能通过共享变量来实现。当创建一个对象实例的时候，它是被分配在堆(heap)上的，每个线程运行时都有自己的工作内存(stack), 当线程操作这个对象的时候，首先从堆中创建一个此对象的引用副本到自己的工作内存中，线程运行完毕后，再把工作内存中的对象副本刷新到堆中。在多线程的情况下，即一个共享对象存在了多个副本(在不同的">
@@ -120,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="http://www.balabalacoder.com/2017/10/07/线程的可见性/"/>
+  <link rel="canonical" href="http://www.balabalacoder.com/2016/09/17/线程的可见性/"/>
 
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2017/10/07/线程的可见性/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/09/17/线程的可见性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-07T12:16:37+08:00">
-                2017-10-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-17T12:16:37+08:00">
+                2016-09-17
               </time>
             
 
@@ -374,8 +374,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/01/java9-jshell初体验/" rel="next" title="java9-jshell初体验">
-                <i class="fa fa-chevron-left"></i> java9-jshell初体验
+              <a href="/2016/08/07/volatile详解/" rel="next" title="volatile详解">
+                <i class="fa fa-chevron-left"></i> volatile详解
               </a>
             
           </div>
@@ -383,6 +383,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/05/内置锁与内置条件队列/" rel="prev" title="内置锁与内置条件队列">
+                内置锁与内置条件队列 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -448,7 +452,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

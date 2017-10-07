@@ -935,7 +935,7 @@
 
       
         
-          <p>java中的每个object可以作为一个lock, 而每个lock关联着一个条件队列（其实是2个，一个就绪队列，一个等待队列，只不过对于调用方而言，像是一个队列）。这个<br>条件队列中保存的元素是线程，java中关于内置锁和内置条件队列的3个方法：wait(),notify(),notifyAll()。这里的object lock和condition queue的“关联”关系，个人的理解是通过这个object lock，可以去释放条件队列中等待的线程，例如notify出队，notifyAll倒序所有出队。（权且忽略java.util.current.locks.Condition，这会复杂化内置锁和内置条件队列的关联关系）</p>
+          <p>java中的每个object可以作为一个lock, 而每个lock关联着一个条件队列（其实是2个，一个就绪队列，一个等待队列，只不过对于调用方而言，像是一个队列）。这个<br>条件队列中保存的元素是线程，java中关于内置锁和内置条件队列的3个方法：wait(),notify(),notifyAll()。这里的object lock和condition queue的“关联”关系，个人的理解是通过这个object lock，可以去释放条件队列中等待的线程，例如notify出队，notifyAll倒序所有出队。这和Condtion的await()、signal()、signalAll()用法基本一致(除了需要显式锁和对象锁的区别)。<br></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2016/10/05/内置锁与内置条件队列/#more" rel="contents">

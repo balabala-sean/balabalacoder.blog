@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="nodejs," />
+  <meta name="keywords" content="并发," />
 
 
 
@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="Promise中文译为”承诺，誓言”,但是不能按照中文译来理解它。Promise其实是一种编程方式。其实，它的英文翻译为”普罗米修斯”，是希腊神话中的大英雄，名字的意思是”先知”。Promise最初的命名是Futures，即”未来”，即未卜先知的意思，可以理解为”预测、预言”。 1一个Promise对象表示当前还不可用，但是在未来的某个时间点会变为可以被解析的值。它允许我们以一种同步的方式编写异步">
-<meta name="keywords" content="nodejs">
+<meta name="description" content="在并发编程中，通常会遇到以下三个问题：原子性、可见性、有序性。 1.原子性 原子性：即一个操作或者多个操作 要么全部执行并且执行的过程不会被任何因素打断，要么就都不执行。 一个很经典的例子就是银行账户转账问题： 比如从账户A向账户B转1000元，那么必然包括2个操作：从账户A减去1000元，往账户B加上1000元。 试想一下，如果这2个操作不具备原子性，会造成什么样的后果。假如从账户A减去1000">
+<meta name="keywords" content="并发">
 <meta property="og:type" content="article">
-<meta property="og:title" content="promise探究">
-<meta property="og:url" content="http://www.balabalacoder.com/2015/01/21/promise探究/index.html">
+<meta property="og:title" content="并发的3个特性">
+<meta property="og:url" content="http://www.balabalacoder.com/2016/10/07/并发的3个特性/index.html">
 <meta property="og:site_name" content="balabala.sean">
-<meta property="og:description" content="Promise中文译为”承诺，誓言”,但是不能按照中文译来理解它。Promise其实是一种编程方式。其实，它的英文翻译为”普罗米修斯”，是希腊神话中的大英雄，名字的意思是”先知”。Promise最初的命名是Futures，即”未来”，即未卜先知的意思，可以理解为”预测、预言”。 1一个Promise对象表示当前还不可用，但是在未来的某个时间点会变为可以被解析的值。它允许我们以一种同步的方式编写异步">
+<meta property="og:description" content="在并发编程中，通常会遇到以下三个问题：原子性、可见性、有序性。 1.原子性 原子性：即一个操作或者多个操作 要么全部执行并且执行的过程不会被任何因素打断，要么就都不执行。 一个很经典的例子就是银行账户转账问题： 比如从账户A向账户B转1000元，那么必然包括2个操作：从账户A减去1000元，往账户B加上1000元。 试想一下，如果这2个操作不具备原子性，会造成什么样的后果。假如从账户A减去1000">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.balabalacoder.com/2015/01/21/promise探究/promise.png">
-<meta property="og:updated_time" content="2017-10-01T06:39:34.000Z">
+<meta property="og:updated_time" content="2017-10-07T05:02:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="promise探究">
-<meta name="twitter:description" content="Promise中文译为”承诺，誓言”,但是不能按照中文译来理解它。Promise其实是一种编程方式。其实，它的英文翻译为”普罗米修斯”，是希腊神话中的大英雄，名字的意思是”先知”。Promise最初的命名是Futures，即”未来”，即未卜先知的意思，可以理解为”预测、预言”。 1一个Promise对象表示当前还不可用，但是在未来的某个时间点会变为可以被解析的值。它允许我们以一种同步的方式编写异步">
-<meta name="twitter:image" content="http://www.balabalacoder.com/2015/01/21/promise探究/promise.png">
+<meta name="twitter:title" content="并发的3个特性">
+<meta name="twitter:description" content="在并发编程中，通常会遇到以下三个问题：原子性、可见性、有序性。 1.原子性 原子性：即一个操作或者多个操作 要么全部执行并且执行的过程不会被任何因素打断，要么就都不执行。 一个很经典的例子就是银行账户转账问题： 比如从账户A向账户B转1000元，那么必然包括2个操作：从账户A减去1000元，往账户B加上1000元。 试想一下，如果这2个操作不具备原子性，会造成什么样的后果。假如从账户A减去1000">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://www.balabalacoder.com/2015/01/21/promise探究/"/>
+  <link rel="canonical" href="http://www.balabalacoder.com/2016/10/07/并发的3个特性/"/>
 
 
 
 
 
-  <title>promise探究 | balabala.sean</title>
+  <title>并发的3个特性 | balabala.sean</title>
   
 
 
@@ -255,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/01/21/promise探究/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/10/07/并发的3个特性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -272,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">promise探究</h1>
+          <h1 class="post-title" itemprop="name headline">并发的3个特性</h1>
         
 
         <div class="post-meta">
@@ -284,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-21T13:47:29+08:00">
-                2015-01-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-07T13:00:41+08:00">
+                2016-10-07
               </time>
             
 
@@ -307,8 +305,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/nodejs/" itemprop="url" rel="index">
-                    <span itemprop="name">nodejs</span>
+                  <a href="/categories/并发/" itemprop="url" rel="index">
+                    <span itemprop="name">并发</span>
                   </a>
                 </span>
 
@@ -344,21 +342,36 @@
       
 
       
-        <p>Promise中文译为”承诺，誓言”,但是不能按照中文译来理解它。Promise其实是一种编程方式。其实，它的英文翻译为”普罗米修斯”，是希腊神话中的大英雄，名字的意思是”先知”。Promise最初的命名是Futures，即”未来”，即未卜先知的意思，可以理解为”预测、预言”。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">一个Promise对象表示当前还不可用，但是在未来的某个时间点会变为可以被解析的值。它允许我们以一种同步的方式编写异步代码。这是处理JavaScript中异步的回调函数内嵌层太多的一个很好的解决方案。</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>JavaScript的运行本身是单线程的，但是由于它可以传递函数引用（即callback函数），所以往往在复杂的业务场景下，代码结构会是：嵌套再嵌套，嵌套再嵌套…</p>
-<p>还是先看一个promise的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var promise = new Promise(</div><div class="line">	function(resolve)&#123;</div><div class="line">		resolve(10);</div><div class="line">	&#125;</div><div class="line">);</div><div class="line"></div><div class="line">promise.then(function(value)&#123;</div><div class="line"> 	console.log(value);</div><div class="line">&#125;).catch(function(error)&#123;</div><div class="line"> 	throw error;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
-<p>假如，上面代码中的resolve(10)不是一个如此简单的处理逻辑，它可能去发了一个请求到其他的应用，也可能是一个复杂的查询过程，总之，我们假设它是比较耗时的操作。then函数会在resolve(10)结束之后，当promise链表中的前一个元素的返回值可以被解析的时候，才会触发then去继续的执行下去。catch函数则表示在出现了异常的时候，被触发调用的函数。</p>
-<p>Promise的语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * resolve:成功时的回调函数</div><div class="line"> * reject:失败时的回调函数</div><div class="line"> */</div><div class="line">var promise = new Promise(function(resolve, reject) &#123;</div><div class="line">    // 代码逻辑......</div><div class="line">    // 调用resolve 或 reject</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>下面是一个Ajax Request的代码案例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">var promise = new Promise(function(resolve, reject) &#123;</div><div class="line">	var request = new XMLHttpRequest();</div><div class="line">	request.open(&apos;GET&apos;, &apos;http://api.icndb.com/jokes/random&apos;);</div><div class="line">	request.onload = fucntion() &#123;</div><div class="line"> 		if (request.status == 200) &#123;</div><div class="line"> 			resolve(request.response); // ajax request success</div><div class="line">		&#125; else &#123;</div><div class="line"> 			reject(Error(request.statusText)); //error</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	request.onerror = function() &#123;</div><div class="line"> 		reject(Error(&apos;Error fetching data&apos;)); //error</div><div class="line">	&#125;;</div><div class="line"> 	request.send();</div><div class="line">&#125;);</div><div class="line"></div><div class="line">console.log(&apos;Asynchronous request made.&apos;);</div><div class="line"></div><div class="line">//data is the request.response object</div><div class="line">promise.then(function(data) &#123;</div><div class="line">	console.log(&apos;success&apos;);</div><div class="line">&#125;).catch(function(error)&#123;</div><div class="line"> 	console.log(&apos;Promise rejected&apos;);</div><div class="line"> 	console.log(error.message);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>其实，Promise有3种状态：</p>
-<ul>
-<li>unresolved        Pending        promise对象刚被创建后的初始化状态，既不是resolve也不是reject</li>
-<li>has-resolution    Fulfilled     resolve(成功)时。此时会调用onFulfilled</li>
-<li>has-rejection        Rejected     reject(失败)时。此时会调用onRejected</li>
-</ul>
-<p>ES6中提供了一个直白的图片：<br><img src="/2015/01/21/promise探究/promise.png" alt="场景"></p>
+        <p>在并发编程中，通常会遇到以下三个问题：原子性、可见性、有序性。</p>
+<p>1.原子性</p>
+<p>原子性：即一个操作或者多个操作 要么全部执行并且执行的过程不会被任何因素打断，要么就都不执行。</p>
+<p>一个很经典的例子就是银行账户转账问题：</p>
+<p>比如从账户A向账户B转1000元，那么必然包括2个操作：从账户A减去1000元，往账户B加上1000元。</p>
+<p>试想一下，如果这2个操作不具备原子性，会造成什么样的后果。假如从账户A减去1000元之后，操作突然中止。然后又从B取出了500元，取出500元之后，再执行 往账户B加上1000元 的操作。这样就会导致账户A虽然减去了1000元，但是账户B没有收到这个转过来的1000元。</p>
+<p>所以这2个操作必须要具备原子性才能保证不出现一些意外的问题。</p>
+<p>同样地反映到并发编程中会出现什么结果呢？</p>
+<p>举个最简单的例子，大家想一下假如为一个32位的变量赋值过程不具备原子性的话，会发生什么后果？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i = 9;</div></pre></td></tr></table></figure></p>
+<p>假若一个线程执行到这个语句时，我暂且假设为一个32位的变量赋值包括两个过程：为低16位赋值，为高16位赋值。</p>
+<p>那么就可能发生一种情况：当将低16位数值写入之后，突然被中断，而此时又有一个线程去读取i的值，那么读取到的就是错误的数据。</p>
+<p>2.可见性</p>
+<p>可见性是指当多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。</p>
+<p>举个简单的例子，看下面这段代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//线程1执行的代码</div><div class="line">int i = 0;</div><div class="line">i = 10;</div><div class="line"> </div><div class="line">//线程2执行的代码</div><div class="line">j = i;</div></pre></td></tr></table></figure></p>
+<p>假若执行线程1的是CPU1，执行线程2的是CPU2。由上面的分析可知，当线程1执行 i =10这句时，会先把i的初始值加载到CPU1的高速缓存中，然后赋值为10，那么在CPU1的高速缓存当中i的值变为10了，却没有立即写入到主存当中。</p>
+<p>此时线程2执行 j = i，它会先去主存读取i的值并加载到CPU2的缓存当中，注意此时内存当中i的值还是0，那么就会使得j的值为0，而不是10.</p>
+<p>这就是可见性问题，线程1对变量i修改了之后，线程2没有立即看到线程1修改的值。</p>
+<p>3.有序性</p>
+<p>有序性：即程序执行的顺序按照代码的先后顺序执行。举个简单的例子，看下面这段代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">int i = 0;              </div><div class="line">boolean flag = false;</div><div class="line">i = 1;                //语句1  </div><div class="line">flag = true;          //语句2</div></pre></td></tr></table></figure></p>
+<p>上面代码定义了一个int型变量，定义了一个boolean类型变量，然后分别对两个变量进行赋值操作。从代码顺序上看，语句1是在语句2前面的，那么JVM在真正执行这段代码的时候会保证语句1一定会在语句2前面执行吗？不一定，为什么呢？这里可能会发生指令重排序（Instruction Reorder）。</p>
+<p>下面解释一下什么是指令重排序，一般来说，处理器为了提高程序运行效率，可能会对输入代码进行优化，它不保证程序中各个语句的执行先后顺序同代码中的顺序一致，但是它会保证程序最终执行结果和代码顺序执行的结果是一致的。</p>
+<p>比如上面的代码中，语句1和语句2谁先执行对最终的程序结果并没有影响，那么就有可能在执行过程中，语句2先执行而语句1后执行。</p>
+<p>但是要注意，虽然处理器会对指令进行重排序，但是它会保证程序最终结果会和代码顺序执行结果相同，那么它靠什么保证的呢？再看下面一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">int a = 10;    //语句1</div><div class="line">int r = 2;    //语句2</div><div class="line">a = a + 3;    //语句3</div><div class="line">r = a*a;     //语句4</div></pre></td></tr></table></figure></p>
+<p>这段代码有4个语句，那么可能的一个执行顺序是：</p>
+<p>那么可不可能是这个执行顺序呢： 语句2   语句1    语句4   语句3</p>
+<p>不可能，因为处理器在进行重排序时是会考虑指令之间的数据依赖性，如果一个指令Instruction 2必须用到Instruction 1的结果，那么处理器会保证Instruction 1会在Instruction 2之前执行。</p>
+<p>虽然重排序不会影响单个线程内程序执行的结果，但是多线程呢？下面看一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">//线程1:</div><div class="line">context = loadContext();   //语句1</div><div class="line">inited = true;             //语句2</div><div class="line"> </div><div class="line">//线程2:</div><div class="line">while(!inited )&#123;</div><div class="line">  sleep()</div><div class="line">&#125;</div><div class="line">doSomethingwithconfig(context);</div></pre></td></tr></table></figure></p>
+<p>上面代码中，由于语句1和语句2没有数据依赖性，因此可能会被重排序。假如发生了重排序，在线程1执行过程中先执行语句2，而此是线程2会以为初始化工作已经完成，那么就会跳出while循环，去执行doSomethingwithconfig(context)方法，而此时context并没有被初始化，就会导致程序出错。</p>
+<p>从上面可以看出，指令重排序不会影响单个线程的执行，但是会影响到线程并发执行的正确性。</p>
+<p>也就是说，要想并发程序正确地执行，必须要保证原子性、可见性以及有序性。只要有一个没有被保证，就有可能会导致程序运行不正确。</p>
 
       
     </div>
@@ -376,7 +389,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+            <a href="/tags/并发/" rel="tag"># 并发</a>
           
         </div>
       
@@ -389,8 +402,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/01/20/express-middleware/" rel="next" title="express-middleware">
-                <i class="fa fa-chevron-left"></i> express-middleware
+              <a href="/2016/10/05/object中的内置锁与内置条件队列/" rel="next" title="内置锁与内置条件队列">
+                <i class="fa fa-chevron-left"></i> 内置锁与内置条件队列
               </a>
             
           </div>
@@ -399,8 +412,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/11/01/关于设计模式的一些理解/" rel="prev" title="关于设计模式的一些理解">
-                关于设计模式的一些理解 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/03/eureka用户认证/" rel="prev" title="eureka用户认证">
+                eureka用户认证 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

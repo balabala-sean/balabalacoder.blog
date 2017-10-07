@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="nodejs," />
+  <meta name="keywords" content="并发," />
 
 
 
@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="Promise中文译为”承诺，誓言”,但是不能按照中文译来理解它。Promise其实是一种编程方式。其实，它的英文翻译为”普罗米修斯”，是希腊神话中的大英雄，名字的意思是”先知”。Promise最初的命名是Futures，即”未来”，即未卜先知的意思，可以理解为”预测、预言”。 1一个Promise对象表示当前还不可用，但是在未来的某个时间点会变为可以被解析的值。它允许我们以一种同步的方式编写异步">
-<meta name="keywords" content="nodejs">
+<meta name="description" content="在Java的多线程模型中，线程之间是不允许直接传递数据进行交互的，它们之间的交互只能通过共享变量来实现。当创建一个对象实例的时候，它是被分配在堆(heap)上的，每个线程运行时都有自己的工作内存(stack), 当线程操作这个对象的时候，首先从堆中创建一个此对象的引用副本到自己的工作内存中，线程运行完毕后，再把工作内存中的对象副本刷新到堆中。在多线程的情况下，即一个共享对象存在了多个副本(在不同的">
+<meta name="keywords" content="并发">
 <meta property="og:type" content="article">
-<meta property="og:title" content="promise探究">
-<meta property="og:url" content="http://www.balabalacoder.com/2015/01/21/promise探究/index.html">
+<meta property="og:title" content="并发中的可见性">
+<meta property="og:url" content="http://www.balabalacoder.com/2017/10/07/线程的可见性/index.html">
 <meta property="og:site_name" content="balabala.sean">
-<meta property="og:description" content="Promise中文译为”承诺，誓言”,但是不能按照中文译来理解它。Promise其实是一种编程方式。其实，它的英文翻译为”普罗米修斯”，是希腊神话中的大英雄，名字的意思是”先知”。Promise最初的命名是Futures，即”未来”，即未卜先知的意思，可以理解为”预测、预言”。 1一个Promise对象表示当前还不可用，但是在未来的某个时间点会变为可以被解析的值。它允许我们以一种同步的方式编写异步">
+<meta property="og:description" content="在Java的多线程模型中，线程之间是不允许直接传递数据进行交互的，它们之间的交互只能通过共享变量来实现。当创建一个对象实例的时候，它是被分配在堆(heap)上的，每个线程运行时都有自己的工作内存(stack), 当线程操作这个对象的时候，首先从堆中创建一个此对象的引用副本到自己的工作内存中，线程运行完毕后，再把工作内存中的对象副本刷新到堆中。在多线程的情况下，即一个共享对象存在了多个副本(在不同的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.balabalacoder.com/2015/01/21/promise探究/promise.png">
-<meta property="og:updated_time" content="2017-10-01T06:39:34.000Z">
+<meta property="og:updated_time" content="2017-10-07T05:02:41.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="promise探究">
-<meta name="twitter:description" content="Promise中文译为”承诺，誓言”,但是不能按照中文译来理解它。Promise其实是一种编程方式。其实，它的英文翻译为”普罗米修斯”，是希腊神话中的大英雄，名字的意思是”先知”。Promise最初的命名是Futures，即”未来”，即未卜先知的意思，可以理解为”预测、预言”。 1一个Promise对象表示当前还不可用，但是在未来的某个时间点会变为可以被解析的值。它允许我们以一种同步的方式编写异步">
-<meta name="twitter:image" content="http://www.balabalacoder.com/2015/01/21/promise探究/promise.png">
+<meta name="twitter:title" content="并发中的可见性">
+<meta name="twitter:description" content="在Java的多线程模型中，线程之间是不允许直接传递数据进行交互的，它们之间的交互只能通过共享变量来实现。当创建一个对象实例的时候，它是被分配在堆(heap)上的，每个线程运行时都有自己的工作内存(stack), 当线程操作这个对象的时候，首先从堆中创建一个此对象的引用副本到自己的工作内存中，线程运行完毕后，再把工作内存中的对象副本刷新到堆中。在多线程的情况下，即一个共享对象存在了多个副本(在不同的">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://www.balabalacoder.com/2015/01/21/promise探究/"/>
+  <link rel="canonical" href="http://www.balabalacoder.com/2017/10/07/线程的可见性/"/>
 
 
 
 
 
-  <title>promise探究 | balabala.sean</title>
+  <title>并发中的可见性 | balabala.sean</title>
   
 
 
@@ -255,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/01/21/promise探究/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2017/10/07/线程的可见性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -272,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">promise探究</h1>
+          <h1 class="post-title" itemprop="name headline">并发中的可见性</h1>
         
 
         <div class="post-meta">
@@ -284,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-21T13:47:29+08:00">
-                2015-01-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-07T12:16:37+08:00">
+                2017-10-07
               </time>
             
 
@@ -307,8 +305,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/nodejs/" itemprop="url" rel="index">
-                    <span itemprop="name">nodejs</span>
+                  <a href="/categories/并发/" itemprop="url" rel="index">
+                    <span itemprop="name">并发</span>
                   </a>
                 </span>
 
@@ -344,21 +342,8 @@
       
 
       
-        <p>Promise中文译为”承诺，誓言”,但是不能按照中文译来理解它。Promise其实是一种编程方式。其实，它的英文翻译为”普罗米修斯”，是希腊神话中的大英雄，名字的意思是”先知”。Promise最初的命名是Futures，即”未来”，即未卜先知的意思，可以理解为”预测、预言”。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">一个Promise对象表示当前还不可用，但是在未来的某个时间点会变为可以被解析的值。它允许我们以一种同步的方式编写异步代码。这是处理JavaScript中异步的回调函数内嵌层太多的一个很好的解决方案。</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>JavaScript的运行本身是单线程的，但是由于它可以传递函数引用（即callback函数），所以往往在复杂的业务场景下，代码结构会是：嵌套再嵌套，嵌套再嵌套…</p>
-<p>还是先看一个promise的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var promise = new Promise(</div><div class="line">	function(resolve)&#123;</div><div class="line">		resolve(10);</div><div class="line">	&#125;</div><div class="line">);</div><div class="line"></div><div class="line">promise.then(function(value)&#123;</div><div class="line"> 	console.log(value);</div><div class="line">&#125;).catch(function(error)&#123;</div><div class="line"> 	throw error;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
-<p>假如，上面代码中的resolve(10)不是一个如此简单的处理逻辑，它可能去发了一个请求到其他的应用，也可能是一个复杂的查询过程，总之，我们假设它是比较耗时的操作。then函数会在resolve(10)结束之后，当promise链表中的前一个元素的返回值可以被解析的时候，才会触发then去继续的执行下去。catch函数则表示在出现了异常的时候，被触发调用的函数。</p>
-<p>Promise的语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * resolve:成功时的回调函数</div><div class="line"> * reject:失败时的回调函数</div><div class="line"> */</div><div class="line">var promise = new Promise(function(resolve, reject) &#123;</div><div class="line">    // 代码逻辑......</div><div class="line">    // 调用resolve 或 reject</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>下面是一个Ajax Request的代码案例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">var promise = new Promise(function(resolve, reject) &#123;</div><div class="line">	var request = new XMLHttpRequest();</div><div class="line">	request.open(&apos;GET&apos;, &apos;http://api.icndb.com/jokes/random&apos;);</div><div class="line">	request.onload = fucntion() &#123;</div><div class="line"> 		if (request.status == 200) &#123;</div><div class="line"> 			resolve(request.response); // ajax request success</div><div class="line">		&#125; else &#123;</div><div class="line"> 			reject(Error(request.statusText)); //error</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	request.onerror = function() &#123;</div><div class="line"> 		reject(Error(&apos;Error fetching data&apos;)); //error</div><div class="line">	&#125;;</div><div class="line"> 	request.send();</div><div class="line">&#125;);</div><div class="line"></div><div class="line">console.log(&apos;Asynchronous request made.&apos;);</div><div class="line"></div><div class="line">//data is the request.response object</div><div class="line">promise.then(function(data) &#123;</div><div class="line">	console.log(&apos;success&apos;);</div><div class="line">&#125;).catch(function(error)&#123;</div><div class="line"> 	console.log(&apos;Promise rejected&apos;);</div><div class="line"> 	console.log(error.message);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>其实，Promise有3种状态：</p>
-<ul>
-<li>unresolved        Pending        promise对象刚被创建后的初始化状态，既不是resolve也不是reject</li>
-<li>has-resolution    Fulfilled     resolve(成功)时。此时会调用onFulfilled</li>
-<li>has-rejection        Rejected     reject(失败)时。此时会调用onRejected</li>
-</ul>
-<p>ES6中提供了一个直白的图片：<br><img src="/2015/01/21/promise探究/promise.png" alt="场景"></p>
+        <p>在Java的多线程模型中，线程之间是不允许直接传递数据进行交互的，它们之间的交互只能通过共享变量来实现。当创建一个对象实例的时候，它是被分配在堆(heap)上的，每个线程运行时都有自己的工作内存(stack), 当线程操作这个对象的时候，首先从堆中创建一个此对象的引用副本到自己的工作内存中，线程运行完毕后，再把工作内存中的对象副本刷新到堆中。在多线程的情况下，即一个共享对象存在了多个副本(在不同的线程栈中)，如果一个线程修改了此对象，那么别的线程就能看到被修改后的值了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">public class ThreadVisibility &#123;</div><div class="line">    public static Integer x = 0;</div><div class="line"></div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        new ReadThread().start();</div><div class="line">        new WriteThread().start();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">class ReadThread extends Thread &#123;</div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line"></div><div class="line">        while (true) &#123;</div><div class="line">            try &#123;</div><div class="line">                Thread.sleep(1000);</div><div class="line">            &#125; catch (InterruptedException e) &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line">            System.out.println(ThreadVisibility.x.intValue());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">class WriteThread extends Thread &#123;</div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        try &#123;</div><div class="line">            Thread.sleep(5000);</div><div class="line">        &#125; catch (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        ThreadVisibility.x = 10;</div><div class="line">        System.out.println(&quot;change the variable value to 10&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -376,7 +361,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+            <a href="/tags/并发/" rel="tag"># 并发</a>
           
         </div>
       
@@ -389,8 +374,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/01/20/express-middleware/" rel="next" title="express-middleware">
-                <i class="fa fa-chevron-left"></i> express-middleware
+              <a href="/2017/10/01/java9-jshell初体验/" rel="next" title="java9-jshell初体验">
+                <i class="fa fa-chevron-left"></i> java9-jshell初体验
               </a>
             
           </div>
@@ -398,10 +383,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/01/关于设计模式的一些理解/" rel="prev" title="关于设计模式的一些理解">
-                关于设计模式的一些理解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>

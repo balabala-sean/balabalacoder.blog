@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="java," />
+  <meta name="keywords" content="并发," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="java object中关于内置锁和内置条件队列的3个方法：wait(),notify(),notifyAll() 先看一个例子：123456789101112131415161718// 实现一个线程类，初始化方法传递一个用作锁的objectclass TestThread implements Runnable&amp;#123;    Object lock;    TestThread(Objec">
-<meta name="keywords" content="java">
+<meta name="description" content="java中的每个object可以作为一个lock, 而每个lock关联着一个条件队列。这个条件队列中保存的元素是线程，java中关于内置锁和内置条件队列的3个方法：wait(),notify(),notifyAll()。这里的object lock和condition queue的“关联”关系，个人的理解是通过这个object lock，可以去释放条件队列中等待的线程，例如notify出队，not">
+<meta name="keywords" content="并发">
 <meta property="og:type" content="article">
-<meta property="og:title" content="object中的内置锁与内置条件队列">
+<meta property="og:title" content="内置锁与内置条件队列">
 <meta property="og:url" content="http://www.balabalacoder.com/2016/10/05/object中的内置锁与内置条件队列/index.html">
 <meta property="og:site_name" content="balabala.sean">
-<meta property="og:description" content="java object中关于内置锁和内置条件队列的3个方法：wait(),notify(),notifyAll() 先看一个例子：123456789101112131415161718// 实现一个线程类，初始化方法传递一个用作锁的objectclass TestThread implements Runnable&amp;#123;    Object lock;    TestThread(Objec">
+<meta property="og:description" content="java中的每个object可以作为一个lock, 而每个lock关联着一个条件队列。这个条件队列中保存的元素是线程，java中关于内置锁和内置条件队列的3个方法：wait(),notify(),notifyAll()。这里的object lock和condition queue的“关联”关系，个人的理解是通过这个object lock，可以去释放条件队列中等待的线程，例如notify出队，not">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-05T12:33:38.000Z">
+<meta property="og:updated_time" content="2017-10-06T18:16:46.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="object中的内置锁与内置条件队列">
-<meta name="twitter:description" content="java object中关于内置锁和内置条件队列的3个方法：wait(),notify(),notifyAll() 先看一个例子：123456789101112131415161718// 实现一个线程类，初始化方法传递一个用作锁的objectclass TestThread implements Runnable&amp;#123;    Object lock;    TestThread(Objec">
+<meta name="twitter:title" content="内置锁与内置条件队列">
+<meta name="twitter:description" content="java中的每个object可以作为一个lock, 而每个lock关联着一个条件队列。这个条件队列中保存的元素是线程，java中关于内置锁和内置条件队列的3个方法：wait(),notify(),notifyAll()。这里的object lock和condition queue的“关联”关系，个人的理解是通过这个object lock，可以去释放条件队列中等待的线程，例如notify出队，not">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>object中的内置锁与内置条件队列 | balabala.sean</title>
+  <title>内置锁与内置条件队列 | balabala.sean</title>
   
 
 
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">object中的内置锁与内置条件队列</h1>
+          <h1 class="post-title" itemprop="name headline">内置锁与内置条件队列</h1>
         
 
         <div class="post-meta">
@@ -305,8 +305,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/categories/并发/" itemprop="url" rel="index">
+                    <span itemprop="name">并发</span>
                   </a>
                 </span>
 
@@ -342,17 +342,18 @@
       
 
       
-        <p>java object中关于内置锁和内置条件队列的3个方法：wait(),notify(),notifyAll()</p>
-<p>先看一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// 实现一个线程类，初始化方法传递一个用作锁的object</div><div class="line">class TestThread implements Runnable&#123;</div><div class="line"></div><div class="line">    Object lock;</div><div class="line"></div><div class="line">    TestThread(Object lock)&#123;</div><div class="line">        this.lock = lock;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        try &#123;</div><div class="line">            lock.wait();</div><div class="line">        &#125; catch (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+        <p>java中的每个object可以作为一个lock, 而每个lock关联着一个条件队列。这个<br>条件队列中保存的元素是线程，java中关于内置锁和内置条件队列的3个方法：wait(),notify(),notifyAll()。这里的object lock和condition queue的“关联”关系，个人的理解是通过这个object lock，可以去释放条件队列中等待的线程，例如notify出队，notifyAll倒序所有出队。（权且忽略java.util.current.locks.Condition，这会复杂化内置锁和内置条件队列的关联关系）</p>
+<p>先看一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// 实现一个线程类，初始化方法传递一个object, 作为一个lock</div><div class="line">class TestThread implements Runnable&#123;</div><div class="line"></div><div class="line">    Object lock;</div><div class="line"></div><div class="line">    TestThread(Object lock)&#123;</div><div class="line">        this.lock = lock;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        try &#123;</div><div class="line">            lock.wait();</div><div class="line">        &#125; catch (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>然后在main方法中实例化5个TestThread类并测试notify()：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class ObjectWait &#123;</div><div class="line"></div><div class="line">    public static void main(String[] args) throws InterruptedException &#123;</div><div class="line">        Object lock = new Object();</div><div class="line"></div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line"></div><div class="line">        // 确保上述线程都已经进入running状态，再调用notify方法</div><div class="line">        Thread.sleep(3000);</div><div class="line"></div><div class="line">        lock.notify();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>此时，当我们运行的时候，报错了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">java.lang.IllegalMonitorStateException</div><div class="line">    at java.lang.Object.wait(Native Method)</div><div class="line">    at java.lang.Object.wait(Object.java:502)</div><div class="line">    at com.balabala.spring.beans.TestThread.run(ObjectWait.java:33)</div><div class="line">    at java.lang.Thread.run(Thread.java:745)</div></pre></td></tr></table></figure></p>
-<p>为什么会出现IllegalMonitorStateException呢？这是因为，在调用wait方法的时候，必须持有当前调用wait方法的对象的锁，wait之前一定有synchronized来获取对象的锁，notify同理。<br>注：<br>wait()：释放当前调用wait方法的对象锁，并使当前线程进入挂起状态<br>notify()：释放当前调用notify方法的对象锁，并唤醒Condition Queue（条件队列）的中的第一个线程（front元素，即第一个入队的线程）</p>
+<p>这里有一个比较有意思的问题：为什么会出现IllegalMonitorStateException呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">这是因为，在调用wait方法的时候，必须持有当前调用wait方法的对象的锁，如果不这样做的话，可能这个object lock本身在我们做一些操作的时候，被并发的线程做了一些修改（例如已经被别的程序执行了lock.notify()，此时再唤醒的线程将产生和预期不一致的效果）。</div><div class="line">即：在调用Object.wait()、Object.notfiy()、Object.notifyAll()之前一定有synchronized来获取对象锁。</div></pre></td></tr></table></figure></p>
+<p>注：<br>wait()：释放当前调用wait方法的对象锁，并使当前线程进入挂起状态<br>notify()：释放当前调用notify方法的对象锁，并唤醒Condition Queue（条件队列）的中的第一个线程（front元素，即第一个入队的线程）</p>
 <p>调整后的代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">class TestThread implements Runnable &#123;</div><div class="line"></div><div class="line">    Object lock;</div><div class="line"></div><div class="line">    TestThread(Object lock) &#123;</div><div class="line">        this.lock = lock;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        synchronized (lock) &#123;</div><div class="line">            try &#123;</div><div class="line">                System.out.println(&quot;thread get lock and going to wait:&quot; + Thread.currentThread().getId());</div><div class="line">                lock.wait();</div><div class="line">                System.out.println(&quot;thread notified and running:&quot; + Thread.currentThread().getId());</div><div class="line">            &#125; catch (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class ObjectWait &#123;</div><div class="line"></div><div class="line">    public static void main(String[] args) throws InterruptedException &#123;</div><div class="line">        Object lock = new Object();</div><div class="line"></div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line"></div><div class="line">        Thread.sleep(3000);</div><div class="line"></div><div class="line">        synchronized (lock) &#123;</div><div class="line">            lock.notify();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">thread get lock and going to wait:11</div><div class="line">thread get lock and going to wait:15</div><div class="line">thread get lock and going to wait:14</div><div class="line">thread get lock and going to wait:13</div><div class="line">thread get lock and going to wait:12</div><div class="line">thread notified and running:11  //这里需要注意：因为thread-11首先入队，所以也是第一个出队</div></pre></td></tr></table></figure></p>
 <p>我们把main方法中的lock.notify()改成lock.notifyAll()来看看：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class ObjectWait &#123;</div><div class="line"></div><div class="line">    public static void main(String[] args) throws InterruptedException &#123;</div><div class="line">        Object lock = new Object();</div><div class="line"></div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line"></div><div class="line">        Thread.sleep(3000);</div><div class="line"></div><div class="line">        synchronized (lock) &#123;</div><div class="line">            lock.notifyAll();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">thread get lock and going to wait:11</div><div class="line">thread get lock and going to wait:13</div><div class="line">thread get lock and going to wait:12</div><div class="line">thread get lock and going to wait:14</div><div class="line">thread get lock and going to wait:15</div><div class="line">thread notified and running:15</div><div class="line">thread notified and running:14</div><div class="line">thread notified and running:12</div><div class="line">thread notified and running:13</div><div class="line">thread notified and running:11</div></pre></td></tr></table></figure></p>
+<p>输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">thread get lock and going to wait:11</div><div class="line">thread get lock and going to wait:13</div><div class="line">thread get lock and going to wait:12</div><div class="line">thread get lock and going to wait:14</div><div class="line">thread get lock and going to wait:15</div><div class="line">============倒序出队============</div><div class="line">thread notified and running:15</div><div class="line">thread notified and running:14</div><div class="line">thread notified and running:12</div><div class="line">thread notified and running:13</div><div class="line">thread notified and running:11</div></pre></td></tr></table></figure></p>
 <p>通过观察不难发现：Condition Queue是双端队列(Dequeue), notify()方法是调用出队，notifyAll()是所有的挂起线程倒序出队</p>
 <p>这和Condition的signal、signalAll如出一辙。</p>
 
@@ -372,7 +373,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
+            <a href="/tags/并发/" rel="tag"># 并发</a>
           
         </div>
       
@@ -395,8 +396,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/03/03/eureka用户认证/" rel="prev" title="eureka用户认证">
-                eureka用户认证 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/10/07/并发的3个特性/" rel="prev" title="并发的3个特性">
+                并发的3个特性 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -463,7 +464,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -474,7 +475,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -485,7 +486,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

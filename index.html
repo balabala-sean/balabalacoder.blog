@@ -249,7 +249,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2017/10/02/java9-jshell初体验/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2017/10/07/线程的可见性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -268,7 +268,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/02/java9-jshell初体验/" itemprop="url">java9-jshell初体验</a></h1>
+                <a class="post-title-link" href="/2017/10/07/线程的可见性/" itemprop="url">并发中的可见性</a></h1>
         
 
         <div class="post-meta">
@@ -280,8 +280,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-02T10:12:12+08:00">
-                2017-10-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-07T12:16:37+08:00">
+                2017-10-07
               </time>
             
 
@@ -290,6 +290,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/并发/" itemprop="url" rel="index">
+                    <span itemprop="name">并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -319,14 +341,157 @@
 
       
         
-          <p>JShell：Java9中新增了Java REPL (Read-Eval-Print-Loop),<br>在命令行允许我们进行交互式的编程体验，不需要用class/method去包装表达式语句，</p>
+          
+            <p>在Java的多线程模型中，线程之间是不允许直接传递数据进行交互的，它们之间的交互只能通过共享变量来实现。当创建一个对象实例的时候，它是被分配在堆(heap)上的，每个线程运行时都有自己的工作内存(stack), 当线程操作这个对象的时候，首先从堆中创建一个此对象的引用副本到自己的工作内存中，线程运行完毕后，再把工作内存中的对象副本刷新到堆中。在多线程的情况下，即一个共享对象存在了多个副本(在不同的线程栈中)，如果一个线程修改了此对象，那么别的线程就能看到被修改后的值了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">public class ThreadVisibility &#123;</div><div class="line">    public static Integer x = 0;</div><div class="line"></div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        new ReadThread().start();</div><div class="line">        new WriteThread().start();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">class ReadThread extends Thread &#123;</div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line"></div><div class="line">        while (true) &#123;</div><div class="line">            try &#123;</div><div class="line">                Thread.sleep(1000);</div><div class="line">            &#125; catch (InterruptedException e) &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line">            System.out.println(ThreadVisibility.x.intValue());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">class WriteThread extends Thread &#123;</div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        try &#123;</div><div class="line">            Thread.sleep(5000);</div><div class="line">        &#125; catch (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        ThreadVisibility.x = 10;</div><div class="line">        System.out.println(&quot;change the variable value to 10&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2017/10/01/java9-jshell初体验/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean.Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="balabala.sean">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/01/java9-jshell初体验/" itemprop="url">java9-jshell初体验</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-01T10:12:12+08:00">
+                2017-10-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Java9中新增了Java REPL (Read-Eval-Print-Loop),<br>在命令行允许我们进行交互式的编程体验，不需要用class/method去包装表达式语句。其实这是一个鸡肋功能，因为jshell一没本地shell方便，二在操作上和python脚本类语言也没什么优势。只是方便初学者进行一些程序调试。</p>
 <p>下载jdk9，然后配置path.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">java version &quot;9&quot;</div><div class="line">Java(TM) SE Runtime Environment (build 9+181)</div><div class="line">Java HotSpot(TM) 64-Bit Server VM (build 9+181, mixed mode)</div></pre></td></tr></table></figure></p>
 <p>ok, 接着就可以在终端使用了，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">MacBook-Pro:workspace sean$ jshell   </div><div class="line">|  Welcome to JShell -- Version 9</div><div class="line">|  For an introduction type: /help intro</div><div class="line">jshell&gt;</div></pre></td></tr></table></figure></p>
 <p>输出hello jshell:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">jshell&gt; System.out.println(&quot;hello jshell&quot;)</div><div class="line">hello jshell</div></pre></td></tr></table></figure></p>
 <p>jshell中可以省略行尾的”;”<br></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/02/java9-jshell初体验/#more" rel="contents">
+            <a class="btn" href="/2017/10/01/java9-jshell初体验/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -821,7 +986,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/10/05/object中的内置锁与内置条件队列/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/10/07/并发的3个特性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -840,7 +1005,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/10/05/object中的内置锁与内置条件队列/" itemprop="url">object中的内置锁与内置条件队列</a></h1>
+                <a class="post-title-link" href="/2016/10/07/并发的3个特性/" itemprop="url">并发的3个特性</a></h1>
         
 
         <div class="post-meta">
@@ -852,8 +1017,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-05T20:04:35+08:00">
-                2016-10-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-07T13:00:41+08:00">
+                2016-10-07
               </time>
             
 
@@ -875,8 +1040,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/categories/并发/" itemprop="url" rel="index">
+                    <span itemprop="name">并发</span>
                   </a>
                 </span>
 
@@ -914,17 +1079,189 @@
       
         
           
-            <p>java object中关于内置锁和内置条件队列的3个方法：wait(),notify(),notifyAll()</p>
-<p>先看一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// 实现一个线程类，初始化方法传递一个用作锁的object</div><div class="line">class TestThread implements Runnable&#123;</div><div class="line"></div><div class="line">    Object lock;</div><div class="line"></div><div class="line">    TestThread(Object lock)&#123;</div><div class="line">        this.lock = lock;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        try &#123;</div><div class="line">            lock.wait();</div><div class="line">        &#125; catch (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+            <p>在并发编程中，通常会遇到以下三个问题：原子性、可见性、有序性。</p>
+<p>1.原子性</p>
+<p>原子性：即一个操作或者多个操作 要么全部执行并且执行的过程不会被任何因素打断，要么就都不执行。</p>
+<p>一个很经典的例子就是银行账户转账问题：</p>
+<p>比如从账户A向账户B转1000元，那么必然包括2个操作：从账户A减去1000元，往账户B加上1000元。</p>
+<p>试想一下，如果这2个操作不具备原子性，会造成什么样的后果。假如从账户A减去1000元之后，操作突然中止。然后又从B取出了500元，取出500元之后，再执行 往账户B加上1000元 的操作。这样就会导致账户A虽然减去了1000元，但是账户B没有收到这个转过来的1000元。</p>
+<p>所以这2个操作必须要具备原子性才能保证不出现一些意外的问题。</p>
+<p>同样地反映到并发编程中会出现什么结果呢？</p>
+<p>举个最简单的例子，大家想一下假如为一个32位的变量赋值过程不具备原子性的话，会发生什么后果？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">i = 9;</div></pre></td></tr></table></figure></p>
+<p>假若一个线程执行到这个语句时，我暂且假设为一个32位的变量赋值包括两个过程：为低16位赋值，为高16位赋值。</p>
+<p>那么就可能发生一种情况：当将低16位数值写入之后，突然被中断，而此时又有一个线程去读取i的值，那么读取到的就是错误的数据。</p>
+<p>2.可见性</p>
+<p>可见性是指当多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。</p>
+<p>举个简单的例子，看下面这段代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//线程1执行的代码</div><div class="line">int i = 0;</div><div class="line">i = 10;</div><div class="line"> </div><div class="line">//线程2执行的代码</div><div class="line">j = i;</div></pre></td></tr></table></figure></p>
+<p>假若执行线程1的是CPU1，执行线程2的是CPU2。由上面的分析可知，当线程1执行 i =10这句时，会先把i的初始值加载到CPU1的高速缓存中，然后赋值为10，那么在CPU1的高速缓存当中i的值变为10了，却没有立即写入到主存当中。</p>
+<p>此时线程2执行 j = i，它会先去主存读取i的值并加载到CPU2的缓存当中，注意此时内存当中i的值还是0，那么就会使得j的值为0，而不是10.</p>
+<p>这就是可见性问题，线程1对变量i修改了之后，线程2没有立即看到线程1修改的值。</p>
+<p>3.有序性</p>
+<p>有序性：即程序执行的顺序按照代码的先后顺序执行。举个简单的例子，看下面这段代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">int i = 0;              </div><div class="line">boolean flag = false;</div><div class="line">i = 1;                //语句1  </div><div class="line">flag = true;          //语句2</div></pre></td></tr></table></figure></p>
+<p>上面代码定义了一个int型变量，定义了一个boolean类型变量，然后分别对两个变量进行赋值操作。从代码顺序上看，语句1是在语句2前面的，那么JVM在真正执行这段代码的时候会保证语句1一定会在语句2前面执行吗？不一定，为什么呢？这里可能会发生指令重排序（Instruction Reorder）。</p>
+<p>下面解释一下什么是指令重排序，一般来说，处理器为了提高程序运行效率，可能会对输入代码进行优化，它不保证程序中各个语句的执行先后顺序同代码中的顺序一致，但是它会保证程序最终执行结果和代码顺序执行的结果是一致的。</p>
+<p>比如上面的代码中，语句1和语句2谁先执行对最终的程序结果并没有影响，那么就有可能在执行过程中，语句2先执行而语句1后执行。</p>
+<p>但是要注意，虽然处理器会对指令进行重排序，但是它会保证程序最终结果会和代码顺序执行结果相同，那么它靠什么保证的呢？再看下面一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">int a = 10;    //语句1</div><div class="line">int r = 2;    //语句2</div><div class="line">a = a + 3;    //语句3</div><div class="line">r = a*a;     //语句4</div></pre></td></tr></table></figure></p>
+<p>这段代码有4个语句，那么可能的一个执行顺序是：</p>
+<p>那么可不可能是这个执行顺序呢： 语句2   语句1    语句4   语句3</p>
+<p>不可能，因为处理器在进行重排序时是会考虑指令之间的数据依赖性，如果一个指令Instruction 2必须用到Instruction 1的结果，那么处理器会保证Instruction 1会在Instruction 2之前执行。</p>
+<p>虽然重排序不会影响单个线程内程序执行的结果，但是多线程呢？下面看一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">//线程1:</div><div class="line">context = loadContext();   //语句1</div><div class="line">inited = true;             //语句2</div><div class="line"> </div><div class="line">//线程2:</div><div class="line">while(!inited )&#123;</div><div class="line">  sleep()</div><div class="line">&#125;</div><div class="line">doSomethingwithconfig(context);</div></pre></td></tr></table></figure></p>
+<p>上面代码中，由于语句1和语句2没有数据依赖性，因此可能会被重排序。假如发生了重排序，在线程1执行过程中先执行语句2，而此是线程2会以为初始化工作已经完成，那么就会跳出while循环，去执行doSomethingwithconfig(context)方法，而此时context并没有被初始化，就会导致程序出错。</p>
+<p>从上面可以看出，指令重排序不会影响单个线程的执行，但是会影响到线程并发执行的正确性。</p>
+<p>也就是说，要想并发程序正确地执行，必须要保证原子性、可见性以及有序性。只要有一个没有被保证，就有可能会导致程序运行不正确。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/10/05/object中的内置锁与内置条件队列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean.Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="balabala.sean">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/10/05/object中的内置锁与内置条件队列/" itemprop="url">内置锁与内置条件队列</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-05T20:04:35+08:00">
+                2016-10-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/并发/" itemprop="url" rel="index">
+                    <span itemprop="name">并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>java中的每个object可以作为一个lock, 而每个lock关联着一个条件队列。这个<br>条件队列中保存的元素是线程，java中关于内置锁和内置条件队列的3个方法：wait(),notify(),notifyAll()。这里的object lock和condition queue的“关联”关系，个人的理解是通过这个object lock，可以去释放条件队列中等待的线程，例如notify出队，notifyAll倒序所有出队。（权且忽略java.util.current.locks.Condition，这会复杂化内置锁和内置条件队列的关联关系）</p>
+<p>先看一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// 实现一个线程类，初始化方法传递一个object, 作为一个lock</div><div class="line">class TestThread implements Runnable&#123;</div><div class="line"></div><div class="line">    Object lock;</div><div class="line"></div><div class="line">    TestThread(Object lock)&#123;</div><div class="line">        this.lock = lock;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        try &#123;</div><div class="line">            lock.wait();</div><div class="line">        &#125; catch (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>然后在main方法中实例化5个TestThread类并测试notify()：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class ObjectWait &#123;</div><div class="line"></div><div class="line">    public static void main(String[] args) throws InterruptedException &#123;</div><div class="line">        Object lock = new Object();</div><div class="line"></div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line"></div><div class="line">        // 确保上述线程都已经进入running状态，再调用notify方法</div><div class="line">        Thread.sleep(3000);</div><div class="line"></div><div class="line">        lock.notify();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>此时，当我们运行的时候，报错了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">java.lang.IllegalMonitorStateException</div><div class="line">    at java.lang.Object.wait(Native Method)</div><div class="line">    at java.lang.Object.wait(Object.java:502)</div><div class="line">    at com.balabala.spring.beans.TestThread.run(ObjectWait.java:33)</div><div class="line">    at java.lang.Thread.run(Thread.java:745)</div></pre></td></tr></table></figure></p>
-<p>为什么会出现IllegalMonitorStateException呢？这是因为，在调用wait方法的时候，必须持有当前调用wait方法的对象的锁，wait之前一定有synchronized来获取对象的锁，notify同理。<br>注：<br>wait()：释放当前调用wait方法的对象锁，并使当前线程进入挂起状态<br>notify()：释放当前调用notify方法的对象锁，并唤醒Condition Queue（条件队列）的中的第一个线程（front元素，即第一个入队的线程）</p>
+<p>这里有一个比较有意思的问题：为什么会出现IllegalMonitorStateException呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">这是因为，在调用wait方法的时候，必须持有当前调用wait方法的对象的锁，如果不这样做的话，可能这个object lock本身在我们做一些操作的时候，被并发的线程做了一些修改（例如已经被别的程序执行了lock.notify()，此时再唤醒的线程将产生和预期不一致的效果）。</div><div class="line">即：在调用Object.wait()、Object.notfiy()、Object.notifyAll()之前一定有synchronized来获取对象锁。</div></pre></td></tr></table></figure></p>
+<p>注：<br>wait()：释放当前调用wait方法的对象锁，并使当前线程进入挂起状态<br>notify()：释放当前调用notify方法的对象锁，并唤醒Condition Queue（条件队列）的中的第一个线程（front元素，即第一个入队的线程）</p>
 <p>调整后的代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">class TestThread implements Runnable &#123;</div><div class="line"></div><div class="line">    Object lock;</div><div class="line"></div><div class="line">    TestThread(Object lock) &#123;</div><div class="line">        this.lock = lock;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        synchronized (lock) &#123;</div><div class="line">            try &#123;</div><div class="line">                System.out.println(&quot;thread get lock and going to wait:&quot; + Thread.currentThread().getId());</div><div class="line">                lock.wait();</div><div class="line">                System.out.println(&quot;thread notified and running:&quot; + Thread.currentThread().getId());</div><div class="line">            &#125; catch (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class ObjectWait &#123;</div><div class="line"></div><div class="line">    public static void main(String[] args) throws InterruptedException &#123;</div><div class="line">        Object lock = new Object();</div><div class="line"></div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line"></div><div class="line">        Thread.sleep(3000);</div><div class="line"></div><div class="line">        synchronized (lock) &#123;</div><div class="line">            lock.notify();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">thread get lock and going to wait:11</div><div class="line">thread get lock and going to wait:15</div><div class="line">thread get lock and going to wait:14</div><div class="line">thread get lock and going to wait:13</div><div class="line">thread get lock and going to wait:12</div><div class="line">thread notified and running:11  //这里需要注意：因为thread-11首先入队，所以也是第一个出队</div></pre></td></tr></table></figure></p>
 <p>我们把main方法中的lock.notify()改成lock.notifyAll()来看看：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class ObjectWait &#123;</div><div class="line"></div><div class="line">    public static void main(String[] args) throws InterruptedException &#123;</div><div class="line">        Object lock = new Object();</div><div class="line"></div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line">        new Thread(new TestThread(lock)).start();</div><div class="line"></div><div class="line">        Thread.sleep(3000);</div><div class="line"></div><div class="line">        synchronized (lock) &#123;</div><div class="line">            lock.notifyAll();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">thread get lock and going to wait:11</div><div class="line">thread get lock and going to wait:13</div><div class="line">thread get lock and going to wait:12</div><div class="line">thread get lock and going to wait:14</div><div class="line">thread get lock and going to wait:15</div><div class="line">thread notified and running:15</div><div class="line">thread notified and running:14</div><div class="line">thread notified and running:12</div><div class="line">thread notified and running:13</div><div class="line">thread notified and running:11</div></pre></td></tr></table></figure></p>
+<p>输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">thread get lock and going to wait:11</div><div class="line">thread get lock and going to wait:13</div><div class="line">thread get lock and going to wait:12</div><div class="line">thread get lock and going to wait:14</div><div class="line">thread get lock and going to wait:15</div><div class="line">============倒序出队============</div><div class="line">thread notified and running:15</div><div class="line">thread notified and running:14</div><div class="line">thread notified and running:12</div><div class="line">thread notified and running:13</div><div class="line">thread notified and running:11</div></pre></td></tr></table></figure></p>
 <p>通过观察不难发现：Condition Queue是双端队列(Dequeue), notify()方法是调用出队，notifyAll()是所有的挂起线程倒序出队</p>
 <p>这和Condition的signal、signalAll如出一辙。</p>
 
@@ -1407,306 +1744,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/12/06/JVM中的栈/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sean.Zhang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="balabala.sean">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/12/06/JVM中的栈/" itemprop="url">JVM中的栈</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-06T18:53:47+08:00">
-                2015-12-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/jvm/" itemprop="url" rel="index">
-                    <span itemprop="name">jvm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Stack（栈）也叫栈内存（Stack Memory）或者线程栈（Thread Stack）,是Java程序的运行区，它的整个生命周期是伴随着线程的生命周期，线程结束的时候栈内存也就释放了，对于栈来说不存在GC的问题，因为线程一结束，对应的Stack就Over了。</p>
-<p>那么2个问题：</p>
-<ul>
-<li>栈中存放哪些数据？</li>
-<li>栈中存放的数据的格式是什么？</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/12/06/JVM中的栈/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2015/12/05/JVM中的堆外内存/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sean.Zhang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="balabala.sean">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/12/05/JVM中的堆外内存/" itemprop="url">JVM中的堆外内存</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-05T15:13:22+08:00">
-                2015-12-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/jvm/" itemprop="url" rel="index">
-                    <span itemprop="name">jvm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>JVM为了满足AIO（避免内核态和用户态的进程数据拷贝），在java.nio.buffer.ByteBuffer中提供了访问堆外内存的功能。</p>
-<p>关于ByteBuffer:(分为2种)</p>
-<p>1.Heap ByteBuffer -&gt; -XX:Xmx<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">该类对象分配在JVM的堆内存里面，直接由Java虚拟机负责垃圾回收，</div></pre></td></tr></table></figure></p>
-<p>2.Direct ByteBuffer -&gt; -XX:MaxDirectMemorySize<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">通过jni在虚拟机外内存中分配的。通过jmap无法查看该快内存的使用情况。只能通过top来看它的内存使用情况。</div><div class="line"></div><div class="line">-XX:MaxDirectMemorySize此设置的含义是当Direct ByteBuffer分配的堆外内存到达指定大小后，即触发Full GC。</div></pre></td></tr></table></figure></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/12/05/JVM中的堆外内存/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1757,7 +1794,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1768,7 +1805,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1779,7 +1816,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="balabala.sean">
 <meta property="og:description" content="在java的线程中由于线程栈的存在，对于变量的每一次读写，并不是从主内存区(heap)中获取最新的值，这就可能造成线程A、线程B同时读取了某一个变量x的值，然后线程A对x做了修改，而线程B还在用线程栈中的x值，造成了最终的数据不一致问题。 volatile译为“不稳定的”，这就指示jvm，线程A、线程B每次使用x的时候，都去主内存中进行读取。这样在任何时候，多个线程之间看到的共享变量都是同一个值。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-07T06:31:27.000Z">
+<meta property="og:updated_time" content="2017-10-07T06:34:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="volatile详解">
 <meta name="twitter:description" content="在java的线程中由于线程栈的存在，对于变量的每一次读写，并不是从主内存区(heap)中获取最新的值，这就可能造成线程A、线程B同时读取了某一个变量x的值，然后线程A对x做了修改，而线程B还在用线程栈中的x值，造成了最终的数据不一致问题。 volatile译为“不稳定的”，这就指示jvm，线程A、线程B每次使用x的时候，都去主内存中进行读取。这样在任何时候，多个线程之间看到的共享变量都是同一个值。">
@@ -344,6 +344,7 @@
       
         <p>在java的线程中由于线程栈的存在，对于变量的每一次读写，并不是从主内存区(heap)中获取最新的值，这就可能造成线程A、线程B同时读取了某一个变量x的值，然后线程A对x做了修改，而线程B还在用线程栈中的x值，造成了最终的数据不一致问题。</p>
 <p>volatile译为“不稳定的”，这就指示jvm，线程A、线程B每次使用x的时候，都去主内存中进行读取。这样在任何时候，多个线程之间看到的共享变量都是同一个值。内部的实现是禁用了高速缓存策略（cpu cache）</p>
+<a id="more"></a>
 <p>先看一段代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public class NoVisibility &#123;</div><div class="line">    private static boolean ready;</div><div class="line">    private static int number;</div><div class="line">    private static class ReaderThread extends Thread &#123;</div><div class="line">        @Override</div><div class="line">        public void run() &#123;</div><div class="line">            //这里可能会一直循环下去</div><div class="line">            while(!ready) &#123;</div><div class="line">                Thread.yield();</div><div class="line">            &#125;</div><div class="line">            System.out.println(number);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        new ReaderThread().start();</div><div class="line">        number = 42;</div><div class="line">        ready = true;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>ready在main函数中被修改了之后，并没有强制刷新到主内存，而ReaderThread一开始将ready(false)拷贝到了自己的内存区域（线程栈）中，一直傻傻的认为ready=false循环下去。</p>
 <p>volatile在实际开发中并不常用，主要是针对独立观察（多读一写）、状态控制的情况会用到。</p>
@@ -457,7 +458,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

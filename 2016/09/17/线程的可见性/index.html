@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="balabala.sean">
 <meta property="og:description" content="在Java的多线程模型中，线程之间是不允许直接传递数据进行交互的，它们之间的交互只能通过共享变量来实现。当创建一个对象实例的时候，它是被分配在堆(heap)上的，每个线程运行时都有自己的工作内存(stack), 当线程操作这个对象的时候，首先从堆中创建一个此对象的引用副本到自己的工作内存中，线程运行完毕后，再把工作内存中的对象副本刷新到堆中。在多线程的情况下，即一个共享对象存在了多个副本(在不同的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-07T06:29:47.000Z">
+<meta property="og:updated_time" content="2017-10-07T06:33:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发中的可见性">
 <meta name="twitter:description" content="在Java的多线程模型中，线程之间是不允许直接传递数据进行交互的，它们之间的交互只能通过共享变量来实现。当创建一个对象实例的时候，它是被分配在堆(heap)上的，每个线程运行时都有自己的工作内存(stack), 当线程操作这个对象的时候，首先从堆中创建一个此对象的引用副本到自己的工作内存中，线程运行完毕后，再把工作内存中的对象副本刷新到堆中。在多线程的情况下，即一个共享对象存在了多个副本(在不同的">
@@ -343,6 +343,7 @@
 
       
         <p>在Java的多线程模型中，线程之间是不允许直接传递数据进行交互的，它们之间的交互只能通过共享变量来实现。当创建一个对象实例的时候，它是被分配在堆(heap)上的，每个线程运行时都有自己的工作内存(stack), 当线程操作这个对象的时候，首先从堆中创建一个此对象的引用副本到自己的工作内存中，线程运行完毕后，再把工作内存中的对象副本刷新到堆中。在多线程的情况下，即一个共享对象存在了多个副本(在不同的线程栈中)，如果一个线程修改了此对象，那么别的线程就能看到被修改后的值了。</p>
+<a id="more"></a>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">public class ThreadVisibility &#123;</div><div class="line">    public static Integer x = 0;</div><div class="line"></div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        new ReadThread().start();</div><div class="line">        new WriteThread().start();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">class ReadThread extends Thread &#123;</div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line"></div><div class="line">        while (true) &#123;</div><div class="line">            try &#123;</div><div class="line">                Thread.sleep(1000);</div><div class="line">            &#125; catch (InterruptedException e) &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line">            System.out.println(ThreadVisibility.x.intValue());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">class WriteThread extends Thread &#123;</div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        try &#123;</div><div class="line">            Thread.sleep(5000);</div><div class="line">        &#125; catch (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        ThreadVisibility.x = 10;</div><div class="line">        System.out.println(&quot;change the variable value to 10&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
@@ -452,7 +453,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

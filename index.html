@@ -989,6 +989,154 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/09/21/线程同步-栅栏/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean.Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="balabala.sean">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/21/线程同步-栅栏/" itemprop="url">线程同步-栅栏</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-21T10:33:59+08:00">
+                2016-09-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/并发/" itemprop="url" rel="index">
+                    <span itemprop="name">并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>闭锁是一次性对象，一旦进入终止状态，就不能再被使用。CountDownLatch更多用来事件的触发。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">它是用来启动一组相关的操作，或者等待一组相关的操作结束。</div></pre></td></tr></table></figure></p>
+<p>栅栏跟闭锁有点类似，它能阻塞一组线程直到某个时间发生，但是这里有个很大的区别，在栅栏里，只有这组线程都到达栅栏位置时，才能继续执行。而且栅栏在全部线程到达后，内部的计数会被重置为初始化的值。它的作用有点像[一个能反复使用的”闭锁”]。其内部实现是一个可重入锁(ReentrantLock)。</p>
+<p>如例：<br></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/21/线程同步-栅栏/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/09/17/线程同步-闭锁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1081,18 +1229,20 @@
 
       
         
-          
-            <p>闭锁是一种(一次性的)同步机制的实现，它可以延迟线程的进度直到其他线程到达终止状态：</p>
+          <p>闭锁是一种(一次性的)同步机制的实现，它可以延迟线程的进度直到其他线程到达终止状态：</p>
 <ul>
 <li>允许一个或多个线程等待一个事件集的发生，闭锁的状态包括一个计数器，初始化为一个正数，用来实现需要等待的事件数。</li>
 <li>countDown对计数器做减操作，表示一个事件已经发生了，而await方法等待计数器达到0，此时所有需要等待的事件都已经发生。</li>
 <li>如果计数器的入口时值为非零，await会一直阻塞直到计数器为0，或等待线程中断及超时。</li>
 </ul>
 <p>需要注意的是，当计数器为0的时候，CountDownLatch这个闭锁将失去意义，因为它将一直保持开放的状态。</p>
-<p>如例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div></pre></td><td class="code"><pre><div class="line">import java.util.concurrent.Callable;</div><div class="line">import java.util.concurrent.CountDownLatch;</div><div class="line">import java.util.concurrent.ExecutionException;</div><div class="line">import java.util.concurrent.FutureTask;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 假设有如下案例：（模拟闭锁的场景）</div><div class="line"> * </div><div class="line"> * 用于发起一次购买请求：</div><div class="line"> * </div><div class="line"> * 1.验证用于余额是否足够(调用UserService)</div><div class="line"> * 2.验证库存是否足够(调用OrderService)</div><div class="line"> * </div><div class="line"> * 都验证成功的情况下，则购买成功</div><div class="line"> * </div><div class="line"> */</div><div class="line">public class CountDownLatchDemo &#123;</div><div class="line"></div><div class="line">    public static void main(String[] args) throws InterruptedException, ExecutionException &#123;</div><div class="line">        CountDownLatch latch = new CountDownLatch(2);</div><div class="line">        </div><div class="line">        //验证用于余额是否足够</div><div class="line">        FutureTask&lt;Boolean&gt; validateAmountTask = new FutureTask&lt;Boolean&gt;(new Callable&lt;Boolean&gt;() &#123;</div><div class="line">            @Override</div><div class="line">            public Boolean call() throws Exception &#123;</div><div class="line">                UserService service = new UserService();</div><div class="line">                boolean flag = service.isAmountEnough();</div><div class="line">                latch.countDown();</div><div class="line">                return flag;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        //验证库存是否足够</div><div class="line">        FutureTask&lt;Boolean&gt; validateRepertoryTask = new FutureTask&lt;Boolean&gt;(new Callable&lt;Boolean&gt;() &#123;</div><div class="line">            @Override</div><div class="line">            public Boolean call() throws Exception &#123;</div><div class="line">                OrderService service = new OrderService();</div><div class="line">                boolean flag = service.isRepertoryEnough();</div><div class="line">                latch.countDown();</div><div class="line">                return flag;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        </div><div class="line">        </div><div class="line">        new Thread(validateAmountTask).start();</div><div class="line">        new Thread(validateRepertoryTask).start();</div><div class="line">        </div><div class="line">        //注：这里的InterruptedException被我throw出去了，实际场景不要这么简单粗暴的处理。</div><div class="line">        latch.await();</div><div class="line">        boolean isAmountEnough = validateAmountTask.get();</div><div class="line">        boolean isRepertoryEnough = validateRepertoryTask.get();</div><div class="line">        </div><div class="line">        //都足够的情况下，购买成功</div><div class="line">        if(isAmountEnough &amp;&amp; isRepertoryEnough)&#123;</div><div class="line">            System.out.println(&quot;购买成功&quot;);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">class UserService&#123;</div><div class="line">    //验证余额是否足够</div><div class="line">    Boolean isAmountEnough()&#123;</div><div class="line">        return true;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">class OrderService&#123;</div><div class="line">    //验证库存是否足够</div><div class="line">    Boolean isRepertoryEnough()&#123;</div><div class="line">        return true;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/17/线程同步-闭锁/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1285,6 +1435,154 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/09/16/线程同步-信号量/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sean.Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="balabala.sean">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/16/线程同步-信号量/" itemprop="url">线程同步-信号量</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-16T12:19:12+08:00">
+                2016-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/并发/" itemprop="url" rel="index">
+                    <span itemprop="name">并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>信号量(java.util.current.Semaphore)可以控制某个资源在并发的情况下可被同时访问的线程个数，通过 acquire() 获取一个许可，如果没有就等待，通过release() 释放一个许可。</p>
+<p>Semaphore(int permits, boolean fair)</p>
+<ul>
+<li>int permits : 指定线程数</li>
+<li>fair : 是否采用公平模式，如果以公平方式执行，则线程将会按到达的顺序（FIFO）执行，如果是非公平，则随机唤醒等待的线程。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">import java.util.concurrent.ExecutorService;</div><div class="line">import java.util.concurrent.Executors;</div><div class="line">import java.util.concurrent.Semaphore;</div><div class="line"></div><div class="line">public class SemaphoneDemo &#123;</div><div class="line"></div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        //最多允许50个线程同时访问</div><div class="line">        Semaphore semaphore = new Semaphore(50, true);</div><div class="line">        //创建一个线程池(cached，不指定线程池容量大小)</div><div class="line">        ExecutorService threadPool = Executors.newCachedThreadPool();</div><div class="line">        for (int x = 0; x &lt; 10000; x++) &#123;</div><div class="line">            final int index = x;</div><div class="line">            Runnable runnable = new Runnable() &#123;</div><div class="line">                @Override</div><div class="line">                public void run() &#123;</div><div class="line">                    try &#123;</div><div class="line">                        semaphore.acquire();</div><div class="line">                        System.out.println(&quot;index:&quot; + index);</div><div class="line">                        //TODO do somethding</div><div class="line">                        Thread.sleep(3000);</div><div class="line">                    &#125; catch (InterruptedException e) &#123;</div><div class="line">                        e.printStackTrace();</div><div class="line">                    &#125; finally &#123;</div><div class="line">                        semaphore.release();</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;;</div><div class="line">            threadPool.execute(runnable);</div><div class="line">        &#125;</div><div class="line">        threadPool.shutdown();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/08/07/volatile详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1419,301 +1717,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/06/19/分布式事务之可靠消息/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sean.Zhang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="balabala.sean">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/06/19/分布式事务之可靠消息/" itemprop="url">分布式事务之可靠消息</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-19T10:38:24+08:00">
-                2016-06-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/" itemprop="url" rel="index">
-                    <span itemprop="name">分布式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>基于可靠消息的分布式事务的实现往往是在参与者和协调者的DB中都创建物理表的方式，假设我们现有的业务系统是这样的（实际情况可能比这个复杂的多），如图所示</p>
-<p><img src="/2016/06/19/分布式事务之可靠消息/dist.jpg" alt="场景"></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/06/19/分布式事务之可靠消息/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/06/10/rocketmq集群搭建/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sean.Zhang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="balabala.sean">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/06/10/rocketmq集群搭建/" itemprop="url">rocketmq集群搭建</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-10T17:21:42+08:00">
-                2016-06-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/" itemprop="url" rel="index">
-                    <span itemprop="name">分布式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>这里采用的是2m-2s-async的集群方式, 6台server的配置</p>
-<p>修改hosts文件：vim /etc/hosts<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">172.16.147.136 rocketmq-ns-1</div><div class="line">172.16.147.137 rocketmq-ns-2</div><div class="line">172.16.147.138 rocketmq-master-1</div><div class="line">172.16.147.139 rocketmq-master-2</div><div class="line">172.16.147.140 rocketmq-slave-1</div><div class="line">172.16.147.141 rocketmq-slave-2</div></pre></td></tr></table></figure></p>
-<p>重启网卡：service restart network</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/06/10/rocketmq集群搭建/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1764,7 +1767,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

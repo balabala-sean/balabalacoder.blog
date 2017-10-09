@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="spring cloud," />
+  <meta name="keywords" content="并发," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="在部署eureka-server时，避免不了要解决可用性的问题，本地测试部署3台Eureka Server: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframework.boot.autoconfigure.SpringBootApplicat">
-<meta name="keywords" content="spring cloud">
+<meta name="description" content="闭锁是一次性对象，一旦进入终止状态，就不能再被使用。CountDownLatch更多用来事件的触发。1它是用来启动一组相关的操作，或者等待一组相关的操作结束。 栅栏跟闭锁有点类似，它能阻塞一组线程直到某个时间发生，但是这里有个很大的区别，在栅栏里，只有这组线程都到达栅栏位置时，才能继续执行。而且栅栏在全部线程到达后，内部的计数会被重置为初始化的值。它的作用有点像[一个能反复使用的”闭锁”]。其内部">
+<meta name="keywords" content="并发">
 <meta property="og:type" content="article">
-<meta property="og:title" content="eureka高可用部署">
-<meta property="og:url" content="http://www.balabalacoder.com/2017/03/08/eureka高可用部署/index.html">
+<meta property="og:title" content="线程同步-栅栏">
+<meta property="og:url" content="http://www.balabalacoder.com/2016/09/21/线程同步-栅栏/index.html">
 <meta property="og:site_name" content="balabala.sean">
-<meta property="og:description" content="在部署eureka-server时，避免不了要解决可用性的问题，本地测试部署3台Eureka Server: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframework.boot.autoconfigure.SpringBootApplicat">
+<meta property="og:description" content="闭锁是一次性对象，一旦进入终止状态，就不能再被使用。CountDownLatch更多用来事件的触发。1它是用来启动一组相关的操作，或者等待一组相关的操作结束。 栅栏跟闭锁有点类似，它能阻塞一组线程直到某个时间发生，但是这里有个很大的区别，在栅栏里，只有这组线程都到达栅栏位置时，才能继续执行。而且栅栏在全部线程到达后，内部的计数会被重置为初始化的值。它的作用有点像[一个能反复使用的”闭锁”]。其内部">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-01T11:01:49.000Z">
+<meta property="og:updated_time" content="2017-10-09T07:57:04.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="eureka高可用部署">
-<meta name="twitter:description" content="在部署eureka-server时，避免不了要解决可用性的问题，本地测试部署3台Eureka Server: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframework.boot.autoconfigure.SpringBootApplicat">
+<meta name="twitter:title" content="线程同步-栅栏">
+<meta name="twitter:description" content="闭锁是一次性对象，一旦进入终止状态，就不能再被使用。CountDownLatch更多用来事件的触发。1它是用来启动一组相关的操作，或者等待一组相关的操作结束。 栅栏跟闭锁有点类似，它能阻塞一组线程直到某个时间发生，但是这里有个很大的区别，在栅栏里，只有这组线程都到达栅栏位置时，才能继续执行。而且栅栏在全部线程到达后，内部的计数会被重置为初始化的值。它的作用有点像[一个能反复使用的”闭锁”]。其内部">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://www.balabalacoder.com/2017/03/08/eureka高可用部署/"/>
+  <link rel="canonical" href="http://www.balabalacoder.com/2016/09/21/线程同步-栅栏/"/>
 
 
 
 
 
-  <title>eureka高可用部署 | balabala.sean</title>
+  <title>线程同步-栅栏 | balabala.sean</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2017/03/08/eureka高可用部署/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/09/21/线程同步-栅栏/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">eureka高可用部署</h1>
+          <h1 class="post-title" itemprop="name headline">线程同步-栅栏</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-08T00:39:42+08:00">
-                2017-03-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-21T10:33:59+08:00">
+                2016-09-21
               </time>
             
 
@@ -305,8 +305,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/spring-cloud/" itemprop="url" rel="index">
-                    <span itemprop="name">spring cloud</span>
+                  <a href="/categories/并发/" itemprop="url" rel="index">
+                    <span itemprop="name">并发</span>
                   </a>
                 </span>
 
@@ -342,26 +342,10 @@
       
 
       
-        <p>在部署eureka-server时，避免不了要解决可用性的问题，本地测试部署3台Eureka Server:</p>
-<p>Application.java:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import org.springframework.boot.SpringApplication;</div><div class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line">import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;</div><div class="line"></div><div class="line">@SpringBootApplication</div><div class="line">@EnableEurekaServer</div><div class="line">public class Application &#123;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		SpringApplication.run(Application.class, args);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>修改本地 hosts:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">127.0.0.1 peer1</div><div class="line">127.0.0.1 peer2</div><div class="line">127.0.0.1 peer3</div></pre></td></tr></table></figure>
-<p>application.properties:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">spring.application.name=eureka-server</div></pre></td></tr></table></figure></p>
-<p>application-peer1.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10001</div><div class="line">eureka.instance.hostname=peer1</div><div class="line">eureka.client.serviceUrl.defaultZone=http://peer1:10001/eureka,http://peer2:10002/eureka,http://peer3:10003/eureka</div></pre></td></tr></table></figure></p>
-<p>application-peer2.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10002</div><div class="line">eureka.instance.hostname=peer2</div><div class="line">eureka.client.serviceUrl.defaultZone=http://peer1:10001/eureka,http://peer2:10002/eureka,http://peer3:10003/eureka</div></pre></td></tr></table></figure></p>
-<p>application-peer3.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10003</div><div class="line">eureka.instance.hostname=peer3</div><div class="line">eureka.client.serviceUrl.defaultZone=http://peer1:10001/eureka,http://peer2:10002/eureka,http://peer3:10003/eureka</div></pre></td></tr></table></figure></p>
-<p>打包：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn clean package</div></pre></td></tr></table></figure>
-<p>依次运行 :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">java -jar discovery-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer1</div><div class="line">java -jar discovery-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer2</div><div class="line">java -jar discovery-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer3</div></pre></td></tr></table></figure></p>
-<p>浏览器:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">http://localhost:10001/</div><div class="line">http://localhost:10002/</div><div class="line">http://localhost:10003/</div></pre></td></tr></table></figure>
-<p>eureka高可用集群需要注意的事项：</p>
-<ul>
-<li>spring.application.name=eureka-server， 在N台节点必须保持一致</li>
-<li>eureka.instance.prefer-ip-address=true，IP注册的方式要关闭   </li>
-</ul>
+        <p>闭锁是一次性对象，一旦进入终止状态，就不能再被使用。CountDownLatch更多用来事件的触发。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">它是用来启动一组相关的操作，或者等待一组相关的操作结束。</div></pre></td></tr></table></figure></p>
+<p>栅栏跟闭锁有点类似，它能阻塞一组线程直到某个时间发生，但是这里有个很大的区别，在栅栏里，只有这组线程都到达栅栏位置时，才能继续执行。而且栅栏在全部线程到达后，内部的计数会被重置为初始化的值。它的作用有点像[一个能反复使用的”闭锁”]。其内部实现是一个可重入锁(ReentrantLock)。</p>
+<p>如例：<br><a id="more"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">import java.util.concurrent.BrokenBarrierException;</div><div class="line">import java.util.concurrent.CyclicBarrier;</div><div class="line"></div><div class="line">public class CyclicBarrierDemo &#123;</div><div class="line"></div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        //当5个线程都准备好的时候，输出all ready</div><div class="line">        CyclicBarrier barrier = new CyclicBarrier(5, new Runnable() &#123;</div><div class="line">            @Override</div><div class="line">            public void run() &#123;</div><div class="line">                System.out.println(&quot;all ready!&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        //循环10次，应该会输出2次all ready</div><div class="line">        for (int i = 0; i &lt; 10; i++) &#123;</div><div class="line">            Worker worker = new Worker(barrier);</div><div class="line">            new Thread(worker).start();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">class Worker implements Runnable&#123;</div><div class="line">    private CyclicBarrier barrier;</div><div class="line">    Worker(CyclicBarrier barrier)&#123;</div><div class="line">        this.barrier = barrier;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void run() &#123;</div><div class="line">        try &#123;</div><div class="line">            // do something</div><div class="line">            System.out.println(&quot;I am ready!&quot;);</div><div class="line"></div><div class="line">            barrier.await();</div><div class="line">        &#125; catch (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; catch (BrokenBarrierException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -379,7 +363,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/spring-cloud/" rel="tag"># spring cloud</a>
+            <a href="/tags/并发/" rel="tag"># 并发</a>
           
         </div>
       
@@ -392,8 +376,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/03/eureka用户认证/" rel="next" title="eureka用户认证">
-                <i class="fa fa-chevron-left"></i> eureka用户认证
+              <a href="/2016/09/17/线程同步-闭锁/" rel="next" title="线程同步-闭锁">
+                <i class="fa fa-chevron-left"></i> 线程同步-闭锁
               </a>
             
           </div>
@@ -402,8 +386,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/02/基于Git的配置中心/" rel="prev" title="基于Git的配置中心">
-                基于Git的配置中心 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/10/05/内置锁与内置条件队列/" rel="prev" title="内置锁与内置条件队列">
+                内置锁与内置条件队列 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="spring cloud," />
+  <meta name="keywords" content="并发," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="在部署eureka-server时，避免不了要解决可用性的问题，本地测试部署3台Eureka Server: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframework.boot.autoconfigure.SpringBootApplicat">
-<meta name="keywords" content="spring cloud">
+<meta name="description" content="信号量(java.util.current.Semaphore)可以控制某个资源在并发的情况下可被同时访问的线程个数，通过 acquire() 获取一个许可，如果没有就等待，通过release() 释放一个许可。 Semaphore(int permits, boolean fair)  int permits : 指定线程数 fair : 是否采用公平模式，如果以公平方式执行，则线程将会按到达的">
+<meta name="keywords" content="并发">
 <meta property="og:type" content="article">
-<meta property="og:title" content="eureka高可用部署">
-<meta property="og:url" content="http://www.balabalacoder.com/2017/03/08/eureka高可用部署/index.html">
+<meta property="og:title" content="线程同步-信号量">
+<meta property="og:url" content="http://www.balabalacoder.com/2016/09/16/线程同步-信号量/index.html">
 <meta property="og:site_name" content="balabala.sean">
-<meta property="og:description" content="在部署eureka-server时，避免不了要解决可用性的问题，本地测试部署3台Eureka Server: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframework.boot.autoconfigure.SpringBootApplicat">
+<meta property="og:description" content="信号量(java.util.current.Semaphore)可以控制某个资源在并发的情况下可被同时访问的线程个数，通过 acquire() 获取一个许可，如果没有就等待，通过release() 释放一个许可。 Semaphore(int permits, boolean fair)  int permits : 指定线程数 fair : 是否采用公平模式，如果以公平方式执行，则线程将会按到达的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-01T11:01:49.000Z">
+<meta property="og:updated_time" content="2017-10-09T07:38:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="eureka高可用部署">
-<meta name="twitter:description" content="在部署eureka-server时，避免不了要解决可用性的问题，本地测试部署3台Eureka Server: Application.java: 1234567891011import org.springframework.boot.SpringApplication;import org.springframework.boot.autoconfigure.SpringBootApplicat">
+<meta name="twitter:title" content="线程同步-信号量">
+<meta name="twitter:description" content="信号量(java.util.current.Semaphore)可以控制某个资源在并发的情况下可被同时访问的线程个数，通过 acquire() 获取一个许可，如果没有就等待，通过release() 释放一个许可。 Semaphore(int permits, boolean fair)  int permits : 指定线程数 fair : 是否采用公平模式，如果以公平方式执行，则线程将会按到达的">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://www.balabalacoder.com/2017/03/08/eureka高可用部署/"/>
+  <link rel="canonical" href="http://www.balabalacoder.com/2016/09/16/线程同步-信号量/"/>
 
 
 
 
 
-  <title>eureka高可用部署 | balabala.sean</title>
+  <title>线程同步-信号量 | balabala.sean</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2017/03/08/eureka高可用部署/">
+    <link itemprop="mainEntityOfPage" href="http://www.balabalacoder.com/2016/09/16/线程同步-信号量/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sean.Zhang">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">eureka高可用部署</h1>
+          <h1 class="post-title" itemprop="name headline">线程同步-信号量</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-08T00:39:42+08:00">
-                2017-03-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-16T12:19:12+08:00">
+                2016-09-16
               </time>
             
 
@@ -305,8 +305,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/spring-cloud/" itemprop="url" rel="index">
-                    <span itemprop="name">spring cloud</span>
+                  <a href="/categories/并发/" itemprop="url" rel="index">
+                    <span itemprop="name">并发</span>
                   </a>
                 </span>
 
@@ -342,26 +342,13 @@
       
 
       
-        <p>在部署eureka-server时，避免不了要解决可用性的问题，本地测试部署3台Eureka Server:</p>
-<p>Application.java:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">import org.springframework.boot.SpringApplication;</div><div class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line">import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;</div><div class="line"></div><div class="line">@SpringBootApplication</div><div class="line">@EnableEurekaServer</div><div class="line">public class Application &#123;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		SpringApplication.run(Application.class, args);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>修改本地 hosts:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">127.0.0.1 peer1</div><div class="line">127.0.0.1 peer2</div><div class="line">127.0.0.1 peer3</div></pre></td></tr></table></figure>
-<p>application.properties:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">spring.application.name=eureka-server</div></pre></td></tr></table></figure></p>
-<p>application-peer1.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10001</div><div class="line">eureka.instance.hostname=peer1</div><div class="line">eureka.client.serviceUrl.defaultZone=http://peer1:10001/eureka,http://peer2:10002/eureka,http://peer3:10003/eureka</div></pre></td></tr></table></figure></p>
-<p>application-peer2.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10002</div><div class="line">eureka.instance.hostname=peer2</div><div class="line">eureka.client.serviceUrl.defaultZone=http://peer1:10001/eureka,http://peer2:10002/eureka,http://peer3:10003/eureka</div></pre></td></tr></table></figure></p>
-<p>application-peer3.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">server.port=10003</div><div class="line">eureka.instance.hostname=peer3</div><div class="line">eureka.client.serviceUrl.defaultZone=http://peer1:10001/eureka,http://peer2:10002/eureka,http://peer3:10003/eureka</div></pre></td></tr></table></figure></p>
-<p>打包：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn clean package</div></pre></td></tr></table></figure>
-<p>依次运行 :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">java -jar discovery-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer1</div><div class="line">java -jar discovery-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer2</div><div class="line">java -jar discovery-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=peer3</div></pre></td></tr></table></figure></p>
-<p>浏览器:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">http://localhost:10001/</div><div class="line">http://localhost:10002/</div><div class="line">http://localhost:10003/</div></pre></td></tr></table></figure>
-<p>eureka高可用集群需要注意的事项：</p>
+        <p>信号量(java.util.current.Semaphore)可以控制某个资源在并发的情况下可被同时访问的线程个数，通过 acquire() 获取一个许可，如果没有就等待，通过release() 释放一个许可。</p>
+<p>Semaphore(int permits, boolean fair)</p>
 <ul>
-<li>spring.application.name=eureka-server， 在N台节点必须保持一致</li>
-<li>eureka.instance.prefer-ip-address=true，IP注册的方式要关闭   </li>
+<li>int permits : 指定线程数</li>
+<li>fair : 是否采用公平模式，如果以公平方式执行，则线程将会按到达的顺序（FIFO）执行，如果是非公平，则随机唤醒等待的线程。</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">import java.util.concurrent.ExecutorService;</div><div class="line">import java.util.concurrent.Executors;</div><div class="line">import java.util.concurrent.Semaphore;</div><div class="line"></div><div class="line">public class SemaphoneDemo &#123;</div><div class="line"></div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        //最多允许50个线程同时访问</div><div class="line">        Semaphore semaphore = new Semaphore(50, true);</div><div class="line">        //创建一个线程池(cached，不指定线程池容量大小)</div><div class="line">        ExecutorService threadPool = Executors.newCachedThreadPool();</div><div class="line">        for (int x = 0; x &lt; 10000; x++) &#123;</div><div class="line">            final int index = x;</div><div class="line">            Runnable runnable = new Runnable() &#123;</div><div class="line">                @Override</div><div class="line">                public void run() &#123;</div><div class="line">                    try &#123;</div><div class="line">                        semaphore.acquire();</div><div class="line">                        System.out.println(&quot;index:&quot; + index);</div><div class="line">                        //TODO do somethding</div><div class="line">                        Thread.sleep(3000);</div><div class="line">                    &#125; catch (InterruptedException e) &#123;</div><div class="line">                        e.printStackTrace();</div><div class="line">                    &#125; finally &#123;</div><div class="line">                        semaphore.release();</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;;</div><div class="line">            threadPool.execute(runnable);</div><div class="line">        &#125;</div><div class="line">        threadPool.shutdown();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -379,7 +366,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/spring-cloud/" rel="tag"># spring cloud</a>
+            <a href="/tags/并发/" rel="tag"># 并发</a>
           
         </div>
       
@@ -392,8 +379,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/03/eureka用户认证/" rel="next" title="eureka用户认证">
-                <i class="fa fa-chevron-left"></i> eureka用户认证
+              <a href="/2016/08/07/volatile详解/" rel="next" title="volatile详解">
+                <i class="fa fa-chevron-left"></i> volatile详解
               </a>
             
           </div>
@@ -402,8 +389,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/02/基于Git的配置中心/" rel="prev" title="基于Git的配置中心">
-                基于Git的配置中心 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/09/17/线程的可见性/" rel="prev" title="并发中的可见性">
+                并发中的可见性 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

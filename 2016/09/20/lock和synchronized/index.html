@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="在java中，synchronized和lock都是保证线程同步的手段，下面来对比下他们的区别：  synchronized和lock的用法区别  123synchronized：可以加在方法上(锁的是当前类的Class对象)，也可以锁对象(内置对象锁)。但是程序一旦进入synchronized方法中，将一直等待其运行结束(除非外部上层线程调用interrupt)，这一点鄙人认为是一个很大的缺点，">
+<meta name="description" content="在java中，synchronized和lock都是保证线程同步的手段，下面来对比下他们的区别：  synchronized和lock的用法区别  synchronized：可以加在方法上(锁的是当前类的Class对象)，也可以锁对象(内置对象锁)。但是程序一旦进入synchronized方法中，将一直等待其运行结束(除非外部上层线程调用interrupt)，这一点鄙人认为是一个很大的缺点，增加了">
 <meta name="keywords" content="并发">
 <meta property="og:type" content="article">
 <meta property="og:title" content="lock和synchronized">
 <meta property="og:url" content="http://www.balabalacoder.com/2016/09/20/lock和synchronized/index.html">
 <meta property="og:site_name" content="balabala.sean">
-<meta property="og:description" content="在java中，synchronized和lock都是保证线程同步的手段，下面来对比下他们的区别：  synchronized和lock的用法区别  123synchronized：可以加在方法上(锁的是当前类的Class对象)，也可以锁对象(内置对象锁)。但是程序一旦进入synchronized方法中，将一直等待其运行结束(除非外部上层线程调用interrupt)，这一点鄙人认为是一个很大的缺点，">
+<meta property="og:description" content="在java中，synchronized和lock都是保证线程同步的手段，下面来对比下他们的区别：  synchronized和lock的用法区别  synchronized：可以加在方法上(锁的是当前类的Class对象)，也可以锁对象(内置对象锁)。但是程序一旦进入synchronized方法中，将一直等待其运行结束(除非外部上层线程调用interrupt)，这一点鄙人认为是一个很大的缺点，增加了">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-09T08:29:59.000Z">
+<meta property="og:updated_time" content="2017-10-09T08:32:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="lock和synchronized">
-<meta name="twitter:description" content="在java中，synchronized和lock都是保证线程同步的手段，下面来对比下他们的区别：  synchronized和lock的用法区别  123synchronized：可以加在方法上(锁的是当前类的Class对象)，也可以锁对象(内置对象锁)。但是程序一旦进入synchronized方法中，将一直等待其运行结束(除非外部上层线程调用interrupt)，这一点鄙人认为是一个很大的缺点，">
+<meta name="twitter:description" content="在java中，synchronized和lock都是保证线程同步的手段，下面来对比下他们的区别：  synchronized和lock的用法区别  synchronized：可以加在方法上(锁的是当前类的Class对象)，也可以锁对象(内置对象锁)。但是程序一旦进入synchronized方法中，将一直等待其运行结束(除非外部上层线程调用interrupt)，这一点鄙人认为是一个很大的缺点，增加了">
 
 
 
@@ -346,11 +346,16 @@
 <ul>
 <li>synchronized和lock的用法区别</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">synchronized：可以加在方法上(锁的是当前类的Class对象)，也可以锁对象(内置对象锁)。但是程序一旦进入synchronized方法中，将一直等待其运行结束(除非外部上层线程调用interrupt)，这一点鄙人认为是一个很大的缺点，增加了程序的不可控性。</div><div class="line"> </div><div class="line">lock：显示调用lock和unlock，一般会在finally块中写unlock()以防死锁。而且lock方法的调用次数和unlock次数要一致，会记录锁的次数。在调用语义上和synchronized没有区别。</div></pre></td></tr></table></figure>
+<p>synchronized：可以加在方法上(锁的是当前类的Class对象)，也可以锁对象(内置对象锁)。但是程序一旦进入synchronized方法中，将一直等待其运行结束(除非外部上层线程调用interrupt)，这一点鄙人认为是一个很大的缺点，增加了程序的不可控性。</p>
+<p>lock：显示调用lock和unlock，一般会在finally块中写unlock()以防死锁。而且lock方法的调用次数和unlock次数要一致，会记录锁的次数。在调用语义上和synchronized没有区别。</p>
 <ul>
 <li>synchronized和lock的性能区别</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"> </div><div class="line">synchronized：托管给jvm执行的</div><div class="line"></div><div class="line">lock：由程序员控制锁的获取和释放</div><div class="line"></div><div class="line">PS：在Java1.5中，synchronized是性能低效的。因为这是一个重量级操作，需要调用操作接口，导致有可能加锁消耗的系统时间比加锁以外的操作还多。相比之下lock，性能更高一些。在Java1.6，synchronized在被进行了很多优化，适应自旋，锁消除，锁粗化，轻量级锁，偏向锁等等。导致在Java1.6上synchronized的性能并不比lock差。官方也表示，他们也更支持synchronized。</div><div class="line"> </div><div class="line">synchronized原始采用的是cpu悲观锁机制，即线程获得的是独占锁。独占锁意味着其他线程只能依靠阻塞来等待线程释放锁。而在cpu转换线程阻塞时会引起线程上下文切换，当有很多线程竞争锁的时候，会引起cpu频繁的上下文切换导致效率很低。</div><div class="line"> </div><div class="line">lock用的是乐观锁方式。所谓乐观锁就是，每次不加锁而是假设没有冲突而去完成某项操作，如果因为冲突失败就重试，直到成功为止。乐观锁实现的机制就是CAS操作（Compare And Swap）。</div></pre></td></tr></table></figure>
+<p>synchronized：托管给jvm执行的</p>
+<p>lock：由程序员控制锁的获取和释放</p>
+<p>PS：在Java1.5中，synchronized是性能低效的。因为这是一个重量级操作，需要调用操作接口，导致有可能加锁消耗的系统时间比加锁以外的操作还多。相比之下lock，性能更高一些。在Java1.6，synchronized在被进行了很多优化，适应自旋，锁消除，锁粗化，轻量级锁，偏向锁等等。导致在Java1.6上synchronized的性能并不比lock差。官方也表示，他们也更支持synchronized。</p>
+<p>synchronized原始采用的是cpu悲观锁机制，即线程获得的是独占锁。独占锁意味着其他线程只能依靠阻塞来等待线程释放锁。而在cpu转换线程阻塞时会引起线程上下文切换，当有很多线程竞争锁的时候，会引起cpu频繁的上下文切换导致效率很低。</p>
+<p>lock用的是乐观锁方式。所谓乐观锁就是，每次不加锁而是假设没有冲突而去完成某项操作，如果因为冲突失败就重试，直到成功为止。乐观锁实现的机制就是CAS操作（Compare And Swap）。</p>
 
       
     </div>

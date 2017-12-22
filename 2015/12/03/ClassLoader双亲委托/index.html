@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.balabalacoder.com/2015/12/03/classloader双亲委托/ClassLoader双亲委托/classloader1.png">
 <meta property="og:image" content="http://www.balabalacoder.com/2015/12/03/classloader双亲委托/ClassLoader双亲委托/classloader2.png">
-<meta property="og:updated_time" content="2017-10-07T10:04:09.000Z">
+<meta property="og:updated_time" content="2017-12-22T02:35:39.211Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="classLoader双亲委托">
 <meta name="twitter:description" content="双亲委托机制：ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。而且我们通过重载一些方法(findClass)，可以破坏原有的双亲委托机制。 有一个比较特殊的是BootClassLoader，它是内嵌在JVM中的，只有它是没有父加载器的，但是可以被用作其他Clas">
@@ -348,7 +348,7 @@
         <p>双亲委托机制：<br>ClassLoader是通过双亲委托机制来搜索和加载类的，每个ClassLoader实例都有一个父加载器的引用（Parent ClassLoader）,他们是一个包含的关系，非继承关系。而且我们通过重载一些方法(findClass)，可以破坏原有的双亲委托机制。</p>
 <p>有一个比较特殊的是BootClassLoader，它是内嵌在JVM中的，只有它是没有父加载器的，但是可以被用作其他ClassLoader的父加载器。</p>
 <ul>
-<li>当一个ClassLoader要加载某个*.class的时候，它会先把任务往上丢（丢给他老爸），所以一层层的丢，最后丢到了BootClassLoader那里去了。</li>
+<li>当一个ClassLoader要加载某个*.class的时候，它会先把任务往上丢（丢给父类加载器），所以一层层的丢，最后丢到了BootClassLoader那里去了。</li>
 <li>那么BootClassLoader来试着加载，如果它没有加载成功，则返回给委托的发起者（就是顺序又反过来了，一层层的往下丢，丢给他儿子），也就是ExtensionClassLoade</li>
 <li>要是ExtensionClassLoader也没加载成，则继续往下丢，丢给AppClassLoader进行加载。</li>
 <li>如果AppClassLoader也没加载成，则返回给指定的文件系统或者网络等URL中加载此类。</li>
@@ -364,6 +364,7 @@
 <p>ClassLoader源码分析：</p>
 <p>1.Parent ClassLoader<br><img src="/2015/12/03/classloader双亲委托/ClassLoader双亲委托/classloader1.png" alt="场景"></p>
 <p>2.向上递归<br><img src="/2015/12/03/classloader双亲委托/ClassLoader双亲委托/classloader2.png" alt="场景"></p>
+<p>双亲委托的破坏：<br>public class MyClassLoader extends ClassLoader {<br>  protected Class&lt;?&gt; loadClass(String name, boolean resolve) throws ClassNotFoundException{<br>    // do something<br>  }<br>}</p>
 
       
     </div>
@@ -472,7 +473,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -483,7 +484,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -494,7 +495,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
